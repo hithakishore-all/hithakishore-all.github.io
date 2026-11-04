@@ -55,6 +55,9 @@ main { display: grid; gap: 28px; padding-bottom: 64px; }
 .shot { display: block; position: relative; background: var(--chip); border-right: 1px solid var(--line); overflow: hidden; }
 .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .4s ease; }
 .shot:hover img { transform: scale(1.02); }
+.shot img.gif { object-fit: contain; object-position: center; background: #F2F7FF; }
+.shot:has(img.gif) { background: #F2F7FF; }
+.shot:hover img.gif { transform: none; }
 .shot .play { position: absolute; left: 18px; bottom: 18px; background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; }
 .body { padding: 32px 34px 30px; display: flex; flex-direction: column; }
 .tag { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
@@ -154,7 +157,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
   <article class="project readaroo" id="readaroo">
     <a class="shot" href="https://hithakishore-all.github.io/readaroo/" aria-label="Open the Readaroo live demo">
-      <img src="img/readaroo.jpg" alt="Readaroo family library home screen" loading="lazy">
+      <img class="gif" src="img/readaroo.gif" alt="Animated tour of Readaroo features: Next-Up read-alikes, parent approval, instant borrow, reading streaks and more" loading="lazy">
       <span class="play">Open live demo →</span>
     </a>
     <div class="body">
