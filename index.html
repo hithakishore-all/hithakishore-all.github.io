@@ -7,7 +7,7 @@
 <meta name="description" content="AI product prototypes designed and built end to end by Hitha Kishore. Each one runs live in your browser.">
 <meta property="og:title" content="Hitha Kishore · AI Product Portfolio">
 <meta property="og:description" content="AI product prototypes I designed and built end to end. Every demo runs live in your browser.">
-<meta property="og:image" content="https://hithakishore-all.github.io/img/orbit.jpg">
+<meta property="og:image" content="https://hithakishore-all.github.io/img/orbit-poster.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1F24'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' fill='%23F4EFE6' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +55,8 @@ main { display: grid; gap: 28px; padding-bottom: 64px; }
 .shot { display: block; position: relative; background: var(--chip); border-right: 1px solid var(--line); overflow: hidden; }
 .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .4s ease; }
 .shot:hover img { transform: scale(1.02); }
+.shot video.clip { display: block; width: 100%; height: 100%; object-fit: contain; background: #F6F3EE; }
+.shot:has(video.clip) { background: #F6F3EE; }
 .shot img.gif { object-fit: contain; object-position: center; background: #F2F7FF; }
 .shot:has(img.gif) { background: #F2F7FF; }
 .shot:hover img.gif { transform: none; }
@@ -108,7 +110,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
   <article class="project conviction" id="conviction">
     <a class="shot" href="https://hithakishore-all.github.io/conviction-ai/" aria-label="Open the Conviction AI live demo">
-      <img src="img/conviction.jpg" alt="Conviction AI overview screen ranking AI market segments" loading="lazy">
+      <video class="clip" src="img/conviction.mp4" poster="img/conviction-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="45-second demo of Conviction AI"></video>
       <span class="play">Open live demo →</span>
     </a>
     <div class="body">
@@ -132,7 +134,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 
   <article class="project orbit" id="orbit">
     <a class="shot" href="https://hithakishore-all.github.io/gtm-orbit/" aria-label="Open the GTM Orbit live demo">
-      <img src="img/orbit.jpg" alt="GTM Orbit console with a ranked account queue and a validated outreach brief" loading="lazy">
+      <video class="clip" src="img/orbit.mp4" poster="img/orbit-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of GTM Orbit"></video>
       <span class="play">Open live demo →</span>
     </a>
     <div class="body">
