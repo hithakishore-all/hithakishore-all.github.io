@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Meridian: a governed B2B agent marketplace. Clickable demo with synthetic data.">
+<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Meridian · Agent Marketplace Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: app shell — slim top bar, persona-grouped step rail, one working view at a time */
+:root{
+  --bg:#f7f5fb; --surface:#ffffff; --sunk:#f0ecf7; --line:#e1daee;
+  --fg:#1b1530; --muted:#5e5875; --faint:#8d87a3;
+  --accent:#e0336f; --accent-ink:#ffffff; --accent-soft:#fde3ec;
+  --meter:#f08a00; --meter-soft:#fff0d6;
+  --good:#11865a; --good-soft:#d9f5e8; --warn:#b35f00; --warn-soft:#ffecd1; --bad:#c62f2f; --bad-soft:#fde0de;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#120f1c; --surface:#1b1729; --sunk:#241f36; --line:#352e4d;
+  --fg:#f1edfa; --muted:#aea7c4; --faint:#7d7696;
+  --accent:#ff5c93; --accent-ink:#2a0614; --accent-soft:#4a1a30;
+  --meter:#ffb23f; --meter-soft:#3d2a0e;
+  --good:#4fd69a; --good-soft:#123326; --warn:#ffb547; --warn-soft:#3b2a10; --bad:#ff7a72; --bad-soft:#3f1a1a;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#120f1c; --surface:#1b1729; --sunk:#241f36; --line:#352e4d;
+  --fg:#f1edfa; --muted:#aea7c4; --faint:#7d7696;
+  --accent:#ff5c93; --accent-ink:#2a0614; --accent-soft:#4a1a30;
+  --meter:#ffb23f; --meter-soft:#3d2a0e;
+  --good:#4fd69a; --good-soft:#123326; --warn:#ffb547; --warn-soft:#3b2a10; --bad:#ff7a72; --bad-soft:#3f1a1a;
+  color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.1}
+h2{font-size:22px;line-height:1.2}
+h3{font-size:16px;line-height:1.3}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:13px}
+.muted{color:var(--muted)}
+.eyebrow{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* banner + top */
+.banner{background:var(--meter-soft);color:var(--fg);font-size:12.5px}
+.banner .wrap{padding-block:6px;display:flex;gap:8px;flex-wrap:wrap}
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:19px}
+.brand svg{flex:none}
+.ws{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.ws b{color:var(--fg);font-weight:600}
+.rail{overflow-x:auto;border-top:1px solid var(--line)}
+.rail .wrap{display:flex;gap:4px;padding-block:6px;align-items:center;width:max-content;min-width:100%}
+.group{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:0 6px 0 10px;font-weight:600;white-space:nowrap}
+.group:not(:first-child){border-left:1px solid var(--line);margin-left:6px}
+.step{display:flex;align-items:center;gap:7px;border:0;background:none;color:var(--muted);padding:7px 10px;border-radius:8px;white-space:nowrap;font-size:14px}
+.step .n{font-family:var(--mono);font-size:11px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);color:var(--muted)}
+.step.done .n{background:var(--good-soft);color:var(--good)}
+.step[aria-current="page"]{background:var(--accent-soft);color:var(--fg);font-weight:600}
+.step[aria-current="page"] .n{background:var(--accent);color:var(--accent-ink)}
+
+main{padding-block:24px 64px}
+.view{display:grid;gap:20px}
+.head{display:grid;gap:6px;max-width:72ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:18px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.grid2{grid-template-columns:minmax(0,1fr)}}
+
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 14px;border-radius:8px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.pill.meter{background:var(--meter-soft);color:var(--meter)}
+
+/* catalog */
+.search{display:flex;gap:10px;flex-wrap:wrap}
+.search input{flex:1 1 280px;min-width:0;font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 12px;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.stats{display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.stats b{display:block;font-family:var(--display);font-size:22px;color:var(--fg)}
+.sec{display:grid;gap:12px}.sechead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-align:left;color:var(--fg)}
+.card:hover{border-color:var(--accent)}
+.card.hero{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);background:linear-gradient(160deg,var(--accent-soft),var(--surface) 55%)}
+.card .t{display:flex;gap:10px;align-items:flex-start}
+.logo{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:15px;flex:none;color:#fff}
+.card .meta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.card p{font-size:13.5px;color:var(--muted)}
+.intent{font-size:13px;color:var(--muted);padding:10px 12px;border-radius:8px;background:var(--sunk)}
+.intent b{color:var(--fg)}
+
+/* listing */
+.lhead{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.lhead .logo{width:56px;height:56px;font-size:22px;border-radius:12px}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.tablebox{overflow-x:auto}
+.checks{display:grid;gap:8px;font-size:14px}
+.checks li{display:flex;gap:10px;align-items:flex-start;list-style:none}
+.checks{padding:0;margin:0}
+.dot{width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;margin-top:2px}
+.dot.ok{background:var(--good-soft);color:var(--good)} .dot.no{background:var(--warn-soft);color:var(--warn)}
+.surfaces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.surfaces{grid-template-columns:minmax(0,1fr)}}
+.surf{padding:12px;border-radius:8px;background:var(--sunk);font-size:13px}
+.surf b{display:block;font-size:14px;margin-bottom:2px}
+
+/* procure */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.plans{grid-template-columns:minmax(0,1fr)}}
+.plan{display:grid;gap:8px;align-content:start;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-align:left;color:var(--fg)}
+.plan[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.price{font-family:var(--display);font-size:24px;font-weight:700}
+.plan ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted)}
+.radio{display:grid;gap:8px}
+.radio label{display:flex;gap:10px;padding:12px;border:1px solid var(--line);border-radius:8px;align-items:flex-start;cursor:pointer}
+.radio label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.radio input{margin-top:3px;accent-color:var(--accent)}
+.sum{display:grid;gap:8px;font-size:14px}
+.sum div{display:flex;justify-content:space-between;gap:10px}
+.sum .tot{border-top:1px solid var(--line);padding-top:8px;font-weight:600}
+
+/* deploy */
+.toggle{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.toggle:last-child{border-bottom:0}
+.toggle .l{min-width:0}
+.toggle small{display:block;color:var(--muted);font-size:13px}
+.sw{position:relative;width:42px;height:24px;flex:none}
+.sw input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.sw span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:background .15s}
+.sw span::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--surface);top:3px;left:3px;transition:transform .15s}
+.sw input:checked + span{background:var(--accent)}
+.sw input:checked + span::after{transform:translateX(18px)}
+.sw input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+select,.field{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+.log{font-family:var(--mono);font-size:12.5px;display:grid;gap:6px;color:var(--muted)}
+.log div{display:flex;gap:10px}
+.log time{color:var(--faint);flex:none}
+
+/* run */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:0;background:none;padding:10px 14px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent);font-weight:600}
+.stage{min-height:340px;padding:16px;display:grid;gap:12px;align-content:start}
+.msg{max-width:64ch;padding:10px 14px;border-radius:12px;font-size:14.5px}
+.msg.user{justify-self:end;background:var(--accent);color:var(--accent-ink)}
+.msg.agent{background:var(--sunk)}
+.msg.agent ul{margin:6px 0 0;padding-left:18px}
+.cite{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.trace{font-family:var(--mono);font-size:12.5px;display:grid;gap:4px;padding:10px 12px;border-left:2px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0}
+.trace .ok{color:var(--good)} .trace .hold{color:var(--warn)}
+.prompts{display:flex;gap:8px;flex-wrap:wrap}
+.lock{display:grid;gap:10px;place-items:start;padding:24px}
+.sheet{font-family:var(--mono);font-size:12.5px}
+.slackmsg{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;font-size:14px}
+.av{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-weight:700;color:#fff}
+.approve{display:grid;gap:10px;padding:12px;border:1px dashed var(--warn);border-radius:8px;background:var(--warn-soft)}
+.meterbox{display:grid;gap:12px}
+.bignum{font-family:var(--display);font-size:28px;font-weight:700}
+.bar{height:8px;background:var(--sunk);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--meter);border-radius:999px;transition:width .4s}
+
+/* operator */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:grid;gap:4px}
+.kpi b{font-family:var(--display);font-size:26px}
+.kpi .d{font-size:12.5px}
+.up{color:var(--good)} .down{color:var(--bad)}
+.queue tr{cursor:pointer}
+.queue tr:hover td{background:var(--sunk)}
+.queue tr[aria-selected="true"] td{background:var(--accent-soft)}
+svg text{fill:var(--muted);font-family:var(--body);font-size:11px}
+.chart{width:100%;height:auto;display:block}
+.funnel{display:grid;gap:10px}
+.frow{display:grid;grid-template-columns:120px minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:13.5px}
+.frow .bar{height:14px}
+.frow .bar i{background:var(--accent)}
+.frow.gap .bar i{background:var(--bad)}
+.note{font-size:13.5px;color:var(--muted);padding:12px;border-radius:8px;background:var(--sunk)}
+.note b{color:var(--fg)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);opacity:0;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;transition:all .25s;pointer-events:none;z-index:20;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.next{display:flex;justify-content:flex-end}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<div class="banner"><div class="wrap"><b>Synthetic demo</b><span>Every company, person, listing and figure is fictional. Agent answers are scripted to show how a governed agent marketplace works end to end.</span><span style="margin-left:auto;display:flex;gap:14px"><a href="../" style="color:inherit">← Portfolio</a><a href="https://github.com/hithakishore-all/Meridian" style="color:inherit">Code on GitHub</a></span></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M14 2v24M2 14h24" stroke="var(--accent)" stroke-width="1.2"/><circle cx="14" cy="14" r="3.5" fill="var(--meter)"/></svg>
+      Meridian
+    </div>
+    <div class="ws"><span>Workspace</span><b id="wsName">Northwind Freight</b><span class="pill" id="roleBadge">Buyer view</span></div>
+  </div>
+  <nav class="rail" aria-label="Marketplace lifecycle">
+    <div class="wrap" id="rail"></div>
+  </nav>
+</header>
+
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+// ---------- synthetic demo data (all fictional) ----------
+const COLORS=["#e0336f","#7c3aed","#f08a00","#0ea5e9","#10b981","#ef4444","#d946ef","#14b8a6","#f59e0b","#2563eb","#ec4899","#22a35a"];
+const L=[
+ {id:"orbit",n:"GTM Orbit",pub:"Orbit Labs",cat:"Prospecting",d:"Account research, buying signals and first-touch outreach for B2B sellers. Reads your CRM, enriches with firmographics, drafts in your voice.",inst:1284,wau:71,ver:true,hero:true,k:"account research prospect outreach pipeline buying signal sales sdr crm brief call prep"},
+ {id:"conviction",n:"Conviction AI",pub:"Conviction Labs",cat:"Investing",d:"Investment intelligence for VC and PE firms. VC teams get cited diligence memos; PE teams get portfolio monitoring and add-on screening.",inst:612,wau:66,ver:true,hero:true,k:"investment intelligence diligence memo venture private equity deal vc pe portfolio add-on research company analysis"},
+ {id:"credits",n:"Credit Simulator",pub:"Credit Simulator",cat:"Pricing",d:"Simulates moving a seat-based plan to credits using your billing and usage history. Prices each feature in credits, then shows revenue impact and which customers pay more or less.",inst:214,wau:79,ver:true,hero:true,k:"pricing credits usage based seat migration simulation monetization billing revenue packaging"},
+ {id:"readaroo",n:"Readaroo",pub:"Readaroo",cat:"Consumer",d:"An online library that puts all your library cards on one shelf, shows what you can read tonight instead of waitlists, and gives kids their own safe shelf.",inst:48200,wau:58,ver:true,hero:true,consumer:true,k:"library books ebook audiobook borrow read reading consumer kids family"},
+ {id:"purlwise",n:"Purlwise",pub:"Purlwise",cat:"Hobbies",d:"A pattern library for knitters and crocheters. Search by yarn you own, resize a pattern to your gauge, swap yarns by weight and fiber, and track rows as you go.",inst:31800,wau:63,ver:true,consumer:true,k:"knit knitting crochet pattern yarn gauge stitch row counter craft fiber hobby"},
+ {id:"washbloom",n:"Wash & Bloom",pub:"Wash & Bloom",cat:"Hobbies",d:"Daily watercolor prompts, mixing recipes from the paints you own, and gentle feedback on a photo of your finished piece.",inst:9700,wau:47,ver:true,consumer:true,k:"watercolor painting paint art palette mixing sketch hobby"},
+ {id:"callsight",n:"Callsight",pub:"Callsight",cat:"Conversation intelligence",d:"Records and summarizes sales calls, flags competitor mentions and risk language, and suggests one coaching moment per call.",inst:2940,wau:74,ver:true,k:"conversation intelligence call recording summary coaching competitor objection gong"},
+ {id:"dealnote",n:"Dealnote",pub:"Dealnote",cat:"Deal execution",d:"Turns calls and email threads into structured deal notes: MEDDICC fields, next steps and open risks, written to the opportunity with approval.",inst:1870,wau:69,ver:true,k:"deal notes meddicc meddpicc opportunity next steps qualification crm hygiene"},
+ {id:"quotacraft",n:"Quotacraft",pub:"Quotacraft",cat:"Planning",d:"Quota and territory planning: capacity models from ramp and attrition, fair territory splits, and quota letters ready for finance sign-off.",inst:540,wau:61,ver:true,k:"quota planning territory capacity model sales planning coverage headcount ramp"},
+ {id:"forecastpulse",n:"Forecast Pulse",pub:"Pulse Analytics",cat:"Forecasting",d:"Rolls up the weekly forecast, compares rep commits with deal evidence, and explains every gap before the call with leadership.",inst:1310,wau:72,ver:true,k:"forecast commit roll up pipeline coverage revenue prediction"},
+ {id:"fieldnote",n:"Fieldnote Firmographics",pub:"Fieldnote Data",cat:"Data",d:"Company size, funding, tech stack and hiring signals for 31M companies. Agents call it as a tool.",inst:3410,wau:64,ver:true,stale:41,k:"firmographic company data enrichment hiring tech stack funding"},
+ {id:"pipehealth",n:"Pipeline Steward",pub:"Steward Ops",cat:"RevOps",d:"Finds stale opportunities, missing close dates and duplicate accounts, and proposes fixes in one approval batch.",inst:2050,wau:63,ver:true,k:"revops crm hygiene data quality pipeline stale duplicates"},
+ {id:"icpscout",n:"ICP Scout",pub:"Scout Data",cat:"Prospecting",d:"Scores every account against your ideal customer profile and explains the top three reasons for each score.",inst:980,wau:57,ver:true,soc:"Not provided",k:"icp account scoring abm targeting segmentation"},
+ {id:"winloss",n:"Win-Loss Lens",pub:"Lens Research",cat:"Conversation intelligence",d:"Interviews lost and won buyers by email, codes the reasons, and trends them by segment and competitor.",inst:760,wau:41,ver:true,k:"win loss analysis competitor reasons interviews"},
+ {id:"renewal",n:"Renewal Radar",pub:"Radar CS",cat:"Customer success",d:"Flags renewals at risk from usage drops and support spikes, and drafts a save plan for the CSM.",inst:1450,wau:67,ver:true,k:"renewal churn customer success retention expansion"},
+ {id:"rampcoach",n:"Ramp Coach",pub:"Ramp",cat:"Enablement",d:"Builds a 30-60-90 plan for each new rep and quizzes them on real calls from your library.",inst:1120,wau:49,ver:true,k:"enablement onboarding ramp coaching training new hire"},
+ {id:"pricewell",n:"Pricewell",pub:"Pricewell",cat:"Deal execution",d:"Builds quotes within discount guardrails and explains every exception to deal desk.",inst:940,wau:55,ver:true,k:"quote cpq pricing discount deal desk"},
+ {id:"cosell",n:"Co-sell Map",pub:"Overlap Labs",cat:"Partnerships",d:"Finds account overlap with your partners and suggests co-sell plays, without sharing raw customer lists.",inst:690,wau:52,ver:true,k:"partner co-sell overlap ecosystem alliances"},
+ {id:"launchpilot",n:"Launch Pilot",pub:"Pilot GTM",cat:"Enablement",d:"Turns a launch brief into talk tracks, battlecards and a field FAQ, and tracks which reps used them on calls.",inst:2875,wau:36,ver:true,k:"product launch marketing battlecard talk track enablement"},
+];
+const CATS=["All","Prospecting","Conversation intelligence","Deal execution","Forecasting","Planning","RevOps","Customer success","Enablement","Partnerships","Data","Pricing","Investing","Consumer","Hobbies"];
+
+const DETAILS={
+ orbit:{ver:"v1.3",since:"March 2026",pills:["Verified","MCP server","SOC 2 Type II","No training on your data"],
+  what:"Before a call, Orbit pulls the account from your CRM, enriches it with firmographics, finds buying signals, and drafts a first-touch email in your rep's voice. Writes back to the CRM only with a person's approval.",
+  tools:[["account_brief","One-page account summary with sources","Read","CRM accounts, opportunities"],["buying_signals","Hiring, funding and tech-stack changes","Read","Fieldnote Firmographics (agent-to-agent)"],["draft_outreach","First-touch email in the rep's voice","Read","CRM contacts (PII masked by default)"],["sync_to_crm","Logs the brief and next step on the account","Write","Needs human approval"]],
+  kv:[["Used by","1,284 workspaces"],["Weekly active","71% of installed seats"],["Task eval","96.4% on 1,200 graded briefs"],["p95 latency","1.8s"],["Data residency","US, EU"],["Pricing","Usage or annual private offer"]],
+  surf:[["Chat assistant","Ask the company assistant; Orbit answers in-line."],["Data cloud","Runs next to your CRM tables. No data leaves your account."],["Slack","Posts a brief to the deal channel before each call."]],
+  cta:"Get GTM Orbit",extra:null},
+ conviction:{ver:"v2.1",since:"June 2026",pills:["Verified","MCP server","SOC 2 Type II","No training on your data"],
+  what:"Conviction AI is investment intelligence for VC and PE firms. The VC workflow drafts a cited diligence memo on a target: market, traction, team, comparable rounds and risks. The PE workflow monitors portfolio companies against plan and screens add-on acquisitions. Exports to the deal room need an analyst's approval.",
+  tools:[["diligence_memo","VC: cited memo on market, traction, team and risks","Read","Your deal pipeline, Fieldnote Firmographics"],["portfolio_monitor","PE: flags portfolio companies off plan","Read","Portfolio KPI tables"],["add_on_screen","PE: ranks add-on targets for a platform company","Read","Licensed deal data"],["export_to_deal_room","Saves the memo to the deal's folder","Write","Needs human approval"]],
+  kv:[["Used by","612 firms"],["Weekly active","66% of installed seats"],["Task eval","94.8% on 800 graded memos"],["p95 latency","3.6s"],["Data residency","US"],["Pricing","Per seat, annual"]],
+  surf:[["Chat assistant","Ask for a memo or a portfolio check by name."],["Data cloud","Reads your pipeline and portfolio tables in place."],["Slack","Posts memo summaries to the deal channel."]],
+  cta:"Open in Northwind Capital",extra:"Northwind Capital already licenses Conviction AI. IT approved it on Oct 12, 2026."},
+ credits:{ver:"v1.2",since:"August 2026",pills:["Verified","MCP server","Runs in your data cloud","No training on your data"],
+  what:"Credit Simulator answers the question every pricing team asks before leaving seats: what happens to revenue and to each customer? It replays 12 months of billing and product usage, prices every feature in credits, and shows net revenue impact, the customers who would pay more or less, and the credit price that keeps revenue flat.",
+  tools:[["simulate_migration","Replays history under a credit price book","Read","Billing invoices, product usage events"],["price_solver","Finds the credit price for a revenue target","Read","Simulation results"],["segment_impact","Who pays more or less, by segment","Read","Accounts, plans"],["publish_price_book","Saves the new price book for finance review","Write","Needs human approval"]],
+  kv:[["Used by","214 software companies"],["Weekly active","79% of installed seats"],["Reconciliation","Totals tie to invoices within 0.1%"],["p95 latency","4.2s"],["Data residency","Runs in your account"],["Pricing","Annual, per workspace"]],
+  surf:[["Chat assistant","Ask what-if questions in plain words."],["Data cloud","Runs next to your billing and usage tables."],["Slack","Posts scenario results to #pricing."]],
+  cta:"Open in Northwind Software",extra:"Northwind Software's pricing team already uses Credit Simulator."},
+ readaroo:{ver:"v2.0",since:"September 2026",pills:["Verified","Consumer app","All audiences","Payments on Readaroo's site"],
+  what:"Readaroo is an online library. Unlike single-library apps, it puts every library card you hold on one shelf, shows what you can read tonight before it shows waitlists, gives each child a kid-safe shelf with reading streaks, and lets a book club share notes on the same title.",
+  tools:[["search_tonight","Titles you can borrow now across all your cards","Read","Your linked library catalogs"],["borrow_title","Borrows from whichever card has it first","Write","You confirm each borrow"],["family_shelf","Adds a title to a child's kid-safe shelf","Write","You confirm, age rules applied"],["pay_fine","Opens Readaroo's checkout","Link out","Stripe test mode on readaroo.example"]],
+  kv:[["Used by","48,200 people"],["Weekly active","58%"],["Audience review","Passed, all ages"],["Library cards per user","2.3 on average"],["p95 latency","1.1s"],["Pricing","Free; fines paid to libraries"]],
+  surf:[["Chat assistant","Personal accounts only."],["Data cloud","Not offered for consumer apps."],["Slack","Not offered for consumer apps."]],
+  cta:"Add to my chat",extra:"Consumer listing. It installs to a personal account, not to a company workspace."}
+};
+
+const QUEUE=[
+ {id:"q1",p:"Orbit Labs",l:"GTM Orbit v1.4",t:"Update",age:"6h",checks:{manifest:1,scopes:0,privacy:1,evals:1,latency:1,injection:1},risk:"Scope expansion",note:"Adds crm.write through a new tool. Existing installs keep v1.3 tools until IT re-consents.",ev:"96.4%",p95:"1.8s"},
+ {id:"q2",p:"Commly",l:"Comp Clarity",t:"New",age:"1d",checks:{manifest:1,scopes:1,privacy:0,evals:1,latency:1,injection:1},risk:"Missing retention terms",note:"Reads rep commission statements, but the privacy policy does not say how long they are kept. Request changes naming the missing clause.",ev:"92.1%",p95:"2.4s"},
+ {id:"q3",p:"Sendwise",l:"Inbox Autopilot",t:"New",age:"2d",checks:{manifest:1,scopes:1,privacy:1,evals:0,latency:1,injection:0},risk:"Fails injection suite",note:"Followed 3 of 40 planted instructions hidden in prospect replies, including one that forwarded a thread. Eval pass rate 84%, below the 90% bar.",ev:"84.0%",p95:"3.1s"},
+ {id:"q4",p:"Readaroo",l:"Readaroo v2.0",t:"New",age:"4h",checks:{manifest:1,scopes:1,privacy:1,evals:1,latency:1,injection:1},risk:"Consumer listing",note:"Passed the all-audience review; kid shelves apply age rules. Payment links out to the partner's checkout, so the marketplace takes no card data.",ev:"95.2%",p95:"1.1s"},
+ {id:"q5",p:"Callsight",l:"Callsight Live Coach",t:"New",age:"5h",checks:{manifest:1,scopes:1,privacy:1,evals:1,latency:0,injection:1},risk:"Slow p95",note:"Live in-call hints take 7.9s at p95, past the 5s bar for in-chat tools. Can list as post-call coaching only.",ev:"93.5%",p95:"7.9s"},
+];
+const CHECKNAMES={manifest:"Tool manifest valid",scopes:"Least-privilege scopes",privacy:"Privacy and retention terms",evals:"Task evals at 90% or more",latency:"p95 latency under 5s",injection:"Prompt-injection suite"};
+
+// ---------- state ----------
+const S={step:"discover",cat:"All",q:"",listing:"orbit",agent:"orbit",plan:"annual",pay:"commit",bought:false,deployed:false,surface:"chat",calls:0,spend:0,ran:{},sel:"q1",qs:{},
+  dep:{groups:{"Sales AEs":true,"SDRs":true,"RevOps":true,"Marketing":false},tools:{account_brief:true,buying_signals:true,draft_outreach:true,sync_to_crm:false},humanWrite:true,pii:true,cap:"2000"},log:[]};
+
+const STEPS=[
+ {g:"Buyer",id:"discover",t:"Discover"},
+ {g:"Buyer",id:"evaluate",t:"Evaluate"},
+ {g:"Buyer",id:"buy",t:"Buy"},
+ {g:"Buyer",id:"deploy",t:"Deploy"},
+ {g:"Buyer",id:"use",t:"Use"},
+ {g:"Operator",id:"review",t:"Review queue"},
+ {g:"Operator",id:"health",t:"Health"},
+];
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>n.toLocaleString("en-US");
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2600)}
+function logo(l){const i=L.indexOf(l);const c=COLORS[(i<0?0:i)%COLORS.length];return `<span class="logo" style="background:${c}" aria-hidden="true">${esc(l.n[0])}</span>`}
+const byId=id=>L.find(l=>l.id===id);
+function stamp(t){const d=new Date();S.log.unshift({t:d.toTimeString().slice(0,5),m:t})}
+
+function doneFor(id){return {discover:true,evaluate:S.step!=="discover",buy:S.bought,deploy:S.deployed,use:S.calls>0,review:Object.keys(S.qs).length>0,health:false}[id]}
+function renderRail(){
+  let html="",g="";
+  STEPS.forEach((s,i)=>{
+    if(s.g!==g){g=s.g;html+=`<span class="group">${g}</span>`}
+    const cur=S.step===s.id, dn=doneFor(s.id)&&!cur;
+    html+=`<button class="step ${dn?"done":""}" data-go="${s.id}" ${cur?'aria-current="page"':""}><span class="n">${dn?"✓":i+1}</span>${s.t}</button>`;
+  });
+  $("#rail").innerHTML=html;
+  $("#roleBadge").textContent=(STEPS.find(s=>s.id===S.step)||{}).g==="Operator"?"Marketplace operator":"Buyer view";
+  const who=S.step==="use"?S.agent:S.step==="evaluate"?S.listing:"orbit";
+  const ws=$("#wsName");if(ws)ws.textContent=who==="conviction"?"Northwind Capital":who==="credits"?"Northwind Software":who==="readaroo"?"Personal account":"Northwind Freight";
+}
+function go(id){S.step=id;try{localStorage.setItem("meridian-step",id)}catch(e){}if(location.hash!=="#"+id){try{history.replaceState(null,"","#"+id)}catch(e){}}render();window.scrollTo({top:0})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b&&!b.disabled)go(b.dataset.go)});
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(STEPS.some(s=>s.id===h)&&h!==S.step){S.step=h;render()}});
+
+// ---------- views ----------
+const FEATURED=["orbit","conviction","credits","readaroo"];
+const SECTIONS=[
+ {t:"Featured",d:"Hand-picked this month",ids:FEATURED},
+ {t:"Revenue and go-to-market",d:"From first touch to renewal",cats:["Prospecting","Conversation intelligence","Deal execution","Forecasting","Planning","RevOps","Customer success","Enablement","Partnerships"]},
+ {t:"Data and investing",d:"Signals other agents call",cats:["Data","Investing"]},
+ {t:"Life and hobbies",d:"Personal apps for the chat assistant",cats:["Consumer","Hobbies"]},
+];
+const card=l=>`<button class="card ${l.hero?"hero":""}" data-open="${l.id}">
+      <div class="t">${logo(l)}<div><h3>${esc(l.n)}</h3><span class="muted" style="font-size:12.5px">${esc(l.pub)} · ${l.cat}</span></div></div>
+      <p>${esc(l.d)}</p>
+      <div class="meta"><span class="num">${fmt(l.inst)} ${l.consumer?"people":"workspaces"} · ${l.wau}% weekly active</span><span class="row" style="gap:6px">${l.stale?`<span class="pill warn">Data ${l.stale} days old</span>`:""}${l.soc?`<span class="pill" title="Security report not submitted">SOC 2: ${l.soc}</span>`:""}${l.consumer?'<span class="pill acc">Consumer</span>':""}<span class="pill good">Reviewed</span></span></div>
+    </button>`;
+function vDiscover(){
+  const q=S.q.trim().toLowerCase();
+  let list=L.filter(l=>S.cat==="All"||l.cat===S.cat);
+  if(q){list=list.map(l=>{let s=0;q.split(/\s+/).forEach(w=>{if(w.length>2&&(l.k+" "+l.n+" "+l.d).toLowerCase().includes(w))s++});return{l,s}}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s||b.l.wau-a.l.wau).map(x=>x.l)}
+  const sectioned=!q&&S.cat==="All";
+  const intent=q?`<div class="intent">Matched by the job you described: <b>${list.length} listing${list.length===1?"":"s"}</b> fit “${esc(S.q)}”, ranked by fit and then by weekly use in workspaces like yours.</div>`:"";
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Discover</span><h1>Agents your team can buy, govern and run where it already works</h1><p class="muted">One catalog for third-party agents, tools and data. Every listing passes review, runs under your workspace's identity and policies, and bills against your existing commitment.</p></div>
+   <div class="stats"><div><b class="num">1,284</b>reviewed listings</div><div><b class="num">412</b>partners</div><div><b class="num">9,600+</b>buying workspaces</div><div><b class="num">3</b>surfaces: chat, data, Slack</div></div>
+   <div class="search"><input id="q" type="search" placeholder="Describe the job, like “research accounts before sales calls”" value="${esc(S.q)}" aria-label="Search by what you need done"><button class="btn" id="qtry">Try an example</button></div>
+   <div class="chips" role="group" aria-label="Category">${CATS.map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${S.cat===c}">${c}</button>`).join("")}</div>
+   ${intent}
+   ${sectioned?SECTIONS.map(sec=>{const items=list.filter(l=>sec.ids?sec.ids.includes(l.id):sec.cats.includes(l.cat)&&!FEATURED.includes(l.id));return items.length?`<div class="sec"><div class="sechead"><h2>${sec.t}</h2><span class="muted">${sec.d}</span></div><div class="cards">${items.map(card).join("")}</div></div>`:""}).join(""):`<div class="cards">${list.map(card).join("")||`<div class="note">No listing fits that yet. Searches like this feed the supply-gap report operators use to recruit partners.</div>`}</div>`}</div>
+  </section>`;
+}
+function vEvaluate(){
+  const l=byId(S.listing)||L[0], D=DETAILS[l.id]||DETAILS.orbit;
+  const checks=Object.values(CHECKNAMES).concat(l.consumer?["All-audience suitability"]:[]);
+  const others=FEATURED.filter(x=>x!==l.id).map(byId);
+  return `<section class="view">
+   <div class="lhead">${logo(l)}<div style="flex:1;min-width:0;display:grid;gap:4px"><span class="eyebrow">Evaluate</span><h1>${esc(l.n)}</h1><p class="muted">by ${esc(l.pub)} · ${l.cat} · ${D.ver} · listed since ${D.since}</p><div class="row" style="margin-top:6px">${D.pills.map((p,i)=>`<span class="pill ${i===0?"good":i===1?"acc":""}">${p}</span>`).join("")}</div></div><button class="btn primary" id="cta">${D.cta}</button></div>
+   ${D.extra?`<div class="note"><b>${esc(D.extra)}</b></div>`:""}
+   <div class="grid2">
+    <div class="view">
+     <div class="panel pad" style="display:grid;gap:10px"><h2>What it does</h2><p>${esc(D.what)}</p></div>
+     <div class="panel"><div class="pad" style="padding-bottom:0"><h2>Tools it exposes</h2><p class="muted" style="margin-top:4px">${l.consumer?"You confirm every borrow.":"Your admin chooses which ones each team can use."}</p></div>
+      <div class="tablebox"><table><thead><tr><th>Tool</th><th>Access</th><th>Reads or writes</th></tr></thead><tbody>
+       ${D.tools.map(t=>`<tr><td><span class="mono">${t[0]}</span><br><span class="muted">${esc(t[1])}</span></td><td><span class="pill ${t[2]==="Write"?"warn":t[2]==="Link out"?"meter":""}">${t[2]}</span></td><td class="muted">${esc(t[3])}</td></tr>`).join("")}
+      </tbody></table></div></div>
+     <div class="panel pad" style="display:grid;gap:10px"><h2>Where it runs</h2><div class="surfaces">${D.surf.map(s=>`<div class="surf"><b>${s[0]}</b>${esc(s[1])}</div>`).join("")}</div><p class="muted" style="font-size:13px">Built once as an MCP server. The marketplace handles identity, policy and billing on every surface.</p></div>
+    </div>
+    <div class="view">
+     <div class="panel pad" style="display:grid;gap:12px"><h3>Marketplace review</h3><ul class="checks">${checks.map(c=>`<li><span class="dot ok">✓</span>${c}</li>`).join("")}</ul><p class="muted" style="font-size:13px">Re-reviewed on every version that adds a scope.</p></div>
+     <div class="panel pad"><dl class="kv">${D.kv.map(k=>`<dt>${k[0]}</dt><dd class="num">${esc(k[1])}</dd>`).join("")}</dl></div>
+     <div class="panel pad" style="display:grid;gap:8px"><h3>Other featured listings</h3>${others.map(o=>`<button class="row" data-listing="${o.id}" style="border:0;background:none;padding:4px 0;color:var(--fg);text-align:left">${logo(o)}<span><b style="font-weight:600">${o.n}</b><br><span class="muted" style="font-size:13px">${o.cat}</span></span></button>`).join("")}</div>
+    </div>
+   </div>
+  </section>`;
+}
+function vBuy(){
+  const plans={usage:{t:"Usage",p:"$0.04",u:"per tool call",f:["14-day free trial","Pay only for calls","Self-serve"]},team:{t:"Team",p:"$1,200",u:"per month",f:["Up to 40 seats","50k calls included","Monthly invoice"]},annual:{t:"Private offer",p:"$11,520",u:"per year · 20% off",f:["Unlimited seats","400k calls included","Custom terms from Orbit Labs","Expires Nov 30, 2026"]}};
+  const pl=plans[S.plan], fromCommit=S.pay==="commit";
+  const amt={usage:"Billed monthly on use",team:"$1,200 / month",annual:"$11,520 / year"}[S.plan];
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Buy · GTM Orbit</span><h1>Pick a plan, then pay the way your company already does</h1><p class="muted">Orbit Labs sent Northwind a private offer. Procurement does not need a new vendor, contract or invoice.</p></div>
+   <div class="plans" role="group" aria-label="Plan">${Object.entries(plans).map(([k,v])=>`<button class="plan" data-plan="${k}" aria-pressed="${S.plan===k}"><span class="row" style="justify-content:space-between"><b>${v.t}</b>${k==="annual"?'<span class="pill meter">For Northwind</span>':""}</span><span><span class="price num">${v.p}</span> <span class="muted">${v.u}</span></span><ul>${v.f.map(x=>`<li>${x}</li>`).join("")}</ul></button>`).join("")}</div>
+   <div class="grid2">
+    <div class="panel pad" style="display:grid;gap:12px"><h2>How to pay</h2>
+     <div class="radio" role="radiogroup">
+      <label><input type="radio" name="pay" id="pay-commit" value="commit" ${fromCommit?"checked":""}><span><b>Draw down from platform commitment</b><br><span class="muted">Counts toward Northwind's existing annual spend. $412,800 of $600,000 remaining.</span></span></label>
+      <label><input type="radio" name="pay" id="pay-invoice" value="invoice" ${!fromCommit?"checked":""}><span><b>Add to the monthly platform invoice</b><br><span class="muted">One bill. The marketplace pays Orbit Labs.</span></span></label>
+     </div></div>
+    <div class="panel pad" style="display:grid;gap:14px"><h3>Summary</h3><div class="sum">
+      <div><span>${pl.t}</span><span class="num">${amt}</span></div>
+      <div><span class="muted">Paid via</span><span>${fromCommit?"Commitment draw-down":"Platform invoice"}</span></div>
+      <div><span class="muted">Vendor onboarding</span><span>Not needed</span></div>
+      <div><span class="muted">Security review</span><span>Done by marketplace</span></div>
+      <div class="tot"><span>Approver</span><span>Priya Raman, IT</span></div></div>
+      <button class="btn primary" id="accept" ${S.bought?"disabled":""}>${S.bought?"Offer accepted":"Accept offer and send to IT"}</button>
+      ${S.bought?`<button class="btn" data-go="deploy">Next: deploy →</button>`:""}
+    </div>
+   </div>
+  </section>`;
+}
+function vDeploy(){
+  const d=S.dep;
+  const sw=(id,on,l,sm)=>`<div class="toggle"><div class="l"><b style="font-weight:600">${l}</b>${sm?`<small>${sm}</small>`:""}</div><label class="sw"><input type="checkbox" id="${id}" ${on?"checked":""} aria-label="${l.replace(/<[^>]+>/g,"")}"><span></span></label></div>`;
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Deploy · GTM Orbit</span><h1>IT decides who can use Orbit, which tools, and on what data</h1><p class="muted">Policies come from the workspace's identity provider and apply on every surface. Nothing turns on until IT approves.</p></div>
+   ${!S.bought?`<div class="note"><b>Not purchased yet.</b> You can set the policy now; approval unlocks after the offer is accepted. <button class="btn" data-go="buy" style="margin-left:6px">Go to Buy</button></div>`:""}
+   <div class="grid2">
+    <div class="view">
+     <div class="panel pad"><h2 style="margin-bottom:4px">Who can use it</h2><p class="muted" style="font-size:13.5px">Groups synced from your identity provider</p>
+      ${Object.entries(d.groups).map(([g,on],i)=>sw("g"+i,on,g,{"Sales AEs":"212 people","SDRs":"64 people","RevOps":"11 people","Marketing":"48 people"}[g])).join("")}</div>
+     <div class="panel pad"><h2 style="margin-bottom:4px">Which tools</h2>
+      ${Object.entries(d.tools).map(([t,on])=>sw("t-"+t,on,`<span class="mono">${t}</span>`,t==="sync_to_crm"?"Writes to CRM account records":"Read only")).join("")}
+      ${sw("hw",d.humanWrite,"Require a person to approve every write","Applies to any tool that changes a record")}
+     </div>
+    </div>
+    <div class="view">
+     <div class="panel pad"><h3 style="margin-bottom:4px">Data and spend</h3>
+      ${sw("pii",d.pii,"Mask contact emails and phones","Orbit sees hashed values; reps see real ones")}
+      <div class="toggle"><div class="l"><b style="font-weight:600">Monthly spend cap</b><small>Calls pause and IT is notified at the cap</small></div><select id="cap" aria-label="Monthly spend cap"><option value="1000" ${d.cap==="1000"?"selected":""}>$1,000</option><option value="2000" ${d.cap==="2000"?"selected":""}>$2,000</option><option value="5000" ${d.cap==="5000"?"selected":""}>$5,000</option></select></div>
+     </div>
+     <div class="panel pad" style="display:grid;gap:10px"><h3>Effective policy</h3><p class="mono" style="font-size:12.5px;color:var(--muted)">${Object.values(d.groups).filter(Boolean).length} groups · ${Object.values(d.tools).filter(Boolean).length} tools · writes ${d.humanWrite?"need approval":"auto"} · PII ${d.pii?"masked":"visible"} · cap $${fmt(+d.cap)}/mo</p>
+      <button class="btn primary" id="approve" ${!S.bought||S.deployed?"disabled":""}>${S.deployed?"Approved for Northwind":"Approve for workspace"}</button>
+      ${S.deployed?`<button class="btn" data-go="use">Next: use it →</button>`:""}</div>
+     <div class="panel pad" style="display:grid;gap:8px"><h3>Audit log</h3><div class="log">${S.log.length?S.log.slice(0,6).map(x=>`<div><time>${x.t}</time><span>${esc(x.m)}</span></div>`).join(""):'<span>No events yet.</span>'}</div></div>
+    </div>
+   </div>
+  </section>`;
+}
+
+// ---------- agents in use ----------
+const AGENTS={
+ orbit:{name:"GTM Orbit",short:"Orbit",color:"#e0336f",metered:true,
+  prompts:[{id:"brief",t:"Brief me on Halcyon Cold Chain before my 2pm",tool:"account_brief"},{id:"signals",t:"Which of my accounts show buying signals this week?",tool:"buying_signals"},{id:"sync",t:"Log this brief and next step to the account",tool:"sync_to_crm",write:true}]},
+ conviction:{name:"Conviction AI",short:"Conviction",color:"#5a4fcf",metered:true,
+  prompts:[{id:"memo",t:"VC: draft a diligence memo on Halden Robotics, Series B",tool:"diligence_memo"},{id:"comps",t:"PE: which portfolio companies are off plan this quarter?",tool:"portfolio_monitor"},{id:"export",t:"Export the Halden memo to the deal room",tool:"export_to_deal_room",write:true}]},
+ credits:{name:"Credit Simulator",short:"Credits",color:"#7c3aed",metered:true,
+  prompts:[{id:"sim",t:"Simulate moving our Pro plan from seats to credits at $0.10",tool:"simulate_migration"},{id:"solve",t:"What credit price keeps revenue flat?",tool:"price_solver"},{id:"publish",t:"Publish this price book for finance review",tool:"publish_price_book",write:true}]},
+ readaroo:{name:"Readaroo",short:"Readaroo",color:"#b4690e",metered:false,
+  prompts:[{id:"find",t:"What can I read tonight on supply chains?",tool:"search_tonight"},{id:"borrow",t:"Borrow the first one",tool:"borrow_title"},{id:"kids",t:"Add a dinosaur picture book to Maya's shelf",tool:"family_shelf"},{id:"fine",t:"Pay my $3.50 late fine",tool:"pay_fine",link:true}]}
+};
+const NOW=()=>new Date().toTimeString().slice(0,5);
+function answer(id){
+  switch(id){
+   case "brief":return `<b>Halcyon Cold Chain</b> · 1,900 employees · Series D · open opportunity $184k (Stage 2)<ul><li>Opened 14 refrigerated-logistics roles in 30 days, mostly in Dallas.</li><li>Replaced their routing vendor in August; that contract renews in Q1.</li><li>Champion Dana Ortiz (VP Ops) attended your webinar on Oct 22.</li></ul><p style="margin-top:6px"><b>Suggested angle:</b> lead with cutover risk during peak season.</p><span class="cite">Sources: CRM.ACCOUNTS A-20931 · CRM.OPPS O-7781 · Fieldnote (refreshed 41 days ago)</span>`;
+   case "signals":return `3 of your 42 accounts moved this week:<ul><li><b>Halcyon Cold Chain</b>: hiring surge, vendor change</li><li><b>Brisa Foods</b>: new CFO from a current customer</li><li><b>Tern Medical Supply</b>: raised a $60M Series C</li></ul><span class="cite">Sources: Fieldnote Firmographics · CRM.ACCOUNTS (owner = you)</span>`;
+   case "sync":return `Logged to account A-20931: brief attached, next step “Send cutover-risk deck before Nov 12.”<br><span class="cite">Write approved by you at ${NOW()} · recorded in audit log</span>`;
+   case "memo":return `<b>Halden Robotics · Series B memo (draft)</b><ul><li><b>Market:</b> warehouse picking robots, 4 funded competitors.</li><li><b>Traction:</b> 38 paying sites, up from 11 a year ago.</li><li><b>Team:</b> founders shipped two prior robotics products.</li><li><b>Risk:</b> headcount figure could not be confirmed; shown as unknown.</li></ul><span class="cite">Sources: PIPELINE.DEALS D-3307 · Halden data room, deck p.7 · Fieldnote (41 days old, flagged)</span>`;
+   case "comps":return `2 of 9 portfolio companies are off plan this quarter:<ul><li><b>Brightwater Pumps</b>: revenue 11% under plan; two delayed municipal contracts</li><li><b>Kinley Dental Group</b>: EBITDA margin 3 points under plan after a new-clinic ramp</li></ul><span class="cite">Sources: PORTFOLIO.KPIS Q3 board packs · plan of record v2026</span>`;
+   case "export":return `Saved “Halden Robotics Series B memo” to the Halden deal room.<br><span class="cite">Write approved by you at ${NOW()} · recorded in audit log</span>`;
+   case "sim":return `<b>Pro plan, seats → credits at $0.10</b> · 1,240 accounts · 12 months replayed<ul><li>Net revenue: <b>−2.1%</b> ($184k less on $8.8M)</li><li>61% of accounts pay less; 27% pay more; 8% pay over 10% more</li><li>Biggest driver: AI summaries at 5 credits each make up 44% of credits used</li></ul><span class="cite">Sources: BILLING.INVOICES Nov 2025 to Oct 2026 · PRODUCT.USAGE_EVENTS · FEATURE_CREDITS v3</span>`;
+   case "solve":return `<b>$0.104 per credit</b> keeps revenue within 0.5% of today.<ul><li>Light users (under 20 seats) save 9% on average</li><li>Heavy AI users pay 18% more; 41 accounts would see increases over $5k a year</li></ul><p style="margin-top:6px"><b>Suggested:</b> a 12-month credit grant for those 41 accounts.</p><span class="cite">Sources: simulation run S-114 · ACCOUNTS.PLANS</span>`;
+   case "publish":return `Saved price book “Pro credits v1 ($0.104)” for finance review. Nothing changes for customers until finance approves.<br><span class="cite">Write approved by you at ${NOW()} · recorded in audit log</span>`;
+   case "find":return `Ready tonight across your 2 library cards:<ul><li><b>The Long Haul Ledger</b> (ebook) · Riverside card · no wait</li><li><b>Cold Chain Stories</b> (audiobook) · County card · no wait</li></ul><p style="margin-top:6px" class="muted">3 more titles have waitlists; shown after these.</p><span class="cite">Source: both libraries' catalogs, checked just now</span>`;
+   case "kids":return `Added <b>Big Bones, Small Feet</b> to Maya's shelf (ages 4 to 6). She's on a 5-day reading streak.<br><span class="cite">Confirmed by you · age rules applied</span>`;
+   case "borrow":return `Borrowed <b>The Long Haul Ledger</b>. Due Nov 25, 2026. It's on your shelf in Readaroo.<br><span class="cite">Confirmed by you · Readaroo account</span>`;
+  }
+  return "";
+}
+function traceFor(id){
+  const pol=`<span class="ok">✓ policy</span> caller in “Sales AEs” · tool allowed · PII masked`;
+  const pol2=`<span class="ok">✓ policy</span> caller in “Deal team” at Northwind Capital · tool allowed`;
+  const stale=`<span class="hold">! freshness</span> Fieldnote last refreshed 41 days ago (rule: 30). Figures marked possibly stale.`;
+  switch(id){
+   case "brief":return [pol,`→ orbit.account_brief(account="Halcyon Cold Chain")`,`  ↳ reads CRM.ACCOUNTS, CRM.OPPS in Northwind's account`,`  ↳ agent-to-agent: fieldnote.company_profile · billed to Orbit Labs`,stale,`<span class="ok">✓ 2 tool calls · 1.6s · $0.08</span>`];
+   case "signals":return [pol,`→ orbit.buying_signals(owner=me, window=7d)`,`  ↳ agent-to-agent: fieldnote.signals(batch=42) · billed to Orbit Labs`,stale,`<span class="ok">✓ 2 tool calls · 2.1s · $0.08</span>`];
+   case "sync":return [`<span class="hold">◷ policy</span> sync_to_crm writes a record, so a person must approve`];
+   case "memo":return [pol2,`→ conviction.diligence_memo(company="Halden Robotics", stage="B")`,`  ↳ reads PIPELINE.DEALS in Northwind's account`,`  ↳ agent-to-agent: fieldnote.company_profile · billed to Conviction Labs`,stale,`<span class="ok">✓ validator: 4 claims, 4 cited, 1 unknown kept as unknown</span>`,`<span class="ok">✓ 2 tool calls · 3.4s · $0.08</span>`];
+   case "comps":return [pol2,`→ conviction.portfolio_monitor(quarter="Q3 2026")`,`  ↳ reads PORTFOLIO.KPIS in Northwind Capital's account`,`<span class="ok">✓ validator: 2 claims, 2 cited</span>`,`<span class="ok">✓ 2 tool calls · 2.2s · $0.08</span>`];
+   case "export":return [`<span class="hold">◷ policy</span> export_to_deal_room writes a file, so a person must approve`];
+   case "sim":return [`<span class="ok">✓ policy</span> caller in “Pricing” at Northwind Software · tool allowed`,`→ credits.simulate_migration(plan="Pro", price=0.10, months=12)`,`  ↳ reads BILLING.INVOICES, PRODUCT.USAGE_EVENTS in Northwind's account`,`<span class="ok">✓ reconciliation: simulated seat revenue ties to invoices within 0.1%</span>`,`<span class="ok">✓ 2 tool calls · 4.0s · $0.08</span>`];
+   case "solve":return [`<span class="ok">✓ policy</span> caller in “Pricing” · tool allowed`,`→ credits.price_solver(target="revenue flat", tolerance=0.5%)`,`<span class="ok">✓ 2 tool calls · 3.1s · $0.08</span>`];
+   case "publish":return [`<span class="hold">◷ policy</span> publish_price_book saves a pricing change, so a person must approve`];
+   case "kids":return [`<span class="ok">✓ personal account</span> you confirmed · age rules: 4 to 6`,`→ readaroo.family_shelf(child="Maya", title="Big Bones, Small Feet")`,`<span class="ok">✓ 1 call · 0.6s · free</span>`];
+   case "find":return [`<span class="ok">✓ personal account</span> all-audience listing · no workspace data shared`,`→ readaroo.search_tonight(topic="supply chains", cards=2)`,`<span class="ok">✓ 1 call · 0.9s · free</span>`];
+   case "borrow":return [`<span class="ok">✓ personal account</span> you confirmed the borrow`,`→ readaroo.borrow_title(id="LHL-2291")`,`<span class="ok">✓ 1 call · 0.7s · free</span>`];
+   case "fine":return [`<span class="ok">✓ personal account</span> payment is handled by the partner`,`→ readaroo.pay_fine(amount=3.50) returns a checkout link`];
+  }
+  return [];
+}
+function agentAvailable(a){if(a==="orbit")return S.deployed;return true}
+function vUse(){
+  const a=AGENTS[S.agent], surf={chat:"Chat assistant",data:"Data cloud",slack:"Slack"};
+  const cap=+S.dep.cap;
+  const agentTabs=`<div class="chips" role="group" aria-label="Agent">${Object.entries(AGENTS).map(([k,v])=>`<button class="chip" data-agent="${k}" aria-pressed="${S.agent===k}">${v.name}${k==="orbit"&&!S.deployed?" · not deployed":""}${k==="readaroo"?" · personal":""}</button>`).join("")}</div>`;
+  let main;
+  if(!agentAvailable(S.agent)){
+    main=`<div class="panel lock"><h2>GTM Orbit isn't turned on for Northwind yet</h2><p class="muted">IT needs to approve the deployment first. Every surface checks the same policy.</p><button class="btn primary" data-go="${S.bought?"deploy":"buy"}">${S.bought?"Go to Deploy":"Go to Buy"}</button></div>`;
+  } else {
+    const consumerOnly=S.agent==="readaroo"&&S.surface!=="chat";
+    const promptBtns=a.prompts.map(p=>{let dis="",why="";if(S.agent==="orbit"&&S.dep.tools[p.tool]===false){dis="disabled";why=' title="Turned off by IT"'}if(consumerOnly){dis="disabled"}return `<button class="btn" data-ask="${p.id}" ${dis}${why}>${esc(p.t)}</button>`}).join("");
+    main=`<div class="panel">
+     <div class="tabs" role="tablist">${Object.entries(surf).map(([k,v])=>`<button class="tab" role="tab" data-surf="${k}" aria-selected="${S.surface===k}">${v}</button>`).join("")}</div>
+     <div class="stage" id="stage">${consumerOnly?`<p class="muted">Readaroo is a consumer listing, so it runs only in the chat assistant on a personal account.</p>`:stageHtml()}</div>
+     <div class="pad" style="border-top:1px solid var(--line)"><div class="prompts">${promptBtns}</div>${S.agent==="orbit"&&!S.dep.tools.sync_to_crm?`<p class="muted" style="font-size:12.5px;margin-top:8px">Logging to CRM is off for this workspace. Turn on <span class="mono">sync_to_crm</span> in Deploy to try a governed write.</p>`:""}</div>
+    </div>`;
+  }
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Use</span><h1>Same marketplace, same policy, every surface</h1><p class="muted">Pick an agent and a surface. Every call is checked, metered and logged; writes wait for a person.</p></div>
+   ${agentTabs}
+   <div class="grid2">
+    ${main}
+    <div class="view">
+     <div class="panel pad meterbox"><h3>Northwind usage this month</h3><div><span class="bignum num">$${S.spend.toFixed(2)}</span> <span class="muted">of $${fmt(cap)} cap</span></div><div class="bar"><i style="width:${Math.min(100,S.spend/cap*100)}%"></i></div><dl class="kv"><dt>Tool calls</dt><dd class="num">${S.calls}</dd><dt>Paid via</dt><dd>${S.pay==="commit"?"Commitment draw-down":"Platform invoice"}</dd><dt>Partners earn</dt><dd class="num">$${(S.spend*0.85).toFixed(2)} after 15% fee</dd></dl><p class="muted" style="font-size:12.5px">Readaroo is free and personal, so it never touches Northwind's bill.</p></div>
+     <div class="panel pad note" style="background:var(--surface)"><b>Why this matters:</b> each listing is one MCP server. The marketplace adds identity, policy, metering and payouts, so a partner ships once and the buyer governs once.</div>
+    </div>
+   </div>
+  </section>`;
+}
+function stageHtml(){
+  const key=S.agent+":"+S.surface, items=S.ran[key]||[], a=AGENTS[S.agent];
+  if(!items.length){
+    const hint={chat:`Ask the assistant. ${a.name} is available as @${a.short}.`,data:`${a.name} runs as a tool next to Northwind's tables.`,slack:`${a.name} answers in the deal channel when you mention @${a.short}.`}[S.surface];
+    return `<p class="muted">${hint}</p><p class="muted" style="font-size:13px">Pick a prompt below.</p>`;
+  }
+  return items.map(it=>{
+    const p=a.prompts.find(x=>x.id===it.id);
+    const tr=`<div class="trace">${traceFor(it.id).map(x=>`<div>${x}</div>`).join("")}</div>`;
+    let body;
+    if(p.write&&!it.approved&&!it.denied){
+      const call=it.id==="sync"?`sync_to_crm(account=A-20931, note="Brief + next step: cutover-risk deck before Nov 12")`:it.id==="publish"?`publish_price_book(name="Pro credits v1", price=0.104, status="finance review")`:`export_to_deal_room(deal=D-3307, file="Halden Series B memo")`;
+      body=`<div class="approve"><b>Approve this write?</b><span class="mono" style="font-size:12.5px">${call}</span><div class="row"><button class="btn primary" data-approve="${it.k}">Approve</button><button class="btn" data-deny="${it.k}">Decline</button></div></div>`;
+    } else if(it.denied){body=`<div class="msg agent">Nothing was written. You declined.</div>`}
+    else if(p.link){body=`<div class="msg agent">Your library fine is paid on Readaroo's own checkout.<div class="approve" style="margin-top:8px;border-style:solid;border-color:var(--meter);background:var(--meter-soft)"><b>Checkout opens on readaroo.example</b><span style="font-size:13px">$3.50 to Riverside Public Library · Stripe test mode. The marketplace never sees your card.</span></div></div>`}
+    else body=null;
+    const ans=body||`<div class="msg agent">${answer(it.id)}</div>`;
+    if(S.surface==="data") return `<div class="sheet panel pad"><span class="muted">-- worksheet</span><br>SELECT ${S.agent}.${p.tool}('${esc(p.t.replace(/'/g,""))}');</div>${tr}${ans}`;
+    if(S.surface==="slack") return `<div class="slackmsg"><span class="av" style="background:#5a4fcf">JL</span><div><b>Jordan Lee</b> <span class="muted" style="font-size:12px">#${S.agent==="conviction"?"deal-halden":S.agent==="credits"?"pricing":"deal-halcyon"}</span><br>@${a.short} ${esc(p.t)}</div></div>${tr}${body||`<div class="slackmsg"><span class="av" style="background:${a.color}">${a.name[0]}</span><div><b>${a.name}</b> <span class="pill" style="font-size:11px">App</span><div class="msg agent" style="margin-top:4px">${answer(it.id)}</div></div></div>`}`;
+    return `<div class="msg user">${esc(p.t)}</div>${tr}${ans}`;
+  }).join("");
+}
+function vReview(){
+  const sel=QUEUE.find(q=>q.id===S.sel)||QUEUE[0];
+  const st=id=>S.qs[id]||"Pending";
+  const pillFor=s=>s==="Approved"?"good":s==="Changes requested"?"warn":s==="Rejected"?"bad":"";
+  const passed=c=>Object.values(c).filter(Boolean).length;
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Operator · Review queue</span><h1>Every submission is checked before any buyer sees it</h1><p class="muted">Automated checks run on submit. Reviewers decide the exceptions. Median time to decision: 19 hours.</p></div>
+   <div class="grid2">
+    <div class="panel"><div class="tablebox"><table class="queue"><thead><tr><th>Listing</th><th>Type</th><th>Checks</th><th>Status</th></tr></thead><tbody>
+     ${QUEUE.map(q=>`<tr data-sel="${q.id}" aria-selected="${q.id===sel.id}" tabindex="0"><td><b style="font-weight:600">${esc(q.l)}</b><br><span class="muted" style="font-size:12.5px">${esc(q.p)} · ${q.age} ago</span></td><td>${q.t}</td><td class="num">${passed(q.checks)}/6</td><td><span class="pill ${pillFor(st(q.id))}">${st(q.id)}</span></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="panel pad" style="display:grid;gap:14px;align-content:start">
+     <div><span class="eyebrow">${sel.t}</span><h2>${esc(sel.l)}</h2><p class="muted">${esc(sel.p)}</p></div>
+     <ul class="checks">${Object.entries(sel.checks).map(([k,v])=>`<li><span class="dot ${v?"ok":"no"}">${v?"✓":"!"}</span><span>${CHECKNAMES[k]}${k==="evals"?` <span class="muted num">(${sel.ev})</span>`:k==="latency"?` <span class="muted num">(${sel.p95})</span>`:""}</span></li>`).join("")}</ul>
+     <div class="note"><b>${esc(sel.risk)}.</b> ${esc(sel.note)}</div>
+     <div class="row"><button class="btn primary" data-decide="Approved">Approve</button><button class="btn" data-decide="Changes requested">Request changes</button><button class="btn" data-decide="Rejected">Reject</button></div>
+    </div>
+   </div>
+  </section>`;
+}
+function vHealth(){
+  const weeks=["Sep 8","Sep 15","Sep 22","Sep 29","Oct 6","Oct 13","Oct 20","Oct 27","Nov 3"];
+  const gmv=[1.42,1.51,1.58,1.74,1.81,1.96,2.08,2.21,2.37];
+  const W=560,H=200,pl=44,pr=14,pt=14,pb=26,max=2.5;
+  const x=i=>pl+i*(W-pl-pr)/(gmv.length-1),y=v=>pt+(H-pt-pb)*(1-v/max);
+  const line=gmv.map((v,i)=>`${i?"L":"M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  const area=line+`L${x(gmv.length-1)},${y(0)}L${x(0)},${y(0)}Z`;
+  const grid=[0,0.5,1,1.5,2,2.5].map(v=>`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${pl-6}" y="${y(v)+4}" text-anchor="end">$${v}M</text>`).join("");
+  const xl=weeks.map((w,i)=>i%2===0?`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${w}</text>`:"").join("");
+  const fun=[["Listing views",48200],["Trials started",6120],["Purchased",2310],["Deployed by IT",1980],["Weekly active",1240]];
+  const gaps=[["Ramp Coach",1120,49,"Deployed, but only for managers; new-hire group never enabled"],["Win-Loss Lens",760,41,"Email interviews land in spam for 18% of installs"],["Launch Pilot",2875,36,"Bought by marketing; reps never see it in the tools they use"]];
+  const supply=[["partner-sourced pipeline attribution",412],["usage-based pricing quotes",288],["demo environment setup for sales engineers",251]];
+  const lastV=gmv[gmv.length-1];
+  return `<section class="view">
+   <div class="head"><span class="eyebrow">Operator · Marketplace health</span><h1>Is buying turning into use?</h1><p class="muted">Bookings are growing. The number that decides whether partners stay is weekly use after purchase.</p></div>
+   <div class="kpis">
+    <div class="kpi"><span class="eyebrow">Bookings, 30 days</span><b class="num">$9.1M</b><span class="d up">▲ 31% vs prior 30</span></div>
+    <div class="kpi"><span class="eyebrow">Purchase → weekly active</span><b class="num">54%</b><span class="d down">▼ 3 pts · north star</span></div>
+    <div class="kpi"><span class="eyebrow">Paid from commitment</span><b class="num">62%</b><span class="d muted">of bookings</span></div>
+    <div class="kpi"><span class="eyebrow">Partner payouts, 30 days</span><b class="num">$7.7M</b><span class="d muted">15% blended fee</span></div>
+    <div class="kpi"><span class="eyebrow">Median review time</span><b class="num">19h</b><span class="d up">▼ from 3.2 days</span></div>
+   </div>
+   <div class="grid2">
+    <div class="panel pad" style="display:grid;gap:10px"><h3>Weekly bookings rose 67% in 9 weeks</h3><div style="overflow-x:auto"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly bookings rose from $1.42M to $2.37M between Sep 8 and Nov 3">${grid}<path d="${area}" fill="var(--accent)" fill-opacity=".12"/><path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="${x(gmv.length-1)}" cy="${y(lastV)}" r="4.5" fill="var(--accent)"/><text x="${x(gmv.length-1)-8}" y="${y(lastV)-10}" text-anchor="end" style="fill:var(--fg);font-weight:600">$${lastV}M</text>${xl}</svg></div></div>
+    <div class="panel pad" style="display:grid;gap:12px"><h3>Buyer funnel, last 30 days</h3><div class="funnel">${fun.map((f,i)=>`<div class="frow ${i===4?"gap":""}"><span>${f[0]}</span><div class="bar"><i style="width:${Math.max(2,f[1]/fun[0][1]*100)}%"></i></div><span class="num" style="text-align:right">${fmt(f[1])}</span></div>`).join("")}</div><p class="muted" style="font-size:13px">The biggest leak is after purchase: 37% of IT-deployed agents are not used weekly.</p></div>
+   </div>
+   <div class="grid2">
+    <div class="panel"><div class="pad" style="padding-bottom:0"><h3>Bought but not used</h3><p class="muted" style="font-size:13.5px">Listings with many installs and low weekly use. Each gets a partner success plan.</p></div><div class="tablebox"><table><thead><tr><th>Listing</th><th>Installs</th><th>Weekly active</th><th>Likely cause</th></tr></thead><tbody>${gaps.map(g=>`<tr><td><b style="font-weight:600">${g[0]}</b></td><td class="num">${fmt(g[1])}</td><td><span class="pill ${g[2]<45?"bad":"warn"} num">${g[2]}%</span></td><td class="muted">${g[3]}</td></tr>`).join("")}</tbody></table></div></div>
+    <div class="view">
+     <div class="panel"><div class="pad" style="padding-bottom:0"><h3>Supply gaps</h3><p class="muted" style="font-size:13.5px">Buyer searches with no good match. Partnerships recruits against this list.</p></div><div class="tablebox"><table><thead><tr><th>Searched for</th><th>Workspaces</th></tr></thead><tbody>${supply.map(s=>`<tr><td>${s[0]}</td><td class="num">${s[1]}</td></tr>`).join("")}</tbody></table></div></div>
+     <div class="panel pad" style="display:grid;gap:6px"><h3>Data freshness</h3><p style="font-size:14px"><span class="pill warn">41 days</span> <b>Fieldnote Firmographics</b> is past its 30-day rule. 2,140 calls from GTM Orbit and Conviction AI carried a stale-data warning this week.</p></div>
+    </div>
+   </div>
+  </section>`;
+}
+
+const VIEWS={discover:vDiscover,evaluate:vEvaluate,buy:vBuy,deploy:vDeploy,use:vUse,review:vReview,health:vHealth};
+function render(){renderRail();app.innerHTML=(VIEWS[S.step]||vDiscover)();bind()}
+
+function bind(){
+  const q=$("#q");
+  if(q){q.addEventListener("input",()=>{S.q=q.value;const pos=q.selectionStart;render();const n=$("#q");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}});}
+  const tr=$("#qtry");if(tr)tr.onclick=()=>{S.q="research accounts before sales calls";S.cat="All";render()};
+  app.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{S.cat=b.dataset.cat;render()});
+  app.querySelectorAll("[data-open],[data-listing]").forEach(b=>b.onclick=()=>{const id=b.dataset.open||b.dataset.listing;if(DETAILS[id]){S.listing=id;go("evaluate")}else toast("This demo walks through GTM Orbit, Conviction AI and Readaroo. Other listings are sample data.")});
+  const cta=$("#cta");if(cta)cta.onclick=()=>{if(S.listing==="orbit")go("buy");else{S.agent=S.listing;S.surface="chat";go("use")}};
+  app.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>{if(S.bought)return;S.plan=b.dataset.plan;render()});
+  app.querySelectorAll('input[name="pay"]').forEach(r=>r.onchange=()=>{S.pay=r.value;render()});
+  const acc=$("#accept");if(acc)acc.onclick=()=>{S.bought=true;stamp(`GTM Orbit offer accepted (${S.plan==="annual"?"private offer":S.plan}) by Marcus Bell`);toast("Offer accepted. IT has been asked to deploy.");render()};
+  const dep=S.dep;
+  Object.keys(dep.groups).forEach((g,i)=>{const el=$("#g"+i);if(el)el.onchange=()=>{dep.groups[g]=el.checked;stamp(`${el.checked?"Enabled":"Disabled"} group ${g}`);render()}});
+  Object.keys(dep.tools).forEach(t=>{const el=document.getElementById("t-"+t);if(el)el.onchange=()=>{dep.tools[t]=el.checked;stamp(`${el.checked?"Allowed":"Blocked"} tool ${t}`);render()}});
+  const hw=$("#hw");if(hw)hw.onchange=()=>{dep.humanWrite=hw.checked;stamp(`Write approval ${hw.checked?"required":"not required"}`);render()};
+  const pii=$("#pii");if(pii)pii.onchange=()=>{dep.pii=pii.checked;stamp(`PII masking ${pii.checked?"on":"off"}`);render()};
+  const cap=$("#cap");if(cap)cap.onchange=()=>{dep.cap=cap.value;stamp(`Spend cap set to $${fmt(+cap.value)}`);render()};
+  const ap=$("#approve");if(ap)ap.onclick=()=>{S.deployed=true;S.agent="orbit";stamp("GTM Orbit deployment approved by Priya Raman (IT)");toast("Orbit is live for Northwind.");render()};
+  app.querySelectorAll("[data-agent]").forEach(b=>b.onclick=()=>{S.agent=b.dataset.agent;if(S.agent==="readaroo")S.surface="chat";render()});
+  app.querySelectorAll("[data-surf]").forEach(b=>b.onclick=()=>{S.surface=b.dataset.surf;render()});
+  app.querySelectorAll("[data-ask]").forEach(b=>b.onclick=()=>{
+    const a=AGENTS[S.agent], p=a.prompts.find(x=>x.id===b.dataset.ask), key=S.agent+":"+S.surface;
+    (S.ran[key]=S.ran[key]||[]);
+    const it={id:p.id,k:String(Date.now()),approved:false};
+    if(p.write&&S.agent==="orbit"&&!dep.humanWrite)it.approved=true;
+    S.ran[key].push(it);
+    if(!p.write||it.approved){if(a.metered){S.calls+=2;S.spend+=0.08}stamp(`${p.tool} called by Jordan Lee via ${S.surface}`)}
+    render();const st=$("#stage");if(st&&st.lastElementChild)st.lastElementChild.scrollIntoView({block:"nearest"});
+  });
+  app.querySelectorAll("[data-approve],[data-deny]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.approve||b.dataset.deny, key=S.agent+":"+S.surface;
+    const it=(S.ran[key]||[]).find(x=>x.k===k);if(!it)return;
+    const tool=AGENTS[S.agent].prompts.find(x=>x.id===it.id).tool;
+    if(b.dataset.approve){it.approved=true;S.calls+=1;S.spend+=0.04;stamp(`${tool} write approved by Jordan Lee`)}else{it.denied=true;stamp(`${tool} write declined`)}
+    render();
+  });
+  app.querySelectorAll("[data-sel]").forEach(r=>{const f=()=>{S.sel=r.dataset.sel;render()};r.onclick=f;r.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();f()}}});
+  app.querySelectorAll("[data-decide]").forEach(b=>b.onclick=()=>{S.qs[S.sel]=b.dataset.decide;toast(`${(QUEUE.find(q=>q.id===S.sel)||{}).l}: ${b.dataset.decide.toLowerCase()}`);render()});
+}
+
+const h=location.hash.slice(1);
+if(STEPS.some(s=>s.id===h))S.step=h;else{try{const t=localStorage.getItem("meridian-step");if(t&&STEPS.some(s=>s.id===t))S.step=t}catch(e){}}
+render();
+})();
+</script>
+</body>
+</html>
