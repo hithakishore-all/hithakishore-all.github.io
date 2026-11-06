@@ -6,3 +6,4 @@ Live at **https://hithakishore-all.github.io**: AI product prototypes I've desig
 - [GTM Orbit](https://github.com/hithakishore-all/gtm-orbit) · agentic go-to-market
 - [Readaroo](https://github.com/hithakishore-all/readaroo) · family library app
 - [Meridian](https://github.com/hithakishore-all/Meridian) · governed B2B agent marketplace
+- [Fieldwise](https://hithakishore-all.github.io/fieldwise/) · guided field-service resolution

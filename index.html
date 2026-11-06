@@ -16,19 +16,19 @@
 :root {
   --bg: #F6F2EB; --panel: #FFFDF9; --ink: #1B1F24; --ink-2: #4A515A; --ink-3: #7A818A;
   --line: #E5DED2; --chip: #EFE9DF;
-  --conviction: #0E7C86; --orbit: #C2410C; --readaroo: #5B3FD9; --meridian: #D6336C;
+  --conviction: #0E7C86; --orbit: #C2410C; --readaroo: #5B3FD9; --meridian: #D6336C; --fieldwise: #2450D8;
   --shadow: 0 1px 2px rgba(27,31,36,.04), 0 8px 24px rgba(27,31,36,.06);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #121417; --panel: #1A1D21; --ink: #ECE8E1; --ink-2: #B4B8BE; --ink-3: #8A9097;
-    --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B;
+    --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B; --fieldwise: #7B98FF;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"] {
   --bg: #121417; --panel: #1A1D21; --ink: #ECE8E1; --ink-2: #B4B8BE; --ink-3: #8A9097;
-  --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B;
+  --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B; --fieldwise: #7B98FF;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
 }
 * { box-sizing: border-box; }
@@ -54,6 +54,7 @@ main { display: grid; gap: 28px; padding-bottom: 64px; }
 .project.orbit { --accent: var(--orbit); }
 .project.readaroo { --accent: var(--readaroo); }
 .project.meridian { --accent: var(--meridian); }
+.project.fieldwise { --accent: var(--fieldwise); }
 .shot { display: block; position: relative; background: var(--chip); border-right: 1px solid var(--line); overflow: hidden; }
 .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .4s ease; }
 .shot:hover img { transform: scale(1.02); }
@@ -106,6 +107,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
       <a href="#orbit"><span class="dot" style="background:var(--orbit)"></span>GTM Orbit</a>
       <a href="#readaroo"><span class="dot" style="background:var(--readaroo)"></span>Readaroo</a>
       <a href="#meridian"><span class="dot" style="background:var(--meridian)"></span>Meridian</a>
+      <a href="#fieldwise"><span class="dot" style="background:var(--fieldwise)"></span>Fieldwise</a>
     </nav>
   </div>
 </header>
@@ -206,6 +208,29 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
         <a class="btn" href="https://github.com/hithakishore-all/Meridian"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
       </div>
       <p class="note">My other prototypes appear as partner listings. Tip: search <strong>diligence</strong>, open Conviction AI, then run it.</p>
+    </div>
+  </article>
+
+  <article class="project fieldwise" id="fieldwise">
+    <a class="shot" href="https://hithakishore-all.github.io/fieldwise/" aria-label="Open the Fieldwise live demo">
+      <video class="clip" src="img/fieldwise.mp4" poster="img/fieldwise-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of Fieldwise"></video>
+      <span class="play">Open live demo →</span>
+    </a>
+    <div class="body">
+      <p class="tag">Field service · Guided resolution</p>
+      <h2>Fieldwise</h2>
+      <p class="tagline">Your next move, made clear.</p>
+      <p class="problem">A failed first service visit adds two more visits and 14 days on average. When sibling models share a fault code, a confident answer for the wrong model is how it happens.</p>
+      <ul class="points">
+        <li>Gives zero repair steps until a person confirms the model and revision, and never guesses from a serial number</li>
+        <li>Every step cites a manual page and runs from a reviewer-published, version-pinned procedure the technician resumes on a phone</li>
+        <li>Chat can explain a step but never choose a branch; withdrawing a procedure pauses live runs, and every action is audited</li>
+      </ul>
+      <div class="stack"><span>Python · FastAPI</span><span>PostgreSQL</span><span>Product hierarchy</span><span>Procedure templates</span></div>
+      <div class="actions">
+        <a class="btn primary" href="https://hithakishore-all.github.io/fieldwise/">Live demo</a>
+      </div>
+      <p class="note">A guided walkthrough with synthetic data; the FastAPI + PostgreSQL build is in progress. Tip: open <strong>Hierarchy and templates</strong>.</p>
     </div>
   </article>
 
