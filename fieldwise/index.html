@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fieldwise · guided demo</title>
+<title>Fieldwise · walkthrough</title>
 <meta name="description" content="Fieldwise carries one equipment problem from the support call to a verified fix on a technician's phone. Synthetic data, runs in your browser.">
 <meta property="og:title" content="Fieldwise · Your next move, made clear.">
 <meta property="og:description" content="Cited, approved, model-specific service procedures from the call to the fix. Synthetic demo.">
@@ -138,6 +138,19 @@ th{font-size:12px;color:var(--muted);font-weight:600}
 .sheet .pg{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .sheet p{font-size:17px;margin-top:12px}
 .foot{font-size:13px;color:var(--muted)}
+.watch{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+@media (max-width:980px){.watch{grid-template-columns:minmax(0,1fr)}}
+.vid{background:var(--chrome);border-radius:12px;overflow:hidden;box-shadow:0 18px 40px -22px rgba(20,27,45,.6)}
+.vid video{display:block;width:100%;height:auto;aspect-ratio:16/10;background:#0b1222}
+.chap{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.chap ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:470px;overflow:auto}
+.chap button{display:grid;grid-template-columns:40px 34px minmax(0,1fr);gap:6px;align-items:baseline;width:100%;text-align:left;border:0;border-left:3px solid transparent;border-radius:4px;padding:6px 8px;font-weight:400;font-size:13.5px;background:none}
+.chap button:hover{background:var(--sunk)}
+.chap button.on{background:var(--accent-soft);border-left-color:var(--dc)}
+.chap .t{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chap .who{font-family:var(--f-mono);font-size:11px;color:var(--dc);font-weight:600}
+.try{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:2px}
+
 </style>
 </head>
 <body>
@@ -148,6 +161,36 @@ th{font-size:12px;color:var(--muted);font-weight:600}
     <div><h1><svg class="mark" viewBox="0 0 32 32" role="img" aria-label="Fieldwise mark"><rect x="1" y="1" width="30" height="30" rx="9" fill="var(--accent)"/><path d="M9.5 22.5L18 14" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/><circle cx="21" cy="11" r="5.4" fill="#fff"/><rect x="19.4" y="3.2" width="3.2" height="7" rx="0.8" fill="var(--accent)" transform="rotate(45 21 11)"/><circle cx="10" cy="22" r="1.5" fill="var(--signal)"/></svg>Fieldwise</h1><span class="tag">Your next move, made clear.</span></div>
     <span class="synth">Synthetic demo · all equipment, manuals and people are fictional</span>
   </header>
+
+  <section class="watch" aria-labelledby="watch-h">
+    <div class="vid"><video id="walk" controls playsinline preload="metadata" poster="../img/fieldwise-walkthrough-poster.jpg">
+      <source src="../img/fieldwise-walkthrough.mp4" type="video/mp4"></video></div>
+    <aside class="chap">
+      <h2 id="watch-h">Watch the walkthrough</h2>
+      <p class="muted" style="font-size:13.5px">The working app, driven end to end. About 3 minutes, no sound: on-screen captions and highlights explain each step. Click a chapter to jump.</p>
+      <ol id="chapters">
+      <li><button data-t="3.9" style="--dc:var(--p-ana)"><span class="t">0:04</span><span class="who">Ana</span>Sign in as a demo identity</button></li>
+      <li><button data-t="7.9" style="--dc:var(--p-ana)"><span class="t">0:08</span><span class="who">Ana</span>Fieldwise lives inside the service desk</button></li>
+      <li><button data-t="13.8" style="--dc:var(--p-ana)"><span class="t">0:14</span><span class="who">Ana</span>The caller&#x27;s words, kept exactly</button></li>
+      <li><button data-t="24.0" style="--dc:var(--p-ana)"><span class="t">0:24</span><span class="who">Ana</span>It asks before it answers</button></li>
+      <li><button data-t="35.0" style="--dc:var(--p-ana)"><span class="t">0:35</span><span class="who">Ana</span>A person confirms the model</button></li>
+      <li><button data-t="42.5" style="--dc:var(--p-ana)"><span class="t">0:42</span><span class="who">Ana</span>Now: cited, model-specific guidance</button></li>
+      <li><button data-t="56.6" style="--dc:var(--p-ana)"><span class="t">0:56</span><span class="who">Ana</span>Every citation opens the source</button></li>
+      <li><button data-t="66.6" style="--dc:var(--p-ana)"><span class="t">1:06</span><span class="who">Ana</span>Hand off an approved procedure</button></li>
+      <li><button data-t="73.0" style="--dc:var(--p-teo)"><span class="t">1:13</span><span class="who">Teo</span>Teo picks up the same case on his phone</button></li>
+      <li><button data-t="84.0" style="--dc:var(--p-teo)"><span class="t">1:24</span><span class="who">Teo</span>Every tap is saved instantly</button></li>
+      <li><button data-t="89.2" style="--dc:var(--p-teo)"><span class="t">1:29</span><span class="who">Teo</span>Close the app, lose nothing</button></li>
+      <li><button data-t="98.9" style="--dc:var(--p-teo)"><span class="t">1:39</span><span class="who">Teo</span>Chat explains. It never decides.</button></li>
+      <li><button data-t="109.2" style="--dc:var(--p-teo)"><span class="t">1:49</span><span class="who">Teo</span>No closing without verification</button></li>
+      <li><button data-t="120.7" style="--dc:var(--p-ana)"><span class="t">2:01</span><span class="who">Ana</span>Ana reviews before anything leaves</button></li>
+      <li><button data-t="135.3" style="--dc:var(--p-ana)"><span class="t">2:15</span><span class="who">Ana</span>A host outage loses nothing</button></li>
+      <li><button data-t="143.3" style="--dc:var(--p-ana)"><span class="t">2:23</span><span class="who">Ana</span>Delivered exactly once</button></li>
+      <li><button data-t="154.4" style="--dc:var(--p-ren)"><span class="t">2:34</span><span class="who">Ren</span>The full trail, in order</button></li>
+      <li><button data-t="164.5" style="--dc:var(--p-ren)"><span class="t">2:44</span><span class="who">Ren</span>Why D17 needed a person</button></li>
+      </ol>
+    </aside>
+  </section>
+  <div class="try"><h2>Try it yourself</h2><p class="muted" style="font-size:14px">Prefer to click? The same story as a guided walkthrough, one screen at a time.</p></div>
   <div class="tabs" role="tablist" id="tabs"></div>
   <div class="main">
     <aside class="narr" id="narr" aria-live="polite"></aside>
@@ -506,6 +549,14 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('drawer').hidden=true});
 $('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')$('drawer').hidden=true});
 render();
+
+/* ---------- walkthrough video chapters ---------- */
+(function(){
+  const v=document.getElementById('walk'); if(!v) return;
+  const bs=[...document.querySelectorAll('#chapters button')];
+  bs.forEach(b=>b.addEventListener('click',()=>{v.currentTime=+b.dataset.t; v.play().catch(()=>{});}));
+  v.addEventListener('timeupdate',()=>{let cur=null; bs.forEach(b=>{if(+b.dataset.t<=v.currentTime+0.05) cur=b;}); bs.forEach(b=>b.classList.toggle('on',b===cur));});
+})();
 </script>
 
 </body>
