@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SalesLore · walkthrough</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJTYWxlc0xvcmUiPgogIDxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE1IiBmaWxsPSIjMEY1QzUwIi8+CiAgPGcgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj4KICAgIDxwYXRoIGQ9Ik0zMiAyMSBMMTkgMzkiLz4KICAgIDxwYXRoIGQ9Ik0zMiAyMSBMNDUgMzkiLz4KICAgIDxwYXRoIGQ9Ik0xOSAzOSBMMzIgNDkiLz4KICAgIDxwYXRoIGQ9Ik00NSAzOSBMMzIgNDkiLz4KICA8L2c+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSIxOSIgcj0iNy41IiBmaWxsPSIjRkZCNjI3Ii8+CiAgPGNpcmNsZSBjeD0iMTkiIGN5PSI0MCIgcj0iNS41IiBmaWxsPSIjRkZGRkZGIi8+CiAgPGNpcmNsZSBjeD0iNDUiIGN5PSI0MCIgcj0iNS41IiBmaWxsPSIjRkZGRkZGIi8+CiAgPGNpcmNsZSBjeD0iMzIiIGN5PSI0OS41IiByPSI0LjUiIGZpbGw9IiNEQ0Y1RTYiLz4KPC9zdmc+Cg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Plan: navy rail on the left holds the seven product areas; the canvas is stone-grey paper.
+   Briefs read like a handed-down dossier (serif), the app chrome is a plain sans.
+   The one bold element: amber "receipt" tabs on every claim that unfold the source evidence in place. */
+:root {
+  --navy: #0F5C50;
+  --navy-2: #137565;
+  --sage: #12805C;
+  --sage-soft: #DCF5E6;
+  --amber: #965A00;
+  --amber-soft: #FFF0CC;
+  --sun: #FFB627;
+  --stone: #F4F7F2;
+  --paper: #FFFFFF;
+  --ink: #14231F;
+  --muted: #53645E;
+  --line: #DCE5DE;
+  --critical: #C2413B;
+  --critical-soft: #FDE4E2;
+  --unknown: #6B7570;
+  --unknown-soft: #ECEFEC;
+  --rail-ink: #FFFFFF;
+  --rail-muted: #C6E4DA;
+  --font-ui: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+  --font-doc: "Literata", Georgia, "Times New Roman", serif;
+  --font-code: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --navy: #0C463D; --navy-2: #13695B; --sage: #62D3A3; --sage-soft: #163A2D;
+    --amber: #FFC65A; --amber-soft: #3A2C0E; --sun: #FFB627; --stone: #0E1715; --paper: #15221F;
+    --ink: #E8F2EE; --muted: #A2B7AF; --line: #24352F; --critical: #F08A84; --critical-soft: #3D1F1E;
+    --unknown: #A9B3AE; --unknown-soft: #222C29; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --navy: #0C463D; --navy-2: #13695B; --sage: #62D3A3; --sage-soft: #163A2D;
+  --amber: #FFC65A; --amber-soft: #3A2C0E; --sun: #FFB627; --stone: #0E1715; --paper: #15221F;
+  --ink: #E8F2EE; --muted: #A2B7AF; --line: #24352F; --critical: #F08A84; --critical-soft: #3D1F1E;
+  --unknown: #A9B3AE; --unknown-soft: #222C29; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--stone); color: var(--ink); font-family: var(--font-ui); font-size: 15px; line-height: 1.5; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+.app { display: grid; grid-template-columns: 236px 1fr; min-height: 100%; }
+.rail { background: var(--navy); color: var(--rail-ink); padding: 22px 14px; display: flex; flex-direction: column; gap: 22px; position: sticky; top: 0; height: 100vh; }
+.brand { padding: 0 10px; }
+.brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.brand .mark { width: 36px; height: 36px; flex: none; }
+.brand strong { font-size: 21px; letter-spacing: -0.01em; font-weight: 700; display: block; }
+.brand span { color: var(--rail-muted); font-size: 13px; }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a { color: var(--rail-ink); text-decoration: none; padding: 9px 10px; border-radius: 7px; display: flex; justify-content: space-between; align-items: center; font-size: 14.5px; }
+.nav a small { color: var(--rail-muted); font-size: 12px; }
+.nav a:hover { background: var(--navy-2); }
+.nav a[aria-current="page"] { background: var(--navy-2); box-shadow: inset 4px 0 0 var(--sun); font-weight: 600; }
+.rail-foot { margin-top: auto; padding: 10px; font-size: 12.5px; color: var(--rail-muted); border-top: 1px solid var(--navy-2); }
+.rail-foot b { color: var(--rail-ink); font-weight: 600; }
+.main { min-width: 0; }
+.banner { background: var(--sun); color: #14231F; color: var(--ink); padding: 8px 28px; font-size: 13px; border-bottom: 1px solid var(--line); }
+.view { padding: 28px; max-width: 1180px; }
+.view-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.view-head h1 { font-size: 27px; font-weight: 700; letter-spacing: -0.015em; }
+.view-head p { margin: 4px 0 0; color: var(--muted); max-width: 64ch; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+.pad { padding: 18px 20px; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+.split { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 18px; align-items: start; }
+.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); margin-bottom: 18px; }
+.stat { padding: 14px 18px; border-left: 1px solid var(--line); }
+.stat:first-child { border-left: 0; }
+.stat b { display: block; font-size: 24px; color: var(--navy-2); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 13px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-weight: 600; font-size: 13px; color: var(--muted); padding: 10px 14px; border-bottom: 1px solid var(--line); }
+td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: color-mix(in srgb, var(--sage-soft) 45%, transparent); }
+.num { text-align: right; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 99px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.s-ready { background: var(--sage-soft); color: var(--sage); }
+.s-review { background: var(--amber-soft); color: var(--amber); }
+.s-risk { background: var(--amber-soft); color: var(--amber); }
+.s-stop { background: var(--critical-soft); color: var(--critical); }
+.s-unknown { background: var(--unknown-soft); color: var(--unknown); }
+.s-approved { background: var(--navy); color: #fff; }
+.tag { display: inline-block; font-size: 12px; padding: 1px 7px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); white-space: nowrap; }
+.btn { border: 1px solid var(--navy); background: var(--navy); color: #fff; padding: 8px 14px; border-radius: 7px; font-weight: 600; font-size: 14px; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.acct-list { display: flex; flex-direction: column; }
+.acct-list button { text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 11px 16px; color: var(--ink); display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.acct-list button:last-child { border-bottom: 0; }
+.acct-list button[aria-pressed="true"] { background: var(--sage-soft); }
+.acct-list small { color: var(--muted); display: block; font-size: 12.5px; }
+/* The dossier */
+.dossier { font-family: var(--font-doc); font-size: 16px; line-height: 1.62; }
+.dossier h2 { font-family: var(--font-ui); font-size: 22px; font-weight: 700; }
+.dossier h3 { font-family: var(--font-ui); font-size: 14px; font-weight: 700; margin: 22px 0 8px; color: var(--ink); }
+.dossier .meta { font-family: var(--font-ui); color: var(--muted); font-size: 13.5px; margin-top: 4px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.dossier ul, .dossier ol { margin: 0; padding-left: 20px; }
+.dossier li { margin: 6px 0; }
+.notice { font-family: var(--font-ui); font-size: 14px; border-radius: 8px; padding: 10px 14px; margin-top: 14px; border-left: 4px solid; }
+.notice.stop { background: var(--critical-soft); border-color: var(--critical); }
+.notice.warn { background: var(--amber-soft); border-color: var(--amber); }
+.notice.unk { background: var(--unknown-soft); border-color: var(--unknown); }
+.notice.ok { background: var(--sage-soft); border-color: var(--sage); }
+.unknown-val { color: var(--unknown); font-style: italic; }
+/* Receipts: the signature element */
+.rc { font-family: var(--font-code); font-size: 11px; font-weight: 500; background: var(--sun); color: #14231F; border: 1px solid #E09A00; border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 2px; }
+.rc[aria-expanded="true"] { background: #14231F; color: var(--sun); }
+.receipt { display: block; font-family: var(--font-ui); font-size: 13.5px; margin: 6px 0 4px; padding: 9px 12px; background: var(--paper); border: 1px dashed #E5A800; border-left: 4px solid var(--sun); border-radius: 6px; }
+.receipt q { font-family: var(--font-doc); font-style: italic; }
+.receipt .src { color: var(--muted); font-size: 12.5px; display: block; margin-top: 3px; }
+.step-tag { font-family: var(--font-ui); font-size: 12px; color: var(--sage); font-weight: 600; margin-left: 6px; white-space: nowrap; }
+/* Pipeline */
+.stages { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.stage { border: 1px solid var(--line); background: var(--paper); border-radius: 9px; padding: 12px 14px; transition: background .25s, border-color .25s; }
+.stage b { display: block; font-size: 15px; }
+.stage span { font-size: 12.5px; color: var(--muted); }
+.stage.active { border-color: var(--amber); background: var(--amber-soft); }
+.stage.done { border-color: var(--sage); background: var(--sage-soft); }
+.stage.fail { border-color: var(--critical); background: var(--critical-soft); }
+.log { font-size: 13.5px; list-style: none; margin: 0; padding: 0; }
+.log li { padding: 8px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 92px 1fr; gap: 10px; }
+.log li:last-child { border-bottom: 0; }
+.log .who { font-weight: 600; }
+.log .bad { color: var(--critical); }
+/* Graph */
+.graph-wrap { overflow-x: auto; }
+svg.graph { width: 100%; min-width: 640px; height: auto; display: block; }
+.g-node { cursor: pointer; }
+.g-node rect { stroke-width: 1.4; }
+.g-node:focus-visible rect { stroke: var(--amber); stroke-width: 3; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+/* Companion */
+.watch { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+.watch video { width: 100%; border-radius: 10px; background: #0E2A25; display: block; aspect-ratio: 1280 / 800; }
+.chap { list-style: none; margin: 0; padding: 6px; max-height: 520px; overflow-y: auto; }
+.chap button { width: 100%; text-align: left; display: grid; grid-template-columns: 44px 1fr; gap: 2px 8px; background: none; border: 0; border-radius: 7px; padding: 7px 9px; color: var(--ink); }
+.chap button:hover { background: var(--stone); }
+.chap button[aria-current="true"] { background: var(--sage-soft); box-shadow: inset 3px 0 0 var(--sun); }
+.chap .tm { font-family: var(--font-code); font-size: 12px; color: var(--muted); grid-row: span 2; padding-top: 2px; }
+.chap .who { font-size: 12px; font-weight: 700; }
+.chap .tt { font-size: 14px; }
+.try { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+@media (max-width: 980px) { .watch { grid-template-columns: 1fr; } .chap { max-height: none; } }
+.slackwin { display: grid; grid-template-columns: 220px minmax(0, 1fr); border-radius: 10px; overflow: hidden; border: 1px solid #DDDDDD; background: #FFFFFF; color: #1D1C1D; }
+.slackwin .side { background: #3F0E40; color: #CFC3CF; padding: 14px 0; font-size: 14px; }
+.slackwin .ws { color: #fff; font-weight: 700; font-size: 16px; padding: 0 16px 12px; border-bottom: 1px solid #5B2C5C; margin-bottom: 10px; }
+.slackwin .grp { padding: 8px 16px 4px; font-size: 13px; color: #CFC3CF; }
+.slackwin .ch { padding: 4px 16px; }
+.slackwin .ch.on { background: #1164A3; color: #fff; font-weight: 600; }
+.slackwin .ch.slack-app::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2EB67D; margin-right: 8px; }
+.slackwin .chat { height: 600px; background: #FFFFFF; color: #1D1C1D; }
+.slackwin .chat-head { border-color: #DDDDDD; }
+.slackwin .chat-head span, .slackwin .msg .who small { color: #616061; }
+.slackwin .chips, .slackwin .compose { border-color: #DDDDDD; }
+.slackwin .chips button { background: #F8F8F8; border-color: #DDDDDD; color: #1D1C1D; }
+.slackwin .compose input { background: #FFFFFF; border-color: #BBBBBB; color: #1D1C1D; }
+.slackwin .compose .btn { background: #007A5A; border-color: #007A5A; color: #fff; }
+.slackwin .av.bot { background: #ECB22E; color: #1D1C1D; box-shadow: none; }
+.slackwin .av.leo { background: #2EB67D; }
+.slackwin .msg .muted, .slackwin .receipt .src { color: #616061; }
+.slackwin .receipt { background: #F8F8F8; color: #1D1C1D; }
+@media (max-width: 980px) { .slackwin { grid-template-columns: 1fr; } .slackwin .side { display: none; } }
+.slack-bar { display: flex; align-items: center; gap: 12px; background: #3F0E40; color: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 12px; }
+.slack-bar b { font-size: 17px; letter-spacing: -0.01em; }
+.slack-bar span { font-size: 13px; opacity: .85; }
+.slack-bar .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--sun); flex: none; }
+.chat { display: flex; flex-direction: column; height: 600px; }
+.chat-head { padding: 12px 18px; border-bottom: 1px solid var(--line); font-weight: 600; }
+.chat-head span { color: var(--muted); font-weight: 400; font-size: 13px; }
+.msgs { flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+.msg { display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+.av { width: 32px; height: 32px; border-radius: 7px; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; }
+.av.leo { background: var(--sage); }
+.av.bot { background: var(--navy); box-shadow: inset 0 -4px 0 var(--sun); }
+.msg .who { font-weight: 700; font-size: 14px; }
+.msg .who small { color: var(--muted); font-weight: 400; margin-left: 6px; }
+.msg .body { font-size: 14.5px; }
+.msg .body ul, .msg .body ol { margin: 4px 0; padding-left: 20px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 18px; border-top: 1px solid var(--line); }
+.chips button { border: 1px solid var(--line); background: var(--stone); color: var(--ink); border-radius: 99px; padding: 5px 11px; font-size: 13px; }
+.compose { display: flex; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); }
+.compose input { flex: 1; padding: 9px 12px; border-radius: 7px; border: 1px solid var(--line); background: var(--stone); color: var(--ink); font: inherit; }
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--navy); color: #fff; padding: 11px 16px; border-radius: 8px; font-size: 14px; max-width: 360px; box-shadow: 0 6px 24px rgba(15,24,40,.25); }
+.pattern { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.pattern:last-child { border-bottom: 0; }
+.pattern h3 { font-size: 15.5px; font-weight: 600; }
+.pattern p { margin: 3px 0 0; color: var(--muted); font-size: 13.5px; }
+.pattern.rejected h3 { text-decoration: line-through; color: var(--muted); }
+.kv { display: grid; grid-template-columns: 150px 1fr; gap: 6px 12px; font-size: 14px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+.muted { color: var(--muted); }
+@media (max-width: 980px) {
+  .app { grid-template-columns: 1fr; }
+  .rail { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 12px 16px; gap: 10px; }
+  .nav { flex-direction: row; flex-wrap: wrap; }
+  .nav a small, .rail-foot { display: none; }
+  .split, .grid2 { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(odd) { border-left: 0; }
+  .stages { grid-template-columns: repeat(2, 1fr); }
+  .view { padding: 18px 16px; }
+  .banner { padding: 8px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail" aria-label="SalesLore">
+    <div class="brand"><div class="brand-row"><svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true">
+  <rect width="64" height="64" rx="15" fill="#FFFFFF" fill-opacity="0.12"/>
+  <g stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" fill="none">
+    <path d="M32 21 L19 39"/>
+    <path d="M32 21 L45 39"/>
+    <path d="M19 39 L32 49"/>
+    <path d="M45 39 L32 49"/>
+  </g>
+  <circle cx="32" cy="19" r="7.5" fill="#FFB627"/>
+  <circle cx="19" cy="40" r="5.5" fill="#FFFFFF"/>
+  <circle cx="45" cy="40" r="5.5" fill="#FFFFFF"/>
+  <circle cx="32" cy="49.5" r="4.5" fill="#DCF5E6"/>
+</svg>
+<strong>SalesLore</strong></div><span>Your best sellers' knowledge. Never lost.</span></div>
+    <nav class="nav" id="nav">
+      <a href="#watch">Watch the video <small>2:43</small></a>
+      <a href="#overview">Overview <small>Coverage</small></a>
+      <a href="#sellers">Sellers <small>Seller DNA</small></a>
+      <a href="#accounts">Accounts <small>Account Memory</small></a>
+      <a href="#graph">Knowledge Graph</a>
+      <a href="#transfers">Transfers <small>Agents</small></a>
+      <a href="#companion">Companion <small>Slack</small></a>
+      <a href="#governance">Governance <small>Ledger</small></a>
+    </nav>
+    <div class="rail-foot">Signed in as <b id="who-label">Dana Whitfield</b>, <span id="who-role">sales manager</span><br>
+      <button class="btn ghost" id="switch-user" style="margin-top:8px;color:var(--rail-ink);border-color:var(--navy-2);font-size:12.5px;padding:5px 9px">Switch to Leo Brandt</button></div>
+  </aside>
+  <main class="main">
+    <div class="banner">Synthetic demo. Kestrel Cloud, every account, person, quote and number here is fictional. Demo date is pinned to Nov 16, 2026.</div>
+    <div class="view" id="view"></div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const TODAY = '2026-11-16';
+const OWNER = 'Dana Whitfield';
+const EV = {
+  'EV-CALL-0412': ['Call', '2026-09-18', 'Priya Nair, CFO', "Tom runs the evaluation, but I sign anything over $250K. Show me cost per shipment."],
+  'EV-EML-0201': ['Email', '2026-10-02', 'Tom Reyes, VP IT', "I'll champion this internally. Final call is Priya's."],
+  'EV-CRM-0057': ['Salesforce', '2026-11-03', 'Opportunity field Security_Review__c', "Open: questionnaire items 7 and 12 pending with Ana Cole."],
+  'EV-EML-0193': ['Email', '2026-10-21', 'Maya Okafor to Tom Reyes', "Confirming we'll extend your pilot by 30 days, through Nov 30."],
+  'EV-CALL-0365': ['Call', '2026-10-08', 'Dr. Lena Ortiz, Director Clinical Ops', "Our real pain is scheduling handoffs between clinics."],
+  'EV-EML-0310': ['Email', '2026-10-30', 'Dr. Lena Ortiz', "I've submitted the budget request to finance. Review usually takes two to three weeks."],
+  'EV-CRM-0102': ['Salesforce', '2026-06-29', 'Last activity with Marcus Bell', "Demo follow-up sent. No reply logged since."],
+  'EV-EML-0118': ['Email', '2026-11-04', 'Mail delivery system', "Delivery failed: marcus.bell@orchardlane.example, mailbox not found."],
+  'EV-EML-0422': ['Email', '2026-11-02', 'Grace Whitman, Procurement', "Please pause all vendor outreach until our audit closes on Jan 15."],
+  'EV-CRM-0140': ['Salesforce', '2026-11-02', 'Account field Do_Not_Contact__c', "true, until 2027-01-15"],
+  'EV-CALL-0388': ['Call', '2026-10-27', 'Jae Park, VP Operations', "Usage is up. I'll sign the renewal if the QBR shows the uptime numbers."],
+  'EV-EML-0350': ['Email', '2026-10-28', 'Maya Okafor to Jae Park', "I'll send the QBR deck by Dec 1."],
+  'EV-CRM-0211': ['Salesforce', '2026-11-10', 'Usage snapshot', "92% of licensed seats active in the last 30 days."],
+  'EV-CRM-0230': ['Salesforce', '2026-09-15', 'Opportunity notes', "Inbound. Wants a routing demo."],
+  'EV-EML-0277': ['Email', '2026-09-12', 'Karen Liu, Head of Claims Ops', "Budget for this lands in Q1."],
+  'EV-CALL-0451': ['Call', '2026-10-15', 'Karen Liu', "Realistically we're looking at Q2 funds now."],
+  'EV-CALL-0470': ['Call', '2026-10-20', 'Omar Haddad, VP Grid Ops', "We need this live before the spring maintenance window."],
+  'EV-EML-0299': ['Email', '2026-11-05', 'Sable Energy legal', "Redlines attached on sections 4 and 9."],
+  'EV-CALL-0402': ['Call', '2026-10-09', 'Ruth Adeyemi, Principal', "It's just me and our office manager using it."],
+  'EV-CALL-0433': ['Call', '2026-10-29', 'Sam Ito, CFO', "If you can do a two-year term, we can talk price."],
+  'EV-PAT-001': ['Pattern', '2026-11-01', '11 enterprise wins, 2024 to 2026', "In 9 of 11 wins the security review closed before the first pricing call."],
+  'EV-PAT-002': ['Pattern', '2026-11-01', '38 discovery calls', "Asked who signs by the second meeting in 31 of 38 deals."],
+  'EV-PAT-003': ['Pattern', '2026-11-01', '1,204 customer emails', "Median reply time 3.1 business hours."],
+  'EV-PAT-004': ['Pattern', '2026-11-01', '11 enterprise wins', "Average of 6 engaged contacts per won enterprise deal."],
+  'EV-PAT-005': ['Pattern', '2026-11-01', '212 calls', "Written recap with dated next steps sent within 24 hours after 94% of calls."],
+  'EV-PAT-006': ['Pattern', '2026-11-01', '17 discounted deals', "14 of 17 discounts traded for a multi-year term or a case study."],
+  'EV-PAT-007': ['Pattern', '2026-11-01', '38 discovery calls', "Talk ratio 38% on discovery calls."],
+  'EV-PAT-008': ['Pattern', '2026-11-01', '6 quarter-end deals', "10% discount on 6 deals closed in the last week of a quarter."],
+};
+const PATTERNS = [
+  { id: 'PS-01', text: 'Clear the security review before any pricing call', scope: 'Enterprise, proposal stage and later', ev: 'EV-PAT-001', status: 'approved' },
+  { id: 'PS-02', text: 'Ask who signs by the second meeting', scope: 'All segments', ev: 'EV-PAT-002', status: 'approved' },
+  { id: 'PS-03', text: 'Reply to customer emails within 4 business hours', scope: 'All segments', ev: 'EV-PAT-003', status: 'approved', note: 'Maya edited this from 2 hours to 4.' },
+  { id: 'PS-04', text: 'Multi-thread to five or more contacts', scope: 'Enterprise only', ev: 'EV-PAT-004', status: 'approved' },
+  { id: 'PS-05', text: 'Send a written recap with dated next steps within 24 hours', scope: 'All segments', ev: 'EV-PAT-005', status: 'approved' },
+  { id: 'PS-06', text: 'Trade any discount for a multi-year term or a case study', scope: 'Mid-market and enterprise', ev: 'EV-PAT-006', status: 'approved' },
+  { id: 'PS-07', text: 'Let the customer talk: aim for a talk ratio under 40% on discovery', scope: 'All segments', ev: 'EV-PAT-007', status: 'approved' },
+  { id: 'PS-08', text: 'Discount 10% in the last week of the quarter', scope: 'All segments', ev: 'EV-PAT-008', status: 'rejected', note: "Maya rejected it: “It happened, but it isn't a practice I'd teach.”" },
+];
+const ACCOUNTS = [
+  { id: 'halcyon', name: 'Halcyon Freight', seg: 'Enterprise', stage: 'Negotiation', amt: 480000, status: 'ready', proves: 'Hero run: real buyer, open promise, pattern step applied',
+    people: [
+      { name: 'Priya Nair', title: 'CFO', rel: 'decides_for', note: 'Signs anything over $250K; wants cost per shipment', ev: 'EV-CALL-0412' },
+      { name: 'Tom Reyes', title: 'VP IT', rel: 'champion_of', note: 'Runs the evaluation; not the buyer', ev: 'EV-EML-0201' },
+      { name: 'Ana Cole', title: 'Security lead', rel: 'blocks', note: 'Owns the open security questionnaire', ev: 'EV-CRM-0057' } ],
+    commitments: [{ text: '30-day pilot extension, through Nov 30', ev: 'EV-EML-0193', due: '2026-11-30' }],
+    risks: [{ text: 'Security review open: questionnaire items 7 and 12', ev: 'EV-CRM-0057' }],
+    next: [
+      { text: 'Book 30 minutes with Ana Cole to close questionnaire items 7 and 12', ev: 'EV-CRM-0057', ps: 'PS-01' },
+      { text: 'Confirm the pilot extension in writing to Tom Reyes', ev: 'EV-EML-0193', ps: 'PS-05' },
+      { text: 'Once security clears, hold the pricing call with Priya Nair and lead with cost per shipment', ev: 'EV-CALL-0412', ps: 'PS-02' } ],
+    run: [ ['Discover', 'Halcyon Freight in scope. Owner moves from Maya Okafor to Leo Brandt. 3 people, 1 deal, 1 promise, 1 risk.'],
+      ['Research', 'Pulled 4 evidence items from v_saleslore_context. Newest: Nov 3.'],
+      ['Compose', 'Drafted brief: 6 claims, 3 next steps. Applied PS-01, PS-02, PS-05.'],
+      ['Validate', '6 of 6 claims cited. Passed.'] ] },
+  { id: 'brightwater', name: 'Brightwater Health', seg: 'Enterprise', stage: 'Proposal', amt: 210000, status: 'ready', proves: 'Validator catches an unsupported claim',
+    people: [{ name: 'Dr. Lena Ortiz', title: 'Director Clinical Ops', rel: 'champion_of', note: 'Pain is scheduling handoffs between clinics', ev: 'EV-CALL-0365' }],
+    commitments: [],
+    risks: [{ text: 'Budget not yet approved; finance review takes two to three weeks', ev: 'EV-EML-0310' }],
+    facts: [{ text: 'Budget request submitted to finance on Oct 30', ev: 'EV-EML-0310' }],
+    next: [{ text: 'Ask Lena Ortiz for the finance review date and who presents it', ev: 'EV-EML-0310', ps: 'PS-02' }],
+    run: [ ['Discover', 'Brightwater Health in scope. 1 person, 1 deal.'],
+      ['Research', 'Pulled 2 evidence items. Newest: Oct 30.'],
+      ['Compose', 'Drafted brief: 4 claims, 1 next step.'],
+      ['Validate', 'Rejected: "Champion has approved budget" has no evidence. Retry 1 of 2.', 'fail'],
+      ['Compose', 'Replaced it with "Budget request submitted to finance on Oct 30" [EV-EML-0310].'],
+      ['Validate', '4 of 4 claims cited. Passed on retry 1.'] ] },
+  { id: 'orchard', name: 'Orchard Lane Retail', seg: 'Mid-market', stage: 'Evaluation', amt: 96000, status: 'risk', proves: 'Stale data flagged with a re-verify step',
+    people: [{ name: 'Marcus Bell', title: 'Head of eCommerce', rel: 'champion_of', note: 'Last touch 140 days ago; email now bounces', ev: 'EV-CRM-0102', stale: true }],
+    commitments: [], risks: [{ text: 'Champion may have left: email bounced on Nov 4', ev: 'EV-EML-0118' }],
+    flag: ['warn', 'Stale: the champion was last contacted 140 days ago (cutoff is 90) and their email bounced. Treat every fact about Marcus Bell as unverified.'],
+    next: [{ text: 'Re-verify the champion: check the company site and ask the account admin who now owns eCommerce', ev: 'EV-EML-0118' }],
+    run: [ ['Discover', 'Orchard Lane Retail in scope. 1 person, 1 deal.'], ['Research', 'Pulled 2 evidence items. Oldest: Jun 29.'],
+      ['Compose', 'Drafted brief: 3 claims, 1 next step.'], ['Validate', 'Passed. Flagged stale: champion last touch 140 days ago, email bounced.'] ] },
+  { id: 'pinecrest', name: 'Pinecrest Bank', seg: 'Enterprise', stage: 'Renewal', amt: 350000, status: 'stop', proves: 'Stops and escalates on a do-not-contact signal',
+    people: [{ name: 'Grace Whitman', title: 'Procurement', rel: 'influences', note: 'Asked to pause all vendor outreach', ev: 'EV-EML-0422' }],
+    commitments: [], risks: [{ text: 'Do not contact until Jan 15, 2027 (audit)', ev: 'EV-CRM-0140' }],
+    flag: ['stop', 'Stop: the customer asked to pause all outreach until Jan 15, 2027. SalesLore removed every outreach step and escalated to Dana Whitfield.'],
+    next: [],
+    run: [ ['Discover', 'Pinecrest Bank in scope. 1 person, 1 renewal.'], ['Research', 'Pulled 2 evidence items, including Do_Not_Contact__c = true.'],
+      ['Compose', 'Drafted brief: 3 claims, 2 outreach steps.'], ['Validate', 'Stop rule hit: do not contact until Jan 15, 2027. Outreach steps removed. Escalated to Dana Whitfield.', 'fail'] ] },
+  { id: 'lumen', name: 'Lumen Robotics', seg: 'Mid-market', stage: 'Renewal', amt: 120000, status: 'ready', proves: 'Clean run, no warnings',
+    people: [{ name: 'Jae Park', title: 'VP Operations', rel: 'decides_for', note: 'Will renew if the QBR shows uptime', ev: 'EV-CALL-0388' }],
+    commitments: [{ text: 'QBR deck with uptime numbers by Dec 1', ev: 'EV-EML-0350', due: '2026-12-01' }],
+    risks: [], facts: [{ text: '92% of licensed seats active in the last 30 days', ev: 'EV-CRM-0211' }],
+    next: [{ text: 'Build the QBR deck around uptime and send it by Dec 1', ev: 'EV-EML-0350', ps: 'PS-05' }, { text: 'Book the renewal call with Jae Park for the week of Dec 7', ev: 'EV-CALL-0388' }],
+    run: [ ['Discover', 'Lumen Robotics in scope. Renewal in 45 days.'], ['Research', 'Pulled 3 evidence items. Newest: Nov 10.'],
+      ['Compose', 'Drafted brief: 4 claims, 2 next steps.'], ['Validate', '4 of 4 claims cited. Passed.'] ] },
+  { id: 'tidewater', name: 'Tidewater Logistics', seg: 'Mid-market', stage: 'Discovery', amt: 75000, status: 'unknown', proves: 'Missing data shown as unknown',
+    people: [], commitments: [], risks: [], unknowns: ['Decision maker', 'Budget', 'Timeline'], facts: [{ text: 'Inbound lead asking for a routing demo', ev: 'EV-CRM-0230' }],
+    flag: ['unk', 'Unknown: no call recordings and thin CRM notes. SalesLore will not guess who decides, the budget or the timeline.'],
+    next: [{ text: 'Run discovery and ask who signs by the second meeting', ev: 'EV-PAT-002', ps: 'PS-02' }],
+    run: [ ['Discover', 'Tidewater Logistics in scope. 0 people, 1 deal.'], ['Research', 'Pulled 1 evidence item. No calls found.'],
+      ['Compose', 'Drafted brief: 1 claim, 3 unknowns, 1 next step.'], ['Validate', 'Passed. 3 facts shown as unknown.'] ] },
+  { id: 'marlow', name: 'Marlow Insurance', seg: 'Enterprise', stage: 'Proposal', amt: 260000, status: 'review', proves: 'Conflicting evidence shown side by side',
+    people: [{ name: 'Karen Liu', title: 'Head of Claims Ops', rel: 'decides_for', note: 'Budget owner', ev: 'EV-EML-0277' }],
+    commitments: [], risks: [{ text: 'Budget timing unclear', ev: 'EV-CALL-0451' }],
+    conflict: [['Budget lands in Q1', 'EV-EML-0277', 'Sep 12'], ['Q2 funds now', 'EV-CALL-0451', 'Oct 15']],
+    flag: ['warn', 'Conflict: two sources disagree on budget timing. The newer one is a call, but a person should confirm before planning around either.'],
+    next: [{ text: 'Ask Karen Liu to confirm whether funds land in Q1 or Q2', ev: 'EV-CALL-0451' }],
+    run: [ ['Discover', 'Marlow Insurance in scope. 1 person, 1 deal.'], ['Research', 'Pulled 2 evidence items that disagree.'],
+      ['Compose', 'Drafted brief: 3 claims, 1 next step.'], ['Validate', 'Passed with a conflict on budget timing: Q1 vs Q2. Needs a person.'] ] },
+  { id: 'sable', name: 'Sable Energy', seg: 'Enterprise', stage: 'Negotiation', amt: 310000, status: 'ready', proves: 'Privacy filter drops a personal fact',
+    people: [{ name: 'Omar Haddad', title: 'VP Grid Ops', rel: 'decides_for', note: 'Needs go-live before the spring maintenance window', ev: 'EV-CALL-0470' }],
+    commitments: [], risks: [{ text: 'Legal redlines open on sections 4 and 9', ev: 'EV-EML-0299' }],
+    flag: ['ok', 'Privacy filter: 1 personal, non-business fact about Omar Haddad was excluded before it reached the graph.'],
+    next: [{ text: 'Get legal answers on sections 4 and 9 back within the week', ev: 'EV-EML-0299', ps: 'PS-03' }],
+    run: [ ['Discover', 'Sable Energy in scope. 1 person, 1 deal.'], ['Research', 'Pulled 3 evidence items. Privacy filter excluded 1 personal fact.'],
+      ['Compose', 'Drafted brief: 3 claims, 1 next step.'], ['Validate', '3 of 3 claims cited. Passed.'] ] },
+  { id: 'juniper', name: 'Juniper Schools', seg: 'SMB', stage: 'Proposal', amt: 4800, status: 'ready', proves: 'Pattern step shown only where it applies',
+    people: [{ name: 'Ruth Adeyemi', title: 'Principal', rel: 'decides_for', note: 'Two users: herself and the office manager', ev: 'EV-CALL-0402' }],
+    commitments: [], risks: [],
+    flag: ['ok', 'PS-04 (multi-thread to five or more contacts) is skipped here. It applies to enterprise deals only.'],
+    next: [{ text: 'Send a 2-seat proposal with a short recap of the Oct 9 call', ev: 'EV-CALL-0402', ps: 'PS-05' }],
+    run: [ ['Discover', 'Juniper Schools in scope. SMB, 2 seats.'], ['Research', 'Pulled 1 evidence item.'],
+      ['Compose', 'Drafted brief: 2 claims, 1 next step. Skipped PS-04: enterprise only.'], ['Validate', '2 of 2 claims cited. Passed.'] ] },
+  { id: 'corvid', name: 'Corvid Analytics', seg: 'Mid-market', stage: 'Negotiation', amt: 88000, status: 'ready', proves: 'Rejected pattern steps are never coached',
+    people: [{ name: 'Sam Ito', title: 'CFO', rel: 'decides_for', note: 'Open to price talk for a two-year term', ev: 'EV-CALL-0433' }],
+    commitments: [], risks: [],
+    flag: ['ok', 'PS-08 (discount 10% at quarter end) was rejected by Maya and is never coached. PS-06 applies instead.'],
+    next: [{ text: 'Offer pricing tied to a two-year term, not a quarter-end discount', ev: 'EV-CALL-0433', ps: 'PS-06' }],
+    run: [ ['Discover', 'Corvid Analytics in scope. 1 person, 1 deal.'], ['Research', 'Pulled 1 evidence item.'],
+      ['Compose', 'Drafted brief: 2 claims, 1 next step. Excluded rejected step PS-08.'], ['Validate', '2 of 2 claims cited. Passed.'] ] },
+];
+const STATUS = { ready: ['Ready', 's-ready'], review: ['Needs review', 's-review'], risk: ['At risk', 's-risk'], stop: ['Stop', 's-stop'], unknown: ['Unknown', 's-unknown'] };
+const REL = { decides_for: 'decides', champion_of: 'champion', blocks: 'blocker', influences: 'influences' };
+const state = { user: OWNER, acct: 'halcyon', approved: {}, ran: {}, ledger: [
+  ['2026-10-28 09:12', 'Maya Okafor', 'Granted consent to capture her book and patterns'],
+  ['2026-11-01 14:03', 'Pattern distiller', 'Proposed 8 pattern steps for Maya Okafor'],
+  ['2026-11-04 10:40', 'Maya Okafor', 'Approved 6 steps, edited PS-03, rejected PS-08'],
+  ['2026-11-10 08:00', 'Dana Whitfield', 'Started transfer: Maya Okafor to Leo Brandt, 10 accounts'],
+] };
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const money = n => n >= 1e6 ? '$' + (n / 1e6).toFixed(2) + 'M' : n >= 1000 ? '$' + Math.round(n / 1000).toLocaleString() + 'K' : '$' + n;
+const fmtDate = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const acct = id => ACCOUNTS.find(a => a.id === id);
+const pill = st => `<span class="pill ${STATUS[st][1]}">${STATUS[st][0]}</span>`;
+const now = () => TODAY + ' ' + new Date().toTimeString().slice(0, 5);
+let rcSeq = 0;
+const rc = id => `<button class="rc" aria-expanded="false" data-ev="${id}" data-k="${rcSeq++}" title="Show the source">${id}</button>`;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3200); }
+function log(who, what) { state.ledger.unshift([now(), who, what]); }
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('.rc'); if (!b) return;
+  e.preventDefault();
+  const open = b.getAttribute('aria-expanded') === 'true';
+  const next = b.nextElementSibling && b.nextElementSibling.classList.contains('receipt') ? b.nextElementSibling : null;
+  if (open && next) { next.remove(); b.setAttribute('aria-expanded', 'false'); return; }
+  const [src, date, who, quote] = EV[b.dataset.ev];
+  const r = document.createElement('span'); r.className = 'receipt';
+  r.innerHTML = `<q>${esc(quote)}</q><span class="src">${esc(src)} · ${esc(who)} · ${fmtDate(date)} · ${b.dataset.ev}</span>`;
+  b.after(r); b.setAttribute('aria-expanded', 'true');
+});
+
+function statusOf(a) { return state.approved[a.id] && a.status === 'ready' ? 'ready' : a.status; }
+
+/* ---------- Views ---------- */
+function vOverview() {
+  const counts = { ready: 0, review: 0, risk: 0, stop: 0, unknown: 0 };
+  ACCOUNTS.forEach(a => counts[a.status]++);
+  const total = ACCOUNTS.reduce((s, a) => s + a.amt, 0);
+  const approved = Object.keys(state.approved).length;
+  return `<div class="view-head"><div><h1>Maya Okafor's book moves to Leo Brandt</h1>
+    <p>Maya, a top enterprise AE, leaves on Nov 27. Leo inherits 10 accounts. SalesLore has turned her records, calls and approved working pattern into a brief for each one.</p></div>
+    <div class="btn-row"><a class="btn" href="#transfers" style="text-decoration:none">Run the agents</a></div></div>
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><b>${money(total)}</b><span>Inherited pipeline</span></div>
+    <div class="stat" role="listitem"><b>${counts.ready}</b><span>Ready</span></div>
+    <div class="stat" role="listitem"><b>${counts.review + counts.risk}</b><span>Needs review or at risk</span></div>
+    <div class="stat" role="listitem"><b>${counts.stop}</b><span>Stopped</span></div>
+    <div class="stat" role="listitem"><b>${approved} of 10</b><span>Briefs approved</span></div>
+  </div>
+  <div class="panel"><table><thead><tr><th>Account</th><th>Segment</th><th>Stage</th><th class="num">Pipeline</th><th>Readiness</th><th>Brief</th><th>What this record proves</th></tr></thead><tbody>
+  ${ACCOUNTS.map(a => `<tr class="click" data-go="${a.id}" tabindex="0"><td><b>${a.name}</b></td><td>${a.seg}</td><td>${a.stage}</td><td class="num">${money(a.amt)}</td><td>${pill(a.status)}</td>
+    <td>${state.approved[a.id] ? '<span class="pill s-approved">Approved</span>' : '<span class="muted">Pending</span>'}</td><td class="muted">${a.proves}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function vSellers() {
+  return `<div class="view-head"><div><h1>Seller DNA: Maya Okafor</h1>
+    <p>How Maya works, distilled from 212 calls and 1,204 emails, then reviewed by Maya herself. Only approved steps are ever coached.</p></div></div>
+  <div class="grid2" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)">
+    <div class="panel">${PATTERNS.map(p => `<div class="pattern ${p.status === 'rejected' ? 'rejected' : ''}">
+      <div><h3>${p.id} · ${esc(p.text)}</h3><p>Applies to: ${p.scope}${rc(p.ev)}</p>${p.note ? `<p>${esc(p.note)}</p>` : ''}</div>
+      <div>${p.status === 'approved' ? '<span class="pill s-ready">Approved by Maya</span>' : '<span class="pill s-stop">Rejected by Maya</span>'}</div></div>`).join('')}</div>
+    <div class="panel pad"><h2 style="font-size:17px">Consent and ownership</h2>
+      <dl class="kv" style="margin-top:12px"><dt>Consent</dt><dd>Granted Oct 28, 2026</dd><dt>Reviewed</dt><dd>Nov 4, 2026</dd><dt>Steps</dt><dd>7 approved, 1 rejected</dd><dt>Visible to</dt><dd>Maya, Dana, Leo</dd></dl>
+      <p class="muted" style="font-size:13.5px;margin-top:14px">Maya can edit or remove any step until her last day. Personal, non-business details are filtered out before capture.</p></div>
+  </div>`;
+}
+
+function acctList(view) {
+  return `<div class="panel acct-list" role="group" aria-label="Accounts">${ACCOUNTS.map(a => `<button data-pick="${a.id}" data-view="${view}" aria-pressed="${a.id === state.acct}">
+    <span>${a.name}<small>${a.seg} · ${money(a.amt)}</small></span>${pill(a.status)}</button>`).join('')}</div>`;
+}
+
+function brief(a) {
+  const ps = id => `<span class="step-tag">${id}</span>`;
+  let h = `<article class="panel pad dossier"><h2>${a.name}</h2>
+    <div class="meta">${a.seg} · ${a.stage} · ${money(a.amt)} · from Maya Okafor to Leo Brandt ${pill(a.status)} ${state.approved[a.id] ? '<span class="pill s-approved">Approved by Dana</span>' : ''}</div>`;
+  if (a.flag) h += `<div class="notice ${a.flag[0]}">${esc(a.flag[1])}</div>`;
+  h += `<h3>Who matters</h3>`;
+  h += a.people.length ? `<ul>${a.people.map(p => `<li><b>${p.name}</b>, ${p.title} (${REL[p.rel]}). ${esc(p.note)}${rc(p.ev)}</li>`).join('')}</ul>` : `<p class="unknown-val">Unknown. No evidence names a decision maker.</p>`;
+  if (a.unknowns) h += `<h3>Unknown</h3><ul>${a.unknowns.map(u => `<li><span class="unknown-val">${u}: unknown</span></li>`).join('')}</ul>`;
+  if (a.facts) h += `<h3>What we know</h3><ul>${a.facts.map(f => `<li>${esc(f.text)}${rc(f.ev)}</li>`).join('')}</ul>`;
+  if (a.conflict) h += `<h3>Conflicting evidence</h3><ul>${a.conflict.map(c => `<li>${c[2]}: “${c[0]}”${rc(c[1])}</li>`).join('')}</ul>`;
+  h += `<h3>Open promises</h3>` + (a.commitments.length ? `<ul>${a.commitments.map(c => `<li>${esc(c.text)}${rc(c.ev)}</li>`).join('')}</ul>` : `<p class="muted">None on record.</p>`);
+  h += `<h3>Risks</h3>` + (a.risks.length ? `<ul>${a.risks.map(r => `<li>${esc(r.text)}${rc(r.ev)}</li>`).join('')}</ul>` : `<p class="muted">None on record.</p>`);
+  h += `<h3>Next steps, the way Maya worked</h3>` + (a.next.length ? `<ol>${a.next.map(n => `<li>${esc(n.text)}${rc(n.ev)}${n.ps ? ps(n.ps) : ''}</li>`).join('')}</ol>` : `<p><b>No outreach.</b> Wait for Dana Whitfield's decision.</p>`);
+  h += `<p class="muted" style="font-family:var(--font-ui);font-size:13px;margin-top:18px">Leo owns every customer message. SalesLore drafts and cites; it never sends.</p></article>`;
+  return h;
+}
+
+function vAccounts() {
+  const a = acct(state.acct);
+  return `<div class="view-head"><div><h1>Account Memory</h1><p>One brief per inherited account. Click any amber receipt to see the source behind a claim.</p></div>
+    <div class="btn-row"><a class="btn ghost" href="#graph" style="text-decoration:none">View graph</a><a class="btn" href="#transfers" style="text-decoration:none">Run agents</a></div></div>
+  <div class="split">${acctList('accounts')}${brief(a)}</div>`;
+}
+
+function graphModel(a) {
+  const nodes = [{ id: 'acct', type: 'account', label: a.name, sub: a.seg + ' account' }];
+  const edges = [];
+  nodes.push({ id: 'maya', type: 'seller', label: 'Maya Okafor', sub: 'AE, leaving Nov 27' });
+  edges.push(['maya', 'acct', 'owned', null]);
+  nodes.push({ id: 'deal', type: 'deal', label: a.stage + ' deal', sub: money(a.amt) });
+  edges.push(['acct', 'deal', 'has deal', null]);
+  a.people.forEach((p, i) => { nodes.push({ id: 'p' + i, type: 'person', label: p.name, sub: p.title, ev: p.ev, stale: p.stale }); edges.push(['p' + i, p.rel === 'blocks' ? 'deal' : 'acct', REL[p.rel], p.ev]); });
+  (a.unknowns || []).forEach((u, i) => { nodes.push({ id: 'u' + i, type: 'unknown', label: u, sub: 'unknown' }); edges.push(['u' + i, 'deal', '?', null]); });
+  a.commitments.forEach((c, i) => { nodes.push({ id: 'c' + i, type: 'promise', label: 'Promise', sub: c.text, ev: c.ev }); edges.push(['maya', 'c' + i, 'promised', c.ev]); });
+  a.risks.forEach((r, i) => { nodes.push({ id: 'r' + i, type: 'risk', label: 'Risk', sub: r.text, ev: r.ev }); edges.push(['r' + i, 'deal', 'blocks', r.ev]); });
+  [...new Set(a.next.map(n => n.ps).filter(Boolean))].forEach(id => { const p = PATTERNS.find(x => x.id === id); nodes.push({ id, type: 'pattern', label: id, sub: p.text, ev: p.ev }); edges.push([id, 'deal', 'applies to', p.ev]); });
+  return { nodes, edges };
+}
+const NODE_STYLE = { account: ['var(--navy)', '#fff'], seller: ['var(--navy-2)', '#fff'], deal: ['var(--amber-soft)', 'var(--ink)'], person: ['var(--sage-soft)', 'var(--ink)'], promise: ['var(--paper)', 'var(--ink)'], risk: ['var(--critical-soft)', 'var(--ink)'], pattern: ['var(--paper)', 'var(--ink)'], unknown: ['var(--unknown-soft)', 'var(--unknown)'] };
+function vGraph() {
+  const a = acct(state.acct); const { nodes, edges } = graphModel(a);
+  const W = 860, H = 560, bw = 172, bh = 50;
+  const pos = { acct: [430, 250], maya: [300, 60], deal: [430, 390] };
+  const col = (arr, x, y0, y1) => arr.forEach((n, i) => { pos[n.id] = [x, arr.length === 1 ? (y0 + y1) / 2 : y0 + (i * (y1 - y0)) / (arr.length - 1)]; });
+  const ofType = (...t) => nodes.filter(n => t.includes(n.type));
+  col(ofType('person', 'unknown'), 750, 130, 430);
+  col(ofType('pattern'), 110, 170, 430);
+  ofType('promise').forEach((n, i) => { pos[n.id] = [560 + i * 190, 60]; });
+  ofType('risk').forEach((n, i) => { pos[n.id] = [430 + (i - (ofType('risk').length - 1) / 2) * 200, 505]; });
+  const clip = (s, n) => s.length > n ? s.slice(0, n - 1) + '…' : s;
+  const svgEdges = edges.map(([f, t, lab]) => { const [x1, y1] = pos[f], [x2, y2] = pos[t]; const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--line)" stroke-width="1.6" ${lab === '?' ? 'stroke-dasharray="5 5"' : ''}/>
+      <text x="${mx}" y="${my - 6}" text-anchor="middle" font-size="12" fill="var(--muted)" paint-order="stroke" stroke="var(--stone)" stroke-width="4">${esc(lab)}</text>`; }).join('');
+  const svgNodes = nodes.map(n => { const [x, y] = pos[n.id]; const [fill, ink] = NODE_STYLE[n.type]; const w = n.id === 'acct' ? 196 : bw;
+    const stroke = n.type === 'risk' ? 'var(--critical)' : n.type === 'pattern' ? 'var(--sage)' : n.type === 'promise' ? 'var(--amber)' : n.stale ? 'var(--amber)' : 'var(--line)';
+    return `<g class="g-node" tabindex="0" role="button" data-node="${n.id}" aria-label="${esc(n.label + ', ' + n.sub)}">
+      <rect x="${x - w / 2}" y="${y - bh / 2}" width="${w}" height="${bh}" rx="9" fill="${fill}" stroke="${stroke}" ${n.type === 'unknown' || n.stale ? 'stroke-dasharray="5 4"' : ''}/>
+      <text x="${x}" y="${y - 4}" text-anchor="middle" font-size="13.5" font-weight="700" fill="${ink}">${esc(clip(n.label, 24))}</text>
+      <text x="${x}" y="${y + 14}" text-anchor="middle" font-size="11.5" fill="${ink}" opacity=".8">${esc(clip(n.sub, 28))}</text></g>`; }).join('');
+  return `<div class="view-head"><div><h1>Knowledge Graph</h1><p>The context graph for one account. Every edge with a source carries its evidence ID. Click a node to see what it rests on.</p></div></div>
+  <div class="split">${acctList('graph')}<div><div class="panel pad graph-wrap"><svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Context graph for ${esc(a.name)}">${svgEdges}${svgNodes}</svg>
+    <div class="legend"><span><i style="background:var(--sage-soft)"></i>Person</span><span><i style="background:var(--amber-soft)"></i>Deal</span><span><i style="background:var(--paper);border:1px solid var(--amber)"></i>Promise</span><span><i style="background:var(--critical-soft)"></i>Risk</span><span><i style="background:var(--paper);border:1px solid var(--sage)"></i>Pattern step</span><span><i style="background:var(--unknown-soft)"></i>Unknown (dashed)</span></div></div>
+    <div class="panel pad" id="node-detail" style="margin-top:14px"><p class="muted" style="margin:0">Select a node to see its evidence.</p></div></div></div>`;
+}
+function showNode(id) {
+  const a = acct(state.acct); const { nodes, edges } = graphModel(a); const n = nodes.find(x => x.id === id); if (!n) return;
+  const evs = [...new Set([n.ev, ...edges.filter(e => (e[0] === id || e[1] === id) && e[3]).map(e => e[3])].filter(Boolean))];
+  $('#node-detail').innerHTML = `<h2 style="font-size:17px">${esc(n.label)}</h2><p class="muted" style="margin:2px 0 10px">${esc(n.sub)}${n.stale ? ' · stale' : ''}</p>
+    ${evs.length ? evs.map(e => { const [src, date, who, q] = EV[e]; return `<div class="receipt"><q>${esc(q)}</q><span class="src">${src} · ${esc(who)} · ${fmtDate(date)} · ${e}</span></div>`; }).join('') : `<p class="muted" style="margin:0">${n.type === 'unknown' ? 'No evidence found, so SalesLore leaves this unknown.' : 'Structural node from Salesforce ownership and deal records.'}</p>`}`;
+}
+
+const STAGES = [['Discover', 'Find accounts in scope'], ['Research', 'Pull cited evidence'], ['Compose', 'Draft brief and steps'], ['Validate', 'Reject uncited claims'], ['Approve', 'Owner only, sends nothing']];
+function vTransfers() {
+  const a = acct(state.acct);
+  return `<div class="view-head"><div><h1>Knowledge Transfer</h1><p>Run the agents on one account and watch each stage. Validate retries at most twice, then escalates. Only Dana, the owner, can approve.</p></div>
+    <div class="btn-row"><button class="btn" id="run">Run agents on ${a.name}</button></div></div>
+  <div class="split">${acctList('transfers')}<div>
+    <div class="stages">${STAGES.map((s, i) => `<div class="stage" id="st${i}"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}</div>
+    <div class="grid2"><div class="panel pad"><h2 style="font-size:17px;margin-bottom:8px">Run log</h2><ul class="log" id="runlog"><li><span class="who muted">Idle</span><span class="muted">Press Run to start.</span></li></ul></div>
+    <div class="panel pad" id="approve-box"><h2 style="font-size:17px;margin-bottom:8px">Approval</h2><p class="muted" style="margin:0">Waiting for a validated brief.</p></div></div>
+  </div></div>`;
+}
+function runAgents() {
+  const a = acct(state.acct); const btn = $('#run'); btn.disabled = true;
+  const ul = $('#runlog'); ul.innerHTML = '';
+  STAGES.forEach((_, i) => $('#st' + i).className = 'stage');
+  const fast = matchMedia('(prefers-reduced-motion: reduce)').matches; const gap = fast ? 120 : 850;
+  let i = 0;
+  const idx = { Discover: 0, Research: 1, Compose: 2, Validate: 3 };
+  const step = () => {
+    if (i >= a.run.length) { finish(a); btn.disabled = false; return; }
+    const [stage, text, kind] = a.run[i];
+    STAGES.forEach((_, k) => { const el = $('#st' + k); if (el.classList.contains('active')) el.className = 'stage done'; });
+    const el = $('#st' + idx[stage]); el.className = 'stage ' + (kind === 'fail' ? 'fail' : 'active');
+    ul.insertAdjacentHTML('beforeend', `<li><span class="who">${stage}</span><span class="${kind === 'fail' ? 'bad' : ''}">${esc(text)}</span></li>`);
+    log(stage + ' agent', a.name + ': ' + text);
+    i++; setTimeout(step, gap);
+  };
+  step();
+}
+function finish(a) {
+  STAGES.slice(0, 4).forEach((_, k) => { const el = $('#st' + k); if (!el.classList.contains('fail')) el.className = 'stage done'; });
+  state.ran[a.id] = true;
+  const box = $('#approve-box');
+  if (a.status === 'stop') { $('#st3').className = 'stage fail'; box.innerHTML = `<h2 style="font-size:17px;margin-bottom:8px">Escalated to Dana Whitfield</h2><div class="notice stop" style="margin-top:0">No brief to approve. Outreach is blocked until Jan 15, 2027.</div>`; return; }
+  $('#st4').className = 'stage active';
+  box.innerHTML = `<h2 style="font-size:17px;margin-bottom:8px">Brief ready for approval</h2><p style="margin:0 0 12px" class="muted">Signed in as ${state.user}. Approving publishes the brief to Leo. It sends nothing to the customer.</p>
+    <div class="btn-row"><button class="btn" id="approve">Approve brief</button><a class="btn ghost" href="#accounts" style="text-decoration:none">Read the brief</a></div><p id="approve-msg" style="margin:10px 0 0;font-size:14px"></p>`;
+  $('#approve').onclick = () => {
+    const msg = $('#approve-msg');
+    if (state.user !== OWNER) { msg.innerHTML = `<span style="color:var(--critical)">Only the record owner, ${OWNER}, can approve this brief.</span>`; log(state.user, 'Approval denied on ' + a.name + ': not the owner'); return; }
+    if (state.approved[a.id]) { msg.textContent = 'Already approved. Nothing changed.'; return; }
+    state.approved[a.id] = true; $('#st4').className = 'stage done'; msg.textContent = 'Approved. Leo can now see this brief.';
+    log(OWNER, 'Approved brief for ' + a.name + '. Nothing sent.'); toast('Brief approved for ' + a.name);
+  };
+}
+
+const BOT = 'SalesLore';
+function answer(q) {
+  const t = q.toLowerCase();
+  const a = ACCOUNTS.find(x => t.includes(x.name.toLowerCase().split(' ')[0].toLowerCase())) || acct(state.acct);
+  if (a.status === 'stop' && /next|reach|email|call|contact/.test(t)) return `${esc(a.flag[1])}${rc('EV-CRM-0140')}`;
+  if (/who|decide|buyer|sign/.test(t)) return a.people.length ? `At ${a.name}:<ul>${a.people.map(p => `<li><b>${p.name}</b>, ${p.title} (${REL[p.rel]}). ${esc(p.note)}${rc(p.ev)}</li>`).join('')}</ul>` : `Unknown. No evidence names a decision maker at ${a.name}, so I won't guess. Maya's step: ask who signs by the second meeting.${rc('EV-PAT-002')}`;
+  if (/promise|commit|owe/.test(t)) return a.commitments.length ? `Open promises at ${a.name}:<ul>${a.commitments.map(c => `<li>${esc(c.text)}${rc(c.ev)}</li>`).join('')}</ul>` : `No open promises on record at ${a.name}.`;
+  if (/budget|timing|when/.test(t) && a.conflict) return `The sources disagree. Sep 12 email: “Budget lands in Q1”${rc('EV-EML-0277')} Oct 15 call: “Q2 funds now”${rc('EV-CALL-0451')} Please confirm with Karen Liu before planning.`;
+  if (/maya|would|before|pricing|next/.test(t)) return a.next.length ? `What Maya would do next at ${a.name}:<ol>${a.next.map(n => `<li>${esc(n.text)}${rc(n.ev)}${n.ps ? `<span class="step-tag">${n.ps}</span>` : ''}</li>`).join('')}</ol>Drafts are yours to edit and send.` : 'No next steps.';
+  if (/brief|summary|overview/.test(t)) return `${a.name}: ${a.seg}, ${a.stage}, ${money(a.amt)}. ${STATUS[a.status][0]}. ${a.flag ? esc(a.flag[1]) : 'No warnings.'} Open the full brief in Account Memory.`;
+  return `I can answer from Maya's approved knowledge: who decides, open promises, next steps or a brief. Try “Who decides at ${a.name}?”`;
+}
+let chat = [['leo', '/saleslore brief Halcyon Freight'], ['bot', null, '/saleslore brief Halcyon Freight']];
+function vCompanion() {
+  const prompts = ['Who really decides at Halcyon?', 'What would Maya do before the pricing call at Halcyon?', 'What did Maya promise Lumen?', 'What is the budget timing at Marlow?', '/saleslore next Pinecrest Bank', 'Who decides at Tidewater?'];
+  return `<div class="view-head"><div><h1>SalesLore Companion, in Slack</h1><p>Leo uses the Companion inside Slack, not in a separate app. Answers come only from approved knowledge, and every claim carries a receipt.</p></div></div>
+  <div class="slack-bar" role="note"><span class="dot"></span><div><b>Slack view</b><br><span>SalesLore Companion lives in Slack. This is what Leo sees in his workspace.</span></div></div>
+  <div class="slackwin"><nav class="side" aria-label="Slack sidebar"><div class="ws">Kestrel Cloud</div><div class="grp">Channels</div><div class="ch"># deals-enterprise</div><div class="ch on"># leo-inherited-accounts</div><div class="ch"># sales-team</div><div class="grp">Apps</div><div class="ch slack-app">SalesLore</div></nav>
+  <div class="chat"><div class="chat-head"># leo-inherited-accounts <span>\u00b7 Kestrel Cloud workspace</span></div>
+    <div class="msgs" id="msgs">${chat.map(renderMsg).join('')}</div>
+    <div class="chips">${prompts.map(p => `<button data-ask="${esc(p)}">${esc(p)}</button>`).join('')}</div>
+    <form class="compose" id="ask-form"><label for="ask" class="muted" style="position:absolute;left:-9999px">Ask SalesLore</label><input id="ask" placeholder="Ask about an inherited account" autocomplete="off"><button class="btn">Send</button></form></div></div>`;
+}
+function renderMsg(m) {
+  if (m[0] === 'leo') return `<div class="msg"><div class="av leo">LB</div><div><div class="who">Leo Brandt<small>successor AE</small></div><div class="body">${esc(m[1])}</div></div></div>`;
+  return `<div class="msg"><div class="av bot">SL</div><div><div class="who">${BOT}<small>app</small></div><div class="body">${m[1] || answer(m[2])}</div></div></div>`;
+}
+function ask(q) { chat.push(['leo', q]); chat.push(['bot', answer(q), q]); $('#msgs').insertAdjacentHTML('beforeend', renderMsg(chat[chat.length - 2]) + renderMsg(chat[chat.length - 1])); $('#msgs').scrollTop = 1e6; log('Leo Brandt', 'Asked Companion: ' + q); }
+
+function vGovernance() {
+  return `<div class="view-head"><div><h1>Evidence Ledger</h1><p>Every agent step and human decision, newest first. Actions you take in this demo are added here.</p></div></div>
+  <div class="grid2" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)"><div class="panel"><table><thead><tr><th style="width:150px">When</th><th style="width:160px">Who</th><th>What</th></tr></thead><tbody>
+    ${state.ledger.map(r => `<tr><td class="muted">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>
+  <div class="panel pad"><h2 style="font-size:17px;margin-bottom:10px">Rules SalesLore keeps</h2><ul style="margin:0;padding-left:18px;font-size:14px">
+    <li>Evidence before answers</li><li>Consent before capture</li><li>Managers approve; successors own every customer message</li><li>Personal details are filtered out</li><li>Missing, stale and conflicting facts are labeled</li><li>Every action is logged</li><li>No impersonation, no sending</li></ul>
+    <p class="muted" style="font-size:13px;margin-top:14px">Facts older than 90 days are flagged stale. Agents read one governed view, v_saleslore_context.</p></div></div>`;
+}
+
+
+const CHAPTERS = [{"t": 0.01, "step": 0, "who": "", "color": "#FFB627", "title": "Title"}, {"t": 6.12, "step": 1, "who": "Dana", "color": "#3FCB97", "title": "Maya's book moves to Leo"}, {"t": 11.47, "step": 2, "who": "Dana", "color": "#3FCB97", "title": "Readiness for every account"}, {"t": 21.72, "step": 3, "who": "Maya", "color": "#FFB627", "title": "Maya approved how she works"}, {"t": 27.06, "step": 4, "who": "Maya", "color": "#FFB627", "title": "Her rejected step is never coached"}, {"t": 38.83, "step": 5, "who": "Dana", "color": "#3FCB97", "title": "Agents draft a cited brief"}, {"t": 44.58, "step": 6, "who": "Dana", "color": "#3FCB97", "title": "It rejects an uncited claim"}, {"t": 50.41, "step": 7, "who": "Dana", "color": "#3FCB97", "title": "Only the owner approves"}, {"t": 65.18, "step": 8, "who": "Leo", "color": "#7DB4FF", "title": "Leo can't approve his own brief"}, {"t": 76.04, "step": 9, "who": "Dana", "color": "#3FCB97", "title": "It stops when the customer says stop"}, {"t": 91.66, "step": 10, "who": "Leo", "color": "#7DB4FF", "title": "Leo inherits a dossier, not a CRM dump"}, {"t": 96.99, "step": 11, "who": "Leo", "color": "#7DB4FF", "title": "Every claim has a receipt"}, {"t": 111.18, "step": 12, "who": "Leo", "color": "#7DB4FF", "title": "The context graph behind it"}, {"t": 123.94, "step": 13, "who": "Leo", "color": "#7DB4FF", "title": "Unknown stays unknown"}, {"t": 131.8, "step": 14, "who": "Leo", "color": "#7DB4FF", "title": "Ask in Slack, get receipts"}, {"t": 139.22, "step": 15, "who": "Leo", "color": "#7DB4FF", "title": "The stop rule holds in Slack too"}, {"t": 150.98, "step": 16, "who": "Dana", "color": "#3FCB97", "title": "Every step is on the record"}, {"t": 157.31, "step": 0, "who": "", "color": "#FFB627", "title": "Try it yourself"}];
+const COLORS = { Dana: '#178A65', Maya: '#965A00', Leo: '#2A6FD6' };
+function vWatch() {
+  const mm = t => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+  return `<div class="view-head"><div><h1>See SalesLore in action</h1><p>A captioned walkthrough of the working app, recorded from the real code with fictional data. No sound. Click a chapter to jump.</p></div></div>
+  <div class="watch"><video id="vid" controls playsinline preload="metadata" poster="../img/saleslore-walkthrough-poster.jpg"><source src="../img/saleslore-walkthrough.mp4" type="video/mp4">Your browser cannot play this video.</video>
+    <div class="panel"><ol class="chap" id="chap">${CHAPTERS.map((c, i) => `<li><button data-t="${c.t}" data-i="${i}"><span class="tm">${mm(c.t)}</span><span class="who" style="color:${COLORS[c.who] || 'var(--muted)'}">${c.who || 'SalesLore'}</span><span class="tt">${esc(c.title)}</span></button></li>`).join('')}</ol></div></div>
+  <div class="try"><h2 style="font-size:19px;margin-right:6px">Try it yourself</h2><a class="btn" href="#overview" style="text-decoration:none">Open the interactive demo</a><a class="btn ghost" href="https://github.com/hithakishore-all/SalesLore" style="text-decoration:none">Code on GitHub</a></div>`;
+}
+function wireWatch() {
+  const v = $('#vid'); const btns = [...document.querySelectorAll('#chap button')];
+  btns.forEach(b => b.onclick = () => { v.currentTime = Number(b.dataset.t) + 0.05; v.play().catch(() => {}); });
+  v.addEventListener('timeupdate', () => { let cur = 0; CHAPTERS.forEach((c, i) => { if (v.currentTime >= c.t) cur = i; }); btns.forEach((b, i) => b.setAttribute('aria-current', i === cur ? 'true' : 'false')); });
+}
+const VIEWS = { watch: vWatch, overview: vOverview, sellers: vSellers, accounts: vAccounts, graph: vGraph, transfers: vTransfers, companion: vCompanion, governance: vGovernance };
+function render() {
+  const name = (location.hash || '#watch').slice(1); const v = VIEWS[name] ? name : 'watch';
+  $('#view').innerHTML = VIEWS[v]();
+  document.querySelectorAll('#nav a').forEach(l => l.setAttribute('aria-current', l.getAttribute('href') === '#' + v ? 'page' : 'false'));
+  if (v === 'watch') wireWatch();
+  if (v === 'transfers') $('#run').onclick = runAgents;
+  if (v === 'companion') { $('#msgs').scrollTop = 1e6; $('#ask-form').onsubmit = e => { e.preventDefault(); const i = $('#ask'); if (i.value.trim()) { ask(i.value.trim()); i.value = ''; } }; }
+}
+document.addEventListener('click', e => {
+  const pick = e.target.closest('[data-pick]'); if (pick) { state.acct = pick.dataset.pick; render(); return; }
+  const go = e.target.closest('[data-go]'); if (go) { state.acct = go.dataset.go; location.hash = '#accounts'; return; }
+  const q = e.target.closest('[data-ask]'); if (q) { ask(q.dataset.ask); return; }
+  const n = e.target.closest('[data-node]'); if (n) showNode(n.dataset.node);
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const go = e.target.closest('[data-go]'); if (go) { e.preventDefault(); state.acct = go.dataset.go; location.hash = '#accounts'; }
+  const n = e.target.closest('[data-node]'); if (n) { e.preventDefault(); showNode(n.dataset.node); }
+});
+$('#switch-user').onclick = () => {
+  state.user = state.user === OWNER ? 'Leo Brandt' : OWNER;
+  $('#who-label').textContent = state.user; $('#who-role').textContent = state.user === OWNER ? 'sales manager' : 'successor AE';
+  $('#switch-user').textContent = 'Switch to ' + (state.user === OWNER ? 'Leo Brandt' : OWNER);
+  toast('Now signed in as ' + state.user);
+};
+addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>

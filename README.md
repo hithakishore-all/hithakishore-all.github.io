@@ -4,6 +4,7 @@ Live at **https://hithakishore-all.github.io**: AI product prototypes I've desig
 
 - [GTM Orbit](https://github.com/hithakishore-all/gtm-orbit) · agentic go-to-market
 - [Account Focus](https://github.com/hithakishore-all/account_focus) · daily account prioritization inside GTM Orbit
+- [SalesLore](https://github.com/hithakishore-all/SalesLore) · keeps a departing AE's account knowledge for the next seller
 - [Conviction AI](https://github.com/hithakishore-all/conviction-ai) · investment intelligence for VC and PE
 - [Meridian](https://github.com/hithakishore-all/Meridian) · governed B2B agent marketplace
 - [Fieldwise](https://github.com/hithakishore-all/fieldwise) · guided field-service resolution
