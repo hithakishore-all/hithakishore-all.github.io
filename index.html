@@ -98,6 +98,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
 }
 
 /* ---- jazz ---- */
+.eyebrow a.name { text-decoration: none; color: var(--ink); border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+.eyebrow a.name:hover { color: var(--conviction); border-bottom-color: currentColor; }
 header.hero { position: relative; overflow: hidden; isolation: isolate; }
 .blobs { position: absolute; inset: 0; z-index: -1; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
 .blobs span { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .32; animation: drift 18s ease-in-out infinite alternate; }
@@ -133,7 +135,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
 <header class="hero">
   <div class="blobs" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
   <div class="wrap">
-    <p class="eyebrow"><span class="live" aria-hidden="true"></span>Hitha Kishore · AI product portfolio</p>
+    <p class="eyebrow"><span class="live" aria-hidden="true"></span><a class="name" href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">Hitha Kishore</a> · AI product portfolio</p>
     <h1>Product thinker. Curious by nature. <span class="grad">Builder by instinct.</span></h1>
     <p class="lede">I&rsquo;m curious about a lot of things: AI, how products come together, and the occasional &ldquo;I wonder if I can actually build that.&rdquo; The best way for me to explore an idea is to build it. I prototype, make mistakes, change direction, and learn far more than I would just reading about it.</p>
     <p class="lede lede-2">AI turned that curiosity into a playground. This is a collection of ideas I&rsquo;ve chased and experiments I&rsquo;ve had way too much fun building.</p>
@@ -329,7 +331,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
 <footer>
   <div class="wrap">
     <span>All companies, people and figures in the demos are synthetic.</span>
-    <a href="https://github.com/hithakishore-all">github.com/hithakishore-all</a>
+    <span class="links"><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
   </div>
 </footer>
 <script>
