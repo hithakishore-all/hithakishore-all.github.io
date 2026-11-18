@@ -97,6 +97,11 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   h2 { font-size: 26px; }
 }
 
+.thinking { margin: 0 0 20px; padding: 14px 16px 12px; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: color-mix(in srgb, var(--accent) 7%, var(--panel)); }
+.thinking .th-label { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.thinking p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 6px; }
+.thinking p:last-child { margin-bottom: 0; }
+.thinking b { color: var(--ink); font-weight: 600; }
 /* ---- jazz ---- */
 .eyebrow a.name { text-decoration: none; color: var(--ink); border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
 .eyebrow a.name:hover { color: var(--conviction); border-bottom-color: currentColor; }
@@ -169,6 +174,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>A validator rejects made-up claims and sends the draft back to be rewritten</li>
         <li>Only the account owner can approve; every agent step lands in an audit trail</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Sellers don’t need more AI. They need AI they trust enough to act on.</p><p><b>Hardest call.</b> Making the validator a hard gate. A draft that can’t cite its evidence goes back for a rewrite, and after two tries it goes to the seller, never out the door. Slower, but one invented fact costs more trust than a minute saves.</p><p><b>How I’d measure it.</b> Briefs approved by the account owner, and how often the validator has to step in.</p></div>
       <div class="stack"><span>Salesforce</span><span>Snowflake</span><span>Slack bot</span><span>Node.js</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/gtm-orbit/">Live demo</a>
@@ -194,6 +200,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>Reads calls instead of counting tracker hits: our own rep's questions count for nothing</li>
         <li>Every sentence cites its evidence; a validator removes the rest, and every decision is audited</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Everyone ranks accounts. The gap is explaining the rank and checking the seller can actually act on it.</p><p><b>Hardest call.</b> Splitting one score into four. Worth winning and moving now set the rank; readiness and confidence choose the action. A hot account with the wrong people becomes “multithread” instead of sinking. A model may write the words, never the score.</p><p><b>North star.</b> Meetings booked with a real buying role from the five picks, per seller per week.</p></div>
       <div class="stack"><span>Salesforce</span><span>Snowflake</span><span>Gong (simulated)</span><span>Slack bot</span><span>Node.js</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/account-focus/">Live demo</a>
@@ -219,6 +226,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>Agents draft a brief per inherited account; a validator rejects any uncited claim, and only the manager who owns the handoff can approve</li>
         <li>Stops on do-not-contact, labels stale and unknown facts, filters personal details, and never speaks to customers as the departed rep</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Most sales AI learns what the organization does. When a top seller leaves, what’s lost is what they knew.</p><p><b>Hardest call.</b> Consent and no impersonation. Capture runs only for sellers who opt in and approve their own patterns, and SalesLore can never send a message or speak as the person who left, even though that would demo better.</p><p><b>How I’d measure it.</b> Time for a new seller to ramp on an inherited territory.</p></div>
       <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Context graph</span><span>Slack bot</span><span>Salesforce</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/saleslore/">Live demo</a>
@@ -244,6 +252,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>NRR, MOIC, IRR and LBO returns come from tested engines, never from the model</li>
         <li>Anything not public shows as <em>Missing</em>, never guessed or scored by default</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Faster memos aren’t the problem. A deck that claims 124% net retention produces a confident memo that says 124%.</p><p><b>Hardest call.</b> Keeping the model away from the math. Every figure comes from a tested engine; language only explains. When sources disagree, both values stay, marked disputed, so nothing is quietly overwritten.</p><p><b>How I’d measure it.</b> Evidence coverage. A company can score well and still be blocked when only 3 of 10 critical claims are backed.</p></div>
       <div class="stack"><span>PostgreSQL</span><span>FastAPI</span><span>React</span><span>Claude research agent</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/conviction-ai/">Live demo</a>
@@ -268,6 +277,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>A validator rejects uncited claims; stale data and unknowns are flagged, never hidden</li>
         <li>Writes wait for the person who asked, and the north star is purchase-to-weekly-active, not bookings</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Marketplaces are making agents easier to buy. The harder problem is making them safe to switch on, and proving they get used.</p><p><b>Hardest call.</b> One policy, set once by IT, enforced everywhere the agent runs: chat, the data cloud and Slack. Any tool that changes a record waits for the person who asked.</p><p><b>North star.</b> Purchase to weekly active, not bookings. Bookings hide agents that were bought and abandoned.</p></div>
       <div class="stack"><span>Snowflake</span><span>Slack bot</span><span>Node.js</span><span>MCP tool servers</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/meridian/">Live demo</a>
@@ -293,6 +303,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>Every step cites a manual page and runs from a reviewer-published, version-pinned procedure the technician resumes on a phone</li>
         <li>Chat can explain a step but never choose a branch; withdrawing a procedure pauses live runs, and every action is audited</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Everyone is adding AI answers. A technician needs the approved next step.</p><p><b>Hardest call.</b> Refusing to guess. No model-specific step until a person confirms the exact model and revision, and a past fix can support a hypothesis but never authorize a step. The assistant explains; people choose.</p><p><b>North star.</b> Verified first-visit fixes. A failed first visit adds two more visits and about two weeks.</p></div>
       <div class="stack"><span>Python · FastAPI</span><span>PostgreSQL</span><span>Product hierarchy</span><span>Procedure templates</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/fieldwise/">Live demo</a>
@@ -317,6 +328,7 @@ header.hero { position: relative; overflow: hidden; isolation: isolate; }
         <li>Parents set age bands and approve exceptions; a weekly family reading digest</li>
         <li>Libraries fund instant borrows, metered through Stripe with a hard cap that's never exceeded</li>
       </ul>
+      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Library apps lend to one reader and make them wait. Readaroo lends to the family and turns the wait into a read.</p><p><b>Hardest call.</b> Families never pay. When a kid is mid-series and the wait is weeks, the library can buy an instant copy, capped inside a database transaction so it can never overspend.</p><p><b>How I’d measure it.</b> Holds that turn into a book read tonight.</p></div>
       <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Stripe metering</span><span>PWA + Capacitor</span></div>
       <div class="actions">
         <a class="btn primary" href="https://hithakishore-all.github.io/readaroo/">Live demo</a>
