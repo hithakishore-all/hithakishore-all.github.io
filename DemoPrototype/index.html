@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTM Decision System — Concept Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16191d; --ink2:#3f4650; --ink3:#6b7380; --ink4:#9aa1ab;
+  --paper:#f4f3f0; --panel:#ffffff; --line:#e2e0db; --line2:#eeece8;
+  --accent:#1d4f7a; --accent-soft:#e8eff6;
+  --risk:#a8402a; --risk-soft:#f8ebe7;
+  --warn:#8a5a00; --warn-soft:#fbf1dc;
+  --ok:#2c6a4c; --ok-soft:#e6f1eb;
+  --violet:#5b4a8a; --violet-soft:#efecf6;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 'IBM Plex Sans',system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}
+button{font:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:216px 1fr;min-height:100vh}
+/* nav */
+.nav{background:#1b2026;color:#c9ced6;padding:16px 0;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.brand{padding:0 18px 18px;border-bottom:1px solid #2b323b;margin-bottom:10px}
+.brand b{color:#fff;font-weight:600;letter-spacing:.2px;display:block}
+.brand span{font-size:11.5px;color:#8a929d}
+.nav a{display:flex;align-items:center;gap:10px;color:#c9ced6;padding:8px 18px;font-size:13.5px;border-left:3px solid transparent}
+.nav a:hover{background:#232a32}
+.nav a.on{background:#252d36;color:#fff;border-left-color:#6fa3d4}
+.nav .ct{margin-left:auto;font-family:var(--mono);font-size:11px;background:#33404d;color:#fff;border-radius:9px;padding:1px 7px}
+.nav .sec{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:#6b7480;padding:14px 18px 6px}
+.nav .foot{margin-top:auto;padding:12px 18px;font-size:11.5px;color:#7c8590;border-top:1px solid #2b323b}
+/* top */
+.main{min-width:0}
+.top{display:flex;align-items:center;gap:16px;padding:12px 28px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .ctx{font-size:12.5px;color:var(--ink3)}
+.top .ctx b{color:var(--ink);font-weight:600}
+.top .who{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink2)}
+.av{width:28px;height:28px;border-radius:50%;background:#d9e3ec;color:var(--accent);display:grid;place-items:center;font-weight:600;font-size:12px}
+.synth{background:var(--warn-soft);color:var(--warn);border-bottom:1px solid #efdcb3;font-size:12px;padding:6px 28px}
+.wrap{padding:22px 28px 60px;max-width:1320px}
+h1{font-size:21px;font-weight:600;margin:0 0 4px;letter-spacing:-.2px}
+h2{font-size:15px;font-weight:600;margin:0}
+h3{font-size:13px;font-weight:600;margin:0}
+.sub{color:var(--ink3);font-size:13px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px}
+.ph{display:flex;align-items:baseline;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line2)}
+.ph .sub{font-size:12.5px}
+.ph .r{margin-left:auto;font-size:12.5px}
+.mono{font-family:var(--mono)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* tags */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;border-radius:3px;padding:1px 6px;white-space:nowrap;border:1px solid transparent}
+.t-fact{background:var(--ok-soft);color:var(--ok);border-color:#cfe3d7}
+.t-rec{background:var(--accent-soft);color:var(--accent);border-color:#d3e0ec}
+.t-seller{background:var(--warn-soft);color:var(--warn);border-color:#efdcb3}
+.t-inf{background:var(--violet-soft);color:var(--violet);border-color:#ddd7ec}
+.t-miss{background:#fff;color:var(--ink3);border:1px dashed #b9bec6}
+.t-risk{background:var(--risk-soft);color:var(--risk);border-color:#f0d4cc}
+.t-gray{background:#f0efec;color:var(--ink2);border-color:#e4e2dd}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:4px;padding:6px 12px;font-size:13px;font-weight:500}
+.btn:hover{border-color:#c5c9cf;background:#fafaf9}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{background:#173f62}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding:4px 6px}
+.btn.danger{color:var(--risk)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+/* priorities */
+.prio{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:16px 0 18px}
+.prio>div{padding:12px 16px;border-right:1px solid var(--line2)}
+.prio>div:last-child{border-right:0}
+.prio .k{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3)}
+.prio .v{font-weight:600;margin:3px 0 6px;font-size:13.5px}
+.bar{height:5px;background:#ecebe7;border-radius:3px;position:relative;overflow:visible}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.bar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.prio .m{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink3);margin-top:5px}
+/* decision queue */
+.dq-row{display:grid;grid-template-columns:28px 1fr 130px 120px 150px 112px;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line2);cursor:pointer}
+.dq-row:hover{background:#fbfaf8}
+.dq-row:last-child{border-bottom:0}
+.rank{font-family:var(--mono);color:var(--ink4);font-size:13px}
+.dq-q{font-weight:600;font-size:14.5px;margin:2px 0 3px}
+.dq-acct{font-size:12px;color:var(--ink3)}
+.dq-why{font-size:12.5px;color:var(--ink2)}
+.cell-k{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4)}
+.cell-v{font-size:13.5px;font-weight:500}
+.conf{display:flex;gap:2px;margin-top:3px}
+.conf i{width:14px;height:5px;background:#e4e2dd;border-radius:1px}
+.conf i.f{background:var(--ink2)}
+.delegated{padding:10px 18px;font-size:12.5px;color:var(--ink3);background:#faf9f7;border-top:1px solid var(--line2);border-radius:0 0 6px 6px}
+.grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;margin-top:18px}
+.list-row{display:flex;gap:12px;padding:11px 18px;border-bottom:1px solid var(--line2);align-items:flex-start}
+.list-row:last-child{border-bottom:0}
+.dir{font-family:var(--mono);font-size:13px;width:16px;text-align:center;margin-top:1px}
+.lr-t{font-size:13.5px;font-weight:500}
+.lr-s{font-size:12px;color:var(--ink3);margin-top:2px}
+.lr-r{margin-left:auto;text-align:right;font-size:12px;color:var(--ink3);white-space:nowrap}
+table{width:100%;border-collapse:collapse}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);font-weight:500;text-align:left;padding:8px 18px;border-bottom:1px solid var(--line2)}
+td{padding:10px 18px;border-bottom:1px solid var(--line2);font-size:13px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+.steps{display:flex;gap:3px}
+.steps i{width:16px;height:6px;border-radius:1px;background:#e4e2dd}
+.steps i.d{background:var(--ok)} .steps i.l{background:var(--risk)} .steps i.p{background:#c9d6e3}
+.ledger-strip{display:grid;grid-template-columns:repeat(5,1fr);margin-top:18px}
+.ledger-strip>div{padding:14px 18px;border-right:1px solid var(--line2)}
+.ledger-strip>div:last-child{border-right:0}
+.ls-k{font-size:11.5px;color:var(--ink3)}
+.ls-v{font-family:var(--mono);font-size:20px;font-weight:500;margin:3px 0 2px}
+.ls-n{font-size:11.5px;color:var(--ink3)}
+.arrowsep{color:var(--ink4)}
+/* thread */
+.crumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px}
+.crumb a{color:var(--ink3)}
+.th-head{display:flex;gap:24px;align-items:flex-start;margin-bottom:16px}
+.facts-row{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--ink2)}
+.facts-row b{font-weight:600;color:var(--ink)}
+.th-grid{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
+.assess{padding:16px 18px;border-bottom:1px solid var(--line2)}
+.assess .big{font-size:16px;font-weight:600;margin:6px 0 6px}
+.assess p{margin:0;color:var(--ink2);font-size:13px}
+.confbox{display:flex;gap:16px;margin-top:12px;padding:10px 12px;background:#faf9f7;border:1px solid var(--line2);border-radius:4px;font-size:12.5px}
+.confbox .lbl{font-weight:600}
+.obs{border-bottom:1px solid var(--line2)}
+.obs-h{display:flex;gap:10px;align-items:flex-start;padding:12px 18px;cursor:pointer}
+.obs-h:hover{background:#fbfaf8}
+.obs-h .chev{font-family:var(--mono);color:var(--ink4);width:12px;margin-top:1px}
+.obs-t{font-weight:500;font-size:13.5px}
+.obs-s{font-size:12px;color:var(--ink3);margin-top:2px}
+.obs-b{padding:0 18px 12px 40px;display:none}
+.obs.open .obs-b{display:block}
+.ev{display:grid;grid-template-columns:96px 1fr auto;gap:12px;padding:9px 12px;border:1px solid var(--line2);border-radius:4px;margin-top:6px;background:#fff;cursor:pointer;align-items:start}
+.ev:hover{border-color:#cdd3da}
+.ev.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.ev-d{font-family:var(--mono);font-size:11.5px;color:var(--ink3)}
+.ev-x{font-size:13px}
+.ev-src{font-size:11.5px;color:var(--ink3);margin-top:3px}
+.weight{font-size:11px;color:var(--ink3);text-align:right}
+.sect-h{padding:12px 18px 6px;display:flex;align-items:center;gap:8px}
+.sect-h .sub{font-size:12px}
+.miss{display:flex;gap:10px;align-items:flex-start;padding:9px 18px;border-top:1px dashed var(--line)}
+.miss:first-of-type{border-top:0}
+.miss .lr-t{font-size:13px}
+.side .panel{margin-bottom:14px}
+.inspector{padding:14px 16px;font-size:12.5px}
+.inspector .row{display:grid;grid-template-columns:96px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--line2)}
+.inspector .row:last-child{border-bottom:0}
+.inspector .k{color:var(--ink3)}
+.quote{margin:10px 0;padding:10px 12px;background:#faf9f7;border-left:3px solid var(--line);font-size:13px;color:var(--ink2)}
+.opt{border:1px solid var(--line);border-radius:5px;padding:12px 14px;margin:10px 16px;cursor:pointer;background:#fff}
+.opt:hover{border-color:#c5ccd4}
+.opt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;background:#fbfdff}
+.opt-h{display:flex;gap:8px;align-items:center}
+.opt-t{font-weight:600;font-size:13.5px}
+.opt p{margin:6px 0 0;font-size:12.5px;color:var(--ink2)}
+.opt .tr{font-size:12px;color:var(--ink3);margin-top:6px}
+.radio{width:14px;height:14px;border-radius:50%;border:1.5px solid #9aa1ab;flex:none}
+.opt.sel .radio{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,#fff 50%)}
+.decide{padding:12px 16px 16px;border-top:1px solid var(--line2);display:flex;gap:8px;flex-wrap:wrap}
+textarea,input[type=text],select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:4px;padding:7px 9px;width:100%;background:#fff;color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.state-banner{margin:12px 16px;padding:10px 12px;border-radius:4px;font-size:12.5px}
+.sb-ok{background:var(--ok-soft);color:var(--ok);border:1px solid #cfe3d7}
+.sb-risk{background:var(--risk-soft);color:var(--risk);border:1px solid #f0d4cc}
+.sb-warn{background:var(--warn-soft);color:var(--warn);border:1px solid #efdcb3}
+.act-row{display:grid;grid-template-columns:1fr 130px 92px 96px;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line2);align-items:center;font-size:13px}
+.act-row:last-child{border-bottom:0}
+.watch{padding:12px 18px 12px 36px;margin:0;font-size:12.5px}
+.watch li{margin:4px 0}
+.log{padding:10px 16px;font-size:12px;color:var(--ink2)}
+.log div{padding:6px 0;border-bottom:1px solid var(--line2);display:grid;grid-template-columns:92px 1fr;gap:8px}
+.log div:last-child{border-bottom:0}
+.log .mono{color:var(--ink3);font-size:11px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--ink3);padding:10px 18px;border-top:1px solid var(--line2)}
+/* outcomes */
+.agree{display:grid;grid-template-columns:repeat(4,1fr)}
+.agree>div{padding:14px 18px;border-right:1px solid var(--line2)}
+.agree>div:last-child{border-right:0}
+.agree .k{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.agree .v{font-weight:600;margin-top:4px}
+.agree .n{font-size:12px;color:var(--ink3);margin-top:2px}
+.ladder-row{display:grid;grid-template-columns:30px 220px 1fr 170px 130px;gap:14px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--line2);cursor:pointer}
+.ladder-row:hover{background:#fbfaf8}
+.ladder-row:last-child{border-bottom:0}
+.ladder-row.fee{background:#f7faf8}
+.lvl{font-family:var(--mono);font-size:12px;color:var(--ink4)}
+.ladder-row .t{font-weight:500}
+.ladder-row .d{font-size:12px;color:var(--ink3)}
+.ladder-row .v{font-family:var(--mono);font-size:13px}
+.ladder-detail{display:none;padding:0 18px 14px 62px;font-size:12.5px;color:var(--ink2);border-bottom:1px solid var(--line2);background:#fbfaf8}
+.ladder-detail.open{display:block}
+.walk{padding:8px 18px 14px}
+.walk-row{display:grid;grid-template-columns:1fr 120px 1.2fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13px;align-items:center}
+.walk-row:last-child{border-bottom:0}
+.walk-row.tot{font-weight:600;border-top:1.5px solid var(--ink);border-bottom:0}
+.wbar{height:10px;border-radius:2px}
+.cmp{padding:6px 18px 14px}
+.cmp-row{display:grid;grid-template-columns:200px 1fr 200px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line2);font-size:13px}
+.cmp-row:last-child{border-bottom:0}
+.pair div{display:flex;align-items:center;gap:8px;margin:2px 0;font-size:11.5px;color:var(--ink3)}
+.pair b{height:9px;border-radius:2px;display:block}
+.limits{padding:12px 18px 16px 36px;margin:0;font-size:12.5px;color:var(--ink2)}
+.limits li{margin:5px 0}
+.modal-bg{position:fixed;inset:0;background:rgba(20,24,28,.35);display:none;align-items:center;justify-content:center;z-index:50}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:6px;width:520px;max-width:92vw;border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.modal .ph{border-bottom:1px solid var(--line2)}
+.modal .bd{padding:14px 18px;font-size:13px}
+.modal .ft{padding:12px 18px;border-top:1px solid var(--line2);display:flex;gap:8px;justify-content:flex-end}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1b2026;color:#fff;padding:9px 16px;border-radius:4px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+.toast.on{opacity:1}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:14px 0 16px}
+.tabs button{border:0;background:none;padding:8px 14px;font-size:13px;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.note{font-size:12px;color:var(--ink3)}
+.kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-radius:3px;padding:0 4px;background:#fff}
+.v2pin{display:none}
+.rpin{display:none}
+body.diff .rpin{display:grid;place-items:center;position:absolute;top:-11px;left:-11px;width:26px;height:22px;border-radius:4px;background:#7b5fc7;color:#fff;font-size:11px;font-weight:700;z-index:4}
+.recbtn{position:fixed;right:22px;bottom:22px;z-index:40;background:#7b5fc7;color:#fff;border:0;border-radius:22px;padding:10px 16px;font-weight:600;font-size:13px;box-shadow:0 6px 20px rgba(91,74,138,.35)}
+.drawer{position:fixed;top:0;right:-460px;width:440px;height:100vh;background:#fff;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(0,0,0,.08);z-index:45;transition:right .2s;display:flex;flex-direction:column}
+.drawer.on{right:0}
+.drawer .dh{padding:16px 18px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:8px}
+.drawer .db{overflow:auto;padding:6px 0 30px}
+.ri{padding:12px 18px;border-bottom:1px solid var(--line2)}
+.ri .rn{display:inline-grid;place-items:center;width:30px;height:22px;border-radius:4px;background:#7b5fc7;color:#fff;font-size:11px;font-weight:700;margin-right:8px}
+.ri .rt{font-weight:600;font-size:13.5px}
+.ri .rk{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-top:7px}
+.ri .rv{font-size:12.5px;color:var(--ink2)}
+.ri .anc{font-size:11.5px;color:#5b4a8a;margin-top:6px}
+.flash{animation:fl 1.6s ease}
+#tourbox{position:fixed;left:240px;bottom:22px;width:400px;background:#1b2026;color:#fff;border-radius:8px;padding:14px 16px;z-index:44;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+#tourbox .btn{font-size:12px;padding:5px 10px}
+@keyframes fl{0%{box-shadow:0 0 0 0 rgba(123,95,199,.0)}25%{box-shadow:0 0 0 8px rgba(123,95,199,.35)}100%{box-shadow:0 0 0 0 rgba(123,95,199,0)}}
+body.diff .v2{outline:2px solid #7b5fc7;outline-offset:3px;border-radius:6px;position:relative}
+body.diff .v2pin{display:inline-flex;position:absolute;top:-10px;right:10px;background:#7b5fc7;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.3px;padding:1px 7px;border-radius:3px;z-index:3}
+body.diff .v1{position:relative}
+body.diff .v1::after{content:'Exists today';position:absolute;top:-9px;right:10px;background:#e9e7e2;color:#4a515b;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:3px}
+body.diff .v1u::after{content:'Exists today · upgraded in v2';background:#ece6f8;color:#5b4a8a}
+body.diff .v2pin{font-size:11px;padding:2px 8px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2);cursor:pointer;user-select:none;border:1px solid var(--line);border-radius:14px;padding:4px 10px 4px 6px;background:#fff}
+.sw{width:28px;height:16px;border-radius:8px;background:#c9ccd1;position:relative;transition:.15s}
+.sw::after{content:'';position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.15s}
+body.diff .sw{background:#7b5fc7} body.diff .sw::after{left:14px}
+.nb{font-size:9.5px;font-weight:600;background:#7b5fc7;color:#fff;border-radius:3px;padding:0 5px;margin-left:auto;letter-spacing:.3px}
+.ask{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:14px 0 4px;color:var(--ink3);font-size:13.5px}
+.ask .chip{margin-left:auto;font-size:12px;border:1px solid var(--line);border-radius:12px;padding:2px 9px;color:var(--ink2)}
+.acct-tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:12px 0 16px;flex-wrap:wrap}
+.acct-tabs span{padding:7px 12px;font-size:12.5px;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-1px}
+.acct-tabs span.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.acct-tabs span.new{color:#5b4a8a}
+.uses{display:inline-flex;gap:4px;align-items:center;font-size:11px;color:var(--accent);background:var(--accent-soft);border-radius:3px;padding:1px 6px;margin-top:3px}
+.rec-row{display:grid;grid-template-columns:1fr 70px 150px;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line2);align-items:center;font-size:13px}
+.rec-row:last-child{border-bottom:0}
+.score{font-family:var(--mono);font-size:12px;border-radius:3px;padding:1px 6px;background:#eef3ee;color:var(--ok)}
+.qtabs{display:flex;gap:2px;margin:6px 0 14px;border-bottom:1px solid var(--line)}
+.qtabs a{padding:8px 14px;font-size:13px;color:var(--ink3);border-bottom:2px solid transparent;margin-bottom:-1px}
+.qtabs a.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:500}
+.unoff{background:#1b2026;color:#c9ced6;font-size:11.5px;padding:5px 28px}
+@media (max-width:1100px){.th-grid,.grid2{grid-template-columns:1fr}.dq-row{grid-template-columns:24px 1fr 110px 110px}.dq-row .hide-s{display:none}}
+</style>
+</head>
+<body class="diff">
+<div class="app">
+  <nav class="nav">
+    <div class="brand"><b>Databook · v2 concept</b><span>Unofficial concept for discussion</span></div>
+    <a href="#home" data-r="home"><span>Home</span><span class="ct" id="nav-ct">3</span></a>
+    <a href="#accounts" data-r="accounts"><span>Accounts</span></a>
+    <a href="#library" data-r="library"><span>Library</span></a>
+    <a href="#workflows" data-r="workflows"><span>Workflows</span><span class="nb">v2</span></a>
+    <a href="#outcomes" data-r="analytics"><span>Analytics</span></a>
+    <div class="sec">Build &amp; govern</div>
+    <a href="#studio" data-r="studio"><span>AI Studio</span></a>
+    <a href="#governance" data-r="governance"><span>Decision policies</span><span class="nb">v2</span></a>
+    <a href="#admin" data-r="admin"><span>Admin Console</span></a>
+    <div class="sec">Moonshot</div>
+    <a href="#selfserve" data-r="selfserve"><span>Self-serve for mid-market</span><span class="nb" style="background:#B4531A">idea</span></a>
+    <div class="foot">Concept by a Director of AI Product candidate. Built on Databook's documented capabilities (help.databook.com, Nov 2026). Not affiliated with Databook. All accounts, people and figures are synthetic.</div>
+  </nav>
+  <div class="main">
+    <div class="unoff">Unofficial product concept: a v2 layer on today's Databook (Home, Accounts, Library, Analytics, AI Studio, Context Graph). Synthetic data. Not a Databook product.</div>
+    <div class="top" style="top:0">
+      <div class="ctx"><b>Q4 FY26</b> · Week of Nov 16 · 6 weeks to quarter close · Forecast call Thu Nov 19</div>
+      <button class="btn pri" onclick="startTour()" style="border-radius:14px">▶ Play the story</button><label class="toggle" id="dt"><span class="sw"></span>Highlight what's new in v2</label><div class="who"><span>Maya Okafor · CRO · Strategist role</span><div class="av">MO</div></div>
+    </div>
+    <div class="synth">Illustrative concept. Synthetic data throughout. Evidence types: <span class="tag t-fact">Verified external</span> <span class="tag t-rec">First-party record</span> <span class="tag t-seller">Seller-reported</span> <span class="tag t-inf">AI inference</span> <span class="tag t-miss">Missing / not found</span></div>
+    <div id="view" class="wrap"></div>
+  </div>
+</div>
+<div class="modal-bg" id="modal"><div class="modal" id="modal-box"></div></div>
+<div class="toast" id="toast"></div>
+<button class="recbtn" id="recbtn">Ideas to explore</button>
+<div class="drawer" id="drawer"><div class="dh"><div><h2>Ideas to explore</h2><div class="note">Concept options grouped by theme, with a suggested priority. For discussion, not commitments. Each builds on a capability Databook ships today.</div></div><button class="btn ghost" style="margin-left:auto" onclick="document.getElementById('drawer').classList.remove('on')">Close</button></div><div class="db" id="reclist"></div></div>
+
+<script>
+/* ============ SYNTHETIC DATA ============ */
+const TYPES={fact:['t-fact','Verified external'],rec:['t-rec','First-party record'],seller:['t-seller','Seller-reported'],inf:['t-inf','AI inference'],miss:['t-miss','Not found']};
+const tag=(k,txt)=>`<span class="tag ${TYPES[k][0]}">${txt||TYPES[k][1]}</span>`;
+
+const DECISIONS={
+ halvorsen:{
+  id:'D-2217', acct:'Halvorsen Industrial', opp:'Plant Operations Platform — expansion', acv:'$4.2M', acvN:4.2, stage:'Stage 4 · Negotiate', fc:'Commit (AE)', close:'Dec 19, 2026',
+  owner:'Jordan Pike (AE) · VP: Priya Raman', due:'Before forecast call · Nov 19',
+  q:'Keep $4.2M in Q4 Commit, or re-sponsor the deal and move it to Best Case?',
+  why:'Executive sponsor left Oct 28. Q3 earnings Nov 4 announced an 8% capex cut. Security review not started at Stage 4.',
+  conf:2, confLbl:'Moderate', evid:9, conflict:2, missing:3, stake:'$4.2M · Q4',
+  assess:'Likely to slip out of Q4 unless a new economic buyer is confirmed by early December.',
+  assessDetail:'The deal was qualified around a sponsor who has left, and the account has since tightened capital spending. The only evidence that budget is approved comes from a seller call that predates both changes. Nothing found shows the new interim CIO has seen the business case.',
+  confWhy:'Two strong verified signals point to risk. Confidence is held at moderate because the CRM and calendar may be incomplete: the AE could have met the interim CIO without logging it.',
+  wouldChange:'A logged meeting with the interim CIO, or written confirmation that the FY27 budget line survived the capex review.',
+  obs:[
+   {t:'Sponsorship changed after the deal was qualified',s:'Economic buyer on record is no longer at the company',dir:'risk',ev:[
+     {d:'Oct 28, 2026',x:'Dana Ruiz, CIO, departed. Tomas Lindqvist named interim CIO.',src:'S&P Global Key Developments · checked 6h ago',k:'fact',w:'High weight',q:'Key development: executive change. Halvorsen Industrial announced the departure of its Chief Information Officer, effective immediately. The SVP Infrastructure will serve as interim CIO.'},
+     {d:'Sep 3, 2026',x:'Opportunity contact role: Dana Ruiz = Economic Buyer.',src:'Salesforce · Opportunity 006-HALV-221 · Contact Roles',k:'rec',w:'Context'},
+     {d:'—',x:'No meeting, email thread or call with Tomas Lindqvist linked to this opportunity.',src:'Searched: Salesforce activities, Outlook calendar, Gong (last 60 days)',k:'miss',w:'Absence'}
+   ]},
+   {t:'Capital spending is being cut',s:'Business case was framed as a capex investment',dir:'risk',ev:[
+     {d:'Nov 4, 2026',x:'CFO on Q3 earnings call: FY27 capex guided down ~8%; "every project re-justified on payback".',src:'S&P Global Investor Transcripts · Q3 FY26 call',k:'fact',w:'High weight',q:'CFO remarks (paraphrased in summary): FY27 capital expenditure guided roughly 8% lower; all discretionary projects will be re-justified on payback period.'},
+     {d:'Aug 19, 2026',x:'Business case v2 positions deal as $4.2M capex with 26-month payback.',src:'Business case tool · shared deck "Halvorsen BC v2"',k:'rec',w:'Context'},
+     {d:'Inferred',x:'A 26-month payback is likely to fall outside the re-justification threshold.',src:'Databook reasoning · peer payback norms for Industrial Machinery',k:'inf',w:'Medium weight'}
+   ]},
+   {t:'Methodology milestones missing for Stage 4',s:'Per Corvane MEDDPICC exit criteria',dir:'risk',ev:[
+     {d:'—',x:'Security review not started (expected before Stage 4).',src:'Searched: Salesforce Security_Review__c, Slack #halvorsen-deal',k:'miss',w:'Absence'},
+     {d:'—',x:'No signed mutual close plan found.',src:'Searched: Salesforce Files, Google Drive (shared)',k:'miss',w:'Absence'}
+   ]}
+  ],
+  counter:[
+   {d:'Oct 21, 2026',x:'Champion (Ana Bello, Dir. Plant Systems) on call: "budget is approved for this year."',src:'Gong call · 38 min · AE Jordan Pike',k:'seller',w:'Down-weighted: predates sponsor change and capex guidance',q:'Ana Bello: "From our side the budget is approved for this year, so it\'s really about getting through paper."'},
+   {d:'Nov 10, 2026',x:'Halvorsen procurement asked for contract redlines.',src:'Slack #halvorsen-deal · SE Lee Chun',k:'rec',w:'Positive, but procurement activity does not confirm executive approval'}
+  ],
+  missingList:[
+   {t:'Economic buyer confirmed since Oct 28',s:'Could be unlogged. Ask the AE before treating as absent.',ask:'Jordan Pike'},
+   {t:'Security review kicked off',s:'Expected before Stage 4 in your methodology.',ask:'Lee Chun'},
+   {t:'Signed mutual close plan',s:'Not found in CRM or shared drive.',ask:'Jordan Pike'}
+  ],
+  options:[
+   {k:'A',rec:true,t:'Re-sponsor and move to Best Case',p:'CRO-to-interim-CIO outreach within 10 days, prepared with the Executive briefing asset. Re-run the Business case coach on operating-cost savings with payback under 18 months. Hold in Best Case until the economic buyer confirms.',tr:'Lowers Q4 Commit by $4.2M now. Keeps the deal alive with the person who now controls budget.'},
+   {k:'B',t:'Keep in Commit, verify this week',p:'AE confirms the economic buyer and budget status by Nov 18. Re-assess before the forecast call.',tr:'Preserves the forecast if the AE has unlogged contact. Risks a late downgrade if not.'},
+   {k:'C',t:'Move to Q1 FY27',p:'Push the close date and reset the plan around the FY27 budget cycle.',tr:'Most conservative. May cede momentum while procurement is engaged.'}
+  ],
+  actions:[
+   {a:'Request intro to interim CIO via Ana Bello; draft CRO outreach',o:'Jordan Pike · AE',due:'Nov 20',fn:'Sales',u:'Prompt: Executive (VITO) letter'},
+   {a:'Rebuild business case on opex savings, payback < 18 mo',o:'Rina Das · Value Eng.',due:'Nov 25',fn:'Value Eng.',u:'Coach: Business case & ROI'},
+   {a:'Kick off security review with Halvorsen InfoSec',o:'Lee Chun · SE',due:'Nov 24',fn:'Pre-sales',u:'Asset: Mutual close plan'},
+   {a:'CRO meeting with Tomas Lindqvist',o:'Maya Okafor · CRO',due:'Dec 1',fn:'Exec',u:'Asset: Executive briefing'},
+   {a:'Update forecast category to Best Case',o:'Priya Raman · VP Sales',due:'Nov 19',fn:'Sales',u:'Salesforce write-back (if enabled)'}
+  ],
+  group:[
+   ['Tomas Lindqvist','Interim CIO (since Oct 28)','Likely economic buyer','inf','No contact','risk','S&P Key Developments; role inferred from budget ownership'],
+   ['Henrik Aas','CFO','Approves capex re-justification','fact','No contact','risk','Q3 earnings call, Nov 4'],
+   ['Ana Bello','Dir. Plant Systems','Champion','rec','Last contact Oct 21','warn','Gong call; Salesforce contact role'],
+   ['Procurement (M. Ortiz)','Category manager','Paper process','rec','Active Nov 10','ok','Slack #halvorsen-deal'],
+   ['InfoSec lead','Unknown','Security review','miss','Not identified','risk','Searched Salesforce, Gong, calendar'],
+   ['Dana Ruiz','Former CIO','Former economic buyer','fact','Departed Oct 28','gray','S&P Key Developments']
+  ],
+  watch:['Meeting with interim CIO held by Dec 1','Security review started by Nov 24','Business case v3 shared with buyer by Nov 26','Stage progression or close-date change in Salesforce','Outcome: closed-won by Dec 31 (Q4) or by Feb 28 (fallback)']
+ },
+ meridia:{
+  id:'D-2209', thread:'renewal &amp; usage risk', acct:'Meridia Retail Group', cov:'Moderate', covWhy:'Private parent · financials inferred from peer group · telemetry + CRM connected', opp:'Renewal — Commerce Suite', acv:'$2.8M ARR', acvN:2.8, stage:'Renewal · 70 days out', fc:'Renewal: Likely (CSM)', close:'Jan 25, 2027',
+  owner:'Sam Ortega (CSM) · CCO: Elena Voss', due:'Nov 24',
+  q:'Start a renewal save plan now, or wait for the Dec 9 QBR?',
+  why:'New CFO announced a cost program. Two of five licensed modules show declining use for 8 weeks.',
+  conf:3, confLbl:'High', evid:7, conflict:1, missing:1, stake:'$2.8M ARR',
+  assess:'Renewal at risk of downsell. Two modules likely to be cut in a cost review.',
+  assessDetail:'Cost program announced by a new CFO coincides with declining usage on two modules. Executive engagement on Meridia\'s side has dropped since the last QBR.',
+  confWhy:'Usage data and the CFO announcement are both first-hand and recent.',
+  wouldChange:'Usage recovery on the two modules, or a sponsor statement that the suite is exempt from the cost program.',
+  obs:[
+   {t:'New CFO launched a cost program',s:'Announced in press release and investor update',dir:'risk',ev:[
+     {d:'Oct 30, 2026',x:'New CFO announces $120M cost-reduction program over 18 months.',src:'S&P Global Key Developments',k:'fact',w:'High weight'}]},
+   {t:'Two modules declining for 8 weeks',s:'Pricing and Promotions modules',dir:'risk',ev:[
+     {d:'Nov 14, 2026',x:'Weekly active users down 31% on Pricing, 24% on Promotions since Sep 19.',src:'Product telemetry · Snowflake usage table',k:'rec',w:'High weight'}]}
+  ],
+  counter:[{d:'Nov 6, 2026',x:'Day-to-day sponsor: "Team loves the platform."',src:'CSM call notes · Salesforce',k:'seller',w:'Down-weighted: sponsor does not own the cost review'}],
+  missingList:[{t:'Exec sponsor engagement since QBR',s:'No exec-level meeting in 120 days.',ask:'Sam Ortega'}],
+  options:[
+   {k:'A',rec:true,t:'Start save plan now',p:'Value review on Pricing and Promotions with the CFO office before Dec 9. Offer adoption sprint.',tr:'Uses the QBR to confirm, not to discover.'},
+   {k:'B',t:'Wait for QBR',p:'Raise concerns at the Dec 9 QBR.',tr:'Leaves 47 days to renewal after QBR.'}
+  ],
+  actions:[{a:'Adoption sprint plan for Pricing and Promotions',o:'Sam Ortega · CSM',due:'Nov 26',fn:'Customer Success'},{a:'Value review with CFO office',o:'Elena Voss · CCO',due:'Dec 3',fn:'Exec'}],
+  watch:['Usage trend on both modules','CFO-office meeting held','Renewal outcome and any downsell']
+ },
+ whitespace:{
+  id:'D-2214', thread:'whitespace coverage', acct:'6 strategic accounts', cov:'Mixed', covWhy:'2 of 6 private, 1 non-US · use-case mapping partly inferred', opp:'Whitespace — Manufacturing & Logistics', acv:'Est. $9–12M pipeline', acvN:0, stage:'Resource allocation', fc:'Not in forecast', close:'Q1 FY27',
+  owner:'RevOps: Kai Brennan · VP SE: Omar Haddad', due:'Dec 1 (Q1 capacity plan)',
+  q:'Fund a two-SE pod for six high-propensity accounts with narrow use-case coverage?',
+  why:'Six accounts score 4+ propensity but have only one strong use case mapped. Combined active days fell 40% last quarter.',
+  conf:2, confLbl:'Moderate', evid:14, conflict:1, missing:2, stake:'2 SE · Q1 capacity',
+  assess:'Likely under-covered expansion potential. Pipeline estimate is an inference, not a forecast.',
+  assessDetail:'Propensity is high because of margin pressure and stated automation priorities. Coverage is thin: one mapped use case each.',
+  confWhy:'Propensity inputs are verified. The pipeline range is modelled from peer conversion rates and is the least certain part.',
+  wouldChange:'AE confirmation that these accounts are already being worked through partners.',
+  obs:[{t:'High propensity, narrow coverage',s:'Whitespace quadrant, Analytics',dir:'opp',ev:[{d:'Nov 15, 2026',x:'6 accounts: Databook Score ≥ 4.0, strong use cases = 1.',src:'Analytics · Uncover White Space',k:'rec',w:'High weight'},{d:'Inferred',x:'Est. $9–12M pipeline at peer conversion rates.',src:'Databook reasoning · peer conversion',k:'inf',w:'Medium weight'}]}],
+  counter:[{d:'Nov 2, 2026',x:'Two of six accounts have partner-led activity.',src:'Partner portal export',k:'rec',w:'May overlap'}],
+  missingList:[{t:'Partner overlap confirmed',s:'2 accounts unclear.',ask:'Kai Brennan'},{t:'SE capacity in Q1 plan',s:'Not yet modelled.',ask:'Omar Haddad'}],
+  options:[{k:'A',rec:true,t:'Fund the pod for one quarter',p:'Two SEs, six accounts, review at Q1 mid-point against pre-agreed progression metrics.',tr:'Time-boxed bet with a clear stop rule.'},{k:'B',t:'Do not fund; route to partners',p:'Hand two accounts to partners, monitor the rest.',tr:'No capacity cost; slower discovery.'}],
+  actions:[{a:'Confirm partner overlap on 2 accounts',o:'Kai Brennan · RevOps',due:'Nov 24',fn:'RevOps'},{a:'Draft pod charter and stop rule',o:'Omar Haddad · VP SE',due:'Dec 1',fn:'Pre-sales'}],
+  watch:['New use cases validated per account','Meetings with new buyer roles','Pipeline created vs. modelled range']
+ }
+};
+const ORDER=['halvorsen','meridia','whitespace'];
+const STATE={}; ORDER.forEach(k=>STATE[k]={status:'open',choice:DECISIONS[k].options.find(o=>o.rec).k,note:'',asked:{},log:[]});
+DECISIONS.halvorsen && (STATE.halvorsen.log=[
+ ['Nov 15 06:12','Thread opened by agent: sponsor change detected (S&P Key Developments).'],
+ ['Nov 15 06:12','Linked to opportunity 006-HALV-221. Entity match: DUNS + domain, confidence 0.99.'],
+ ['Nov 15 06:40','Assessment revised: capex guidance from Q3 call added. Risk raised.'],
+ ['Nov 16 07:05','Routed to CRO: deal > $2M in Commit, sponsor-level risk (governance rule G-04).']
+]);
+
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const view=$('#view');
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
+function modal(html){$('#modal-box').innerHTML=html;$('#modal').classList.add('on')}
+function closeModal(){$('#modal').classList.remove('on')}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+const confBars=n=>`<div class="conf">${[1,2,3].map(i=>`<i class="${i<=n?'f':''}"></i>`).join('')}</div>`;
+const statusTag=s=>({open:tag('miss','Awaiting decision'),approved:'<span class="tag t-fact">Approved · in execution</span>',modified:'<span class="tag t-rec">Approved with changes</span>',rejected:'<span class="tag t-gray">Rejected · logged</span>'}[s]);
+
+/* ============ HOME ============ */
+function renderHome(){
+ const open=ORDER.filter(k=>STATE[k].status==='open');
+ $('#nav-ct').textContent=open.length;
+ view.innerHTML=`
+ <div style="display:flex;align-items:flex-end;gap:16px">
+  <div><h1>Good morning, Maya</h1><div class="sub">Monday, Nov 16 · Q4 FY26 · 6 weeks to quarter close · forecast call Thursday</div></div>
+ </div>
+ <div class="ask v1"><span>Ask anything about your accounts…</span><span class="chip">@ Tag an account</span></div>
+
+ <div class="panel prio v2" id="R2" style="margin-top:22px"><span class="v2pin">R2 · New · Plan context</span>
+  ${prio('FY26 priority 1','Installed-base expansion +18%','Expansion bookings, all segments',0.62,0.66,'$61.8M of $99.2M','Behind plan by $3.7M')}
+  ${prio('FY26 priority 2','Protect the $96M renewal base','Gross retention, trailing 12 mo.',0.93,0.94,'93.1% GRR','Target 94%')}
+  ${prio('FY26 priority 3','Win 12 new mid-market manufacturers','Logos closed',0.58,0.75,'7 of 12','On pace for 9')}
+ </div>
+
+ <div class="panel v2" id="R1"><span class="v2pin">R1 · New · Decision queue</span>
+  <div class="ph"><h2>Decisions for you</h2><span class="sub">${open.length} of 27 open · ranked by value at stake × time to act × confidence · built from threads in the Customer Context Graph</span><span class="r"><a href="#governance">Routing policies</a></span></div>
+  ${ORDER.map((k,i)=>dqRow(k,i)).join('')}
+  <div class="delegated">24 other decisions are with your VPs and managers (Sales 15, Customer Success 6, Marketing 3). Decision policies send you anything over $2M, cross-functional, or touching an executive relationship.</div>
+ </div>
+
+ <div class="grid2">
+  <div class="panel v1 v1u">
+   <div class="ph"><h2>New activity on your accounts</h2><span class="sub">v2: grouped into threads, with direction of change</span></div>
+   ${moved('▲','risk','Halvorsen Industrial','Thread: sponsor &amp; budget risk · CIO departed; capex cut announced','S&amp;P Key Developments · Q3 earnings transcript','Decision above')}
+   ${moved('▲','risk','Okafor-Brandt Chemicals','Thread: single-threaded deal · champion is only contact in 90 days','Pattern in 11 deals this quarter (CRM + Gong)','VP Sales reviewing')}
+   ${moved('▲','opp','Brightwater Utilities','Grid-modernization initiative named on earnings call','Use case fit: Asset Analytics (strong)','Routed to AE')}
+   ${moved('▼','ok','Kestrel Foods','Expansion closed; value-realization plan due','Outcome recorded in ledger','Closed Oct 30')}
+  </div>
+  <div class="panel v1 v1u" id="R3"><span class="rpin">R3</span>
+   <div class="ph"><h2>Where to start</h2><span class="sub">Recommended coaches, prompts and assets</span></div>
+   <div style="padding:8px 18px 4px" class="note">Today: ordered by role and organization usage. <b style="color:#5b4a8a">v2:</b> also ordered by your open decisions, followed accounts and fiscal calendar.</div>
+   ${rec('Executive briefing','Asset','Interim CIO at Halvorsen · for decision D-2217')}
+   ${rec('Business case & ROI','Coach','Re-base Halvorsen case on opex payback')}
+   ${rec('Renewal value review','Coach','Meridia · CFO cost program')}
+   ${rec('Strategic Priorities Summary','Prompt','How Tomas Lindqvist advances Halvorsen priorities')}
+  </div>
+ </div>
+
+ <div class="grid2">
+  <div class="panel v2" id="R8b"><span class="v2pin">R8 · New · Tracked execution</span>
+   <div class="ph"><h2>Decisions in execution</h2><span class="sub">Approved in the last 30 days</span></div>
+   <table>
+    <tr><th>Decision</th><th>Steps</th><th>Leading indicator</th><th>Status</th></tr>
+    ${exec('Kestrel Foods · re-sponsor via CFO office','dddd','EB meeting held Sep 20','<span class="tag t-fact">Won · $1.2M</span>')}
+    ${exec('Brightwater · expand to Asset Analytics','dddp','Use case validated','<span class="tag t-rec">On track</span>')}
+    ${exec('Okafor-Brandt · multi-thread to COO, CFO','dlpp','1 of 3 contacts engaged','<span class="tag t-risk">1 late step</span>')}
+    ${exec('Osk Marine · displacement play','dddd','Closed Nov 7','<span class="tag t-seller">Won · provisional</span>')}
+   </table>
+  </div>
+  <div class="panel v1 v1u">
+   <div class="ph"><h2>My accounts</h2><span class="sub">Score + v2 thread state</span><span class="r"><a href="#accounts">View all</a></span></div>
+   <table><tr><th>Account</th><th>Score</th><th>Open pipeline</th><th>Thread</th></tr>
+   <tr><td><a href="#decision-halvorsen">Halvorsen Industrial</a></td><td><span class="score">3.9</span></td><td class="num">$4.2M</td><td><span class="tag t-risk">Risk raised</span></td></tr>
+   <tr><td><a href="#decision-meridia">Meridia Retail Group</a></td><td><span class="score">3.1</span></td><td class="num">$2.8M ARR</td><td><span class="tag t-risk">Renewal risk</span></td></tr>
+   <tr><td>Brightwater Utilities</td><td><span class="score">4.4</span></td><td class="num">$1.9M</td><td><span class="tag t-rec">Opportunity</span></td></tr>
+   <tr><td>Okafor-Brandt Chemicals</td><td><span class="score">3.6</span></td><td class="num">$3.1M</td><td><span class="tag t-seller">Single-threaded</span></td></tr></table>
+  </div>
+ </div>
+
+ <a href="#outcomes" class="panel ledger-strip v2" id="R11b" style="display:grid;color:inherit"><span class="v2pin">R11 · New · Outcome ledger summary</span>
+  <div><div class="ls-k">Decisions approved · H2</div><div class="ls-v">160</div><div class="ls-n">of 188 reviewed (28 rejected)</div></div>
+  <div><div class="ls-k">Actions completed on time</div><div class="ls-v">74%</div><div class="ls-n">412 of 556</div></div>
+  <div><div class="ls-k">Stage progression, 30 days</div><div class="ls-v">46% <span style="font-size:13px;color:var(--ink3)">vs 34%</span></div><div class="ls-n">decision accounts vs. matched comparison</div></div>
+  <div><div class="ls-k">Above plan, adjusted</div><div class="ls-v">$3.4M</div><div class="ls-n">after price, M&amp;A, market adjustments</div></div>
+  <div><div class="ls-k">Verified attributable</div><div class="ls-v" style="color:var(--ok)">$1.9M</div><div class="ls-n">+ $0.7M provisional · open ledger →</div></div>
+ </a>
+ <p class="note" style="margin-top:10px">Turn on "Highlight what's new in v2" (top right) to see which parts exist in Databook today and which this concept adds.</p>`;
+ view.querySelectorAll('.dq-row').forEach(r=>r.onclick=()=>location.hash='decision-'+r.dataset.k);
+}
+function rec(n,t,w){return `<div class="rec-row"><div><div class="lr-t">${n}</div><div class="lr-s">${w}</div></div><span class="tag t-gray">${t}</span><span style="text-align:right"><button class="btn" onclick="toast('${t} opened in a side panel with the account pre-selected')">Run</button></span></div>`}
+
+function prio(k,v,m,val,target,a,b){const c=val>=target?'var(--ok)':(target-val<0.06?'var(--warn)':'var(--risk)');
+ return `<div><div class="k">${k}</div><div class="v">${v}</div><div class="bar"><i style="width:${val*100}%;background:${c}"></i><u style="left:${target*100}%"></u></div><div class="m"><span>${a}</span><span>${b}</span></div><div class="note" style="margin-top:3px">${m} · marker = plan to date</div></div>`}
+function dqRow(k,i){const d=DECISIONS[k],s=STATE[k];return `
+ <div class="dq-row" data-k="${k}">
+  <div class="rank">${i+1}</div>
+  <div><div class="dq-acct">${d.acct} · ${d.opp}</div><div class="dq-q">${d.q}</div><div class="dq-why">${d.why}</div>
+   <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${tag('fact',d.evid+' evidence')}<span class="tag t-seller">${d.conflict} conflicting</span>${tag('miss',d.missing+' missing')} ${s.status!=='open'?statusTag(s.status):''}</div></div>
+  <div><div class="cell-k">At stake</div><div class="cell-v num">${d.stake}</div></div>
+  <div><div class="cell-k">Decide by</div><div class="cell-v">${d.due.replace('Before forecast call · ','')}</div></div>
+  <div class="hide-s"><div class="cell-k">Confidence</div><div class="cell-v">${d.confLbl}</div>${confBars(d.conf)}</div>
+  <div class="hide-s" style="text-align:right"><button class="btn ${s.status==='open'?'pri':''}">${s.status==='open'?'Review':'View'}</button></div>
+ </div>`}
+function moved(dir,c,a,t,s,r){const col={risk:'var(--risk)',ok:'var(--ok)',opp:'var(--accent)',gray:'var(--ink4)'}[c];
+ return `<div class="list-row"><div class="dir" style="color:${col}">${dir}</div><div><div class="lr-t">${a}</div><div class="lr-s" style="color:var(--ink2)">${t}</div><div class="lr-s">${s}</div></div><div class="lr-r">${r}</div></div>`}
+function awaiting(t,f,s,can){return `<div class="list-row"><div style="flex:1"><div class="lr-t">${t}</div><div class="lr-s">${f} · ${s}</div></div><div>${can?`<button class="btn" onclick="assign(this)">Assign</button>`:`<span class="note">pending</span>`}</div></div>`}
+function exec(d,st,li,s){return `<tr><td>${d}</td><td><div class="steps">${st.split('').map(x=>`<i class="${x}"></i>`).join('')}</div></td><td class="note">${li}</td><td>${s}</td></tr>`}
+window.assign=b=>{modal(`<div class="ph"><h2>Assign owner</h2></div><div class="bd"><label class="note">Owner</label><select id="asg"><option>Lee Chun · SE</option><option>Rina Das · Value Eng.</option><option>Sam Ortega · CSM</option><option>Priya Raman · VP Sales</option></select><p class="note" style="margin-top:10px">The owner's manager is notified in Slack. Recommendations land better when they come from a manager than from a system notification.</p></div><div class="ft"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" id="asg-ok">Assign</button></div>`);
+ $('#asg-ok').onclick=()=>{const v=$('#asg').value;b.outerHTML=`<span class="note">${v}</span>`;closeModal();toast('Assigned to '+v)}};
+
+/* ============ THREAD ============ */
+let selEv=null,CUR='';
+function renderThread(k){
+ const d=DECISIONS[k],s=STATE[k];if(!d){location.hash='home';return}
+ CUR=d.acct;
+ const allEv=[...d.obs.flatMap(o=>o.ev),...d.counter];
+ if(!selEv||!allEv.includes(selEv)) selEv=d.obs[0].ev[0];
+ view.innerHTML=`
+ <div class="crumb"><a href="#accounts">Accounts</a> / ${d.acct} / Threads / <span class="mono">${d.id}</span></div>
+ <div class="acct-tabs v1 v1u"><span>Summary</span><span>Use Cases</span><span>People</span><span>Financials</span><span>Business Case</span><span>Activity</span><span>Conversations</span><span>Assets</span><span class="on new">Threads &amp; decisions</span></div>
+ <div class="th-head"><div style="flex:1">
+   <div class="sub">${d.acct} · ${d.opp}</div>
+   <h1 style="margin-top:4px">${d.q}</h1>
+   <div style="margin-top:24px"><span id="R14" class="v2" style="display:inline-block;padding:8px 10px 4px;border-radius:4px;font-size:12.5px"><span class="v2pin">R14 · New · Coverage confidence</span>Coverage <b>${d.cov||'Strong'}</b> <span class="note">${d.covWhy||'Public company · S&P financials and transcripts · 4 first-party sources connected'}</span> <button class="btn ghost" style="font-size:12px" onclick="reportGap(this)">Report a gap</button></span></div><div class="facts-row"><span>Value <b class="num">${d.acv}</b></span><span>Stage <b>${d.stage}</b></span><span>Forecast <b>${d.fc}</b></span><span>Close date <b>${d.close}</b></span><span>Owners <b>${d.owner}</b></span><span>Decide by <b>${d.due}</b></span></div>
+  </div><div>${statusTag(s.status)}</div></div>
+
+ <div class="th-grid">
+  <div>
+   <div class="panel v1 v1u" id="R4"><span class="rpin">R4</span>
+    <div class="assess">
+     <div style="display:flex;gap:8px;align-items:center">${tag('inf','Thread assessment')}<span class="note">Thread: ${d.thread||'sponsor &amp; budget risk'} · updated Nov 16, 07:05 · 3 revisions</span></div>
+     <div class="big">${d.assess}</div>
+     <p>${d.assessDetail}</p>
+     <div class="confbox"><div><div class="lbl">Confidence: ${d.confLbl}</div>${confBars(d.conf)}</div><div style="flex:1"><div>${d.confWhy}</div><div style="margin-top:6px"><b>What would change this:</b> ${d.wouldChange}</div></div></div>
+    </div>
+    <div class="sect-h"><h3>Why the system reached this</h3><span class="sub">Assessment → observations → evidence. Select evidence to inspect it.</span></div>
+    ${d.obs.map((o,i)=>`<div class="obs ${i<2?'open':''}"><div class="obs-h" data-i="${i}"><span class="chev">${i<2?'−':'+'}</span><div style="flex:1"><div class="obs-t">${o.t}</div><div class="obs-s">${o.s}</div></div><span class="tag ${o.dir==='risk'?'t-risk':'t-rec'}">${o.dir==='risk'?'Raises risk':'Opportunity'}</span></div><div class="obs-b">${o.ev.map(e=>evRow(e)).join('')}</div></div>`).join('')}
+    <div class="sect-h" style="padding-top:14px"><h3>Evidence pointing the other way</h3><span class="sub">Shown, weighed, not hidden</span></div>
+    <div style="padding:0 18px 14px">${d.counter.map(e=>evRow(e)).join('')}</div>
+    <div class="legend">Weighting rule: verified external events after the last seller-reported signal take precedence; seller-reported signals older than a material change are down-weighted, not discarded.</div>
+   </div>
+
+   ${d.group?`<div class="panel v2" id="R16" style="margin-top:14px"><span class="v2pin">R16 · New · Buying group</span><div class="ph"><h2>Buying group</h2><span class="sub">Who decides now, how we know, and when we last engaged</span></div>
+    <table><tr><th>Person</th><th>Role in decision</th><th>Basis</th><th>Engagement</th></tr>
+    ${d.group.map(g=>`<tr><td><b>${g[0]}</b><div class="note">${g[1]}</div></td><td>${g[2]}</td><td>${tag(g[3])}<div class="note" style="margin-top:3px">${g[6]}</div></td><td><span class="tag ${({risk:'t-risk',warn:'t-seller',ok:'t-fact',gray:'t-gray'})[g[5]]}">${g[4]}</span></td></tr>`).join('')}
+    </table><div class="legend">Org charts and personas are among the most-requested missing features in reviews. Roles marked AI inference need confirmation before outreach.</div></div>`:''}
+   <div class="panel v2" id="R6" style="margin-top:14px"><span class="v2pin">R6 · New · Expected but missing</span>
+    <div class="ph"><h2>What's missing</h2><span class="sub">Expected by your methodology but not found. Not found does not mean it did not happen.</span></div>
+    ${d.missingList.map((m,i)=>`<div class="miss"><span class="tag t-miss" style="margin-top:2px">Not found</span><div style="flex:1"><div class="lr-t">${m.t}</div><div class="lr-s">${m.s}</div></div><div>${s.asked[i]?`<span class="note">${s.asked[i]}</span>`:`<button class="btn" data-ask="${i}">Ask ${m.ask.split(' ')[0]}</button>`}</div></div>`).join('')}
+   </div>
+
+   ${s.status==='approved'||s.status==='modified'?execPanel(d,s):''}
+  </div>
+
+  <div class="side">
+   <div class="panel v1 v1u" id="R5"><span class="rpin">R5</span><div class="ph"><h2>Evidence inspector</h2><span class="sub">Provenance exists today; v2 adds type, weight, flags</span></div><div class="inspector" id="insp">${inspector(selEv)}</div></div>
+   <div class="panel v2" id="R7">${decidePanel(k)}</div>
+   <div class="panel v2" id="R15"><span class="v2pin">R15 · New · Decide where you work</span><div class="ph"><h2>Same decision, other surfaces</h2><span class="r"><a href="#surfaces">See them</a></span></div><div class="log">
+  <div><span class="mono">Salesforce</span><span>Decision card on opportunity 006-HALV-221; forecast category change logged as an action</span></div>
+  <div><span class="mono">Slack</span><span>VP Sales gets the decision with Approve / Change / Reject buttons; AE gets actions from the VP</span></div>
+  <div><span class="mono">MCP</span><span><span class="mono">databook.get_decision</span>, <span class="mono">databook.record_decision</span>: Copilot, Agentforce or Claude can show and record it; same ledger</span></div></div></div>
+   <div class="panel v2" id="R9"><span class="v2pin">R9 · New · Decision record</span><div class="ph"><h2>Decision record</h2><span class="sub mono">${d.id}</span></div><div class="log">${s.log.map(l=>`<div><span class="mono">${l[0]}</span><span>${l[1]}</span></div>`).join('')||'<div><span class="mono">—</span><span>No events yet.</span></div>'}</div></div>
+  </div>
+ </div>`;
+ view.querySelectorAll('.obs-h').forEach(h=>h.onclick=()=>{const o=h.parentElement;o.classList.toggle('open');h.querySelector('.chev').textContent=o.classList.contains('open')?'−':'+'});
+ view.querySelectorAll('.ev').forEach(el=>el.onclick=e=>{e.stopPropagation();selEv=allEv[+el.dataset.ix];view.querySelectorAll('.ev').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');$('#insp').innerHTML=inspector(selEv)});
+ view.querySelectorAll('.ev').forEach(el=>{if(allEv[+el.dataset.ix]===selEv)el.classList.add('sel')});
+ view.querySelectorAll('[data-ask]').forEach(b=>b.onclick=()=>{const m=d.missingList[+b.dataset.ask];s.asked[+b.dataset.ask]='Asked '+m.ask+' · via Slack';s.log.push([now(),`Asked ${m.ask} to confirm: ${m.t.toLowerCase()}.`]);renderThread(k);toast('Question sent to '+m.ask+' in Slack')});
+ bindDecide(k);
+ function evRow(e){return `<div class="ev" data-ix="${allEv.indexOf(e)}"><div class="ev-d">${e.d}</div><div><div class="ev-x">${e.x}</div><div class="ev-src">${tag(e.k)} ${e.src}</div></div><div class="weight">${e.w}</div></div>`}
+}
+function inspector(e){return `
+ <div style="margin-bottom:8px">${tag(e.k)}</div>
+ <div style="font-weight:500;font-size:13px">${e.x}</div>
+ ${e.q?`<div class="quote">${e.q}</div>`:''}
+ <div class="row"><span class="k">Source</span><span>${e.src}</span></div>
+ <div class="row"><span class="k">Evidence date</span><span class="mono">${e.d}</span></div>
+ <div class="row"><span class="k">Type</span><span>${{fact:'Licensed third-party data, not editable',rec:'Customer system of record',seller:'Statement captured from a seller interaction',inf:'Derived by reasoning; not a fact',miss:'Searched and not found'}[e.k]}</span></div>
+ <div class="row"><span class="k">Weight</span><span>${e.w}</span></div>
+ <div class="row"><span class="k">Entity match</span><span>${CUR} · DUNS + domain matched</span></div>
+ <div style="margin-top:10px;display:flex;gap:6px"><button class="btn" onclick="toast('Flagged for review: evidence marked as incorrect')">Flag as wrong</button><button class="btn" onclick="toast('Marked as outdated; assessment will be recomputed')">Mark outdated</button></div>`}
+function decidePanel(k){const d=DECISIONS[k],s=STATE[k];
+ if(s.status!=='open'){const o=d.options.find(x=>x.k===s.choice);return `<span class="v2pin">R7 · New · Human decision</span><div class="ph"><h2>Your decision</h2></div>
+  <div class="state-banner ${s.status==='rejected'?'sb-warn':'sb-ok'}"><b>${s.status==='rejected'?'Recommendation rejected':'Option '+o.k+': '+o.t}</b>${s.note?`<div style="margin-top:4px">"${s.note}"</div>`:''}<div style="margin-top:4px">${s.status==='rejected'?'Reason logged. Rejections are reviewed monthly to tune the reasoning.':'Actions created and owners notified through their managers.'}</div></div>
+  <div class="decide"><button class="btn" id="reopen">Reopen decision</button></div>`}
+ return `<span class="v2pin">R7 · New · Approve / change / reject</span><div class="ph"><h2>Recommendation</h2><span class="sub">Choose, change or reject</span></div>
+  ${d.options.map(o=>`<div class="opt ${s.choice===o.k?'sel':''}" data-k="${o.k}"><div class="opt-h"><span class="radio"></span><span class="opt-t">${o.k}. ${o.t}</span>${o.rec?'<span class="tag t-inf" style="margin-left:auto">Recommended</span>':''}</div><p>${o.p}</p><div class="tr">Trade-off: ${o.tr}</div></div>`).join('')}
+  <div style="padding:4px 16px 0"><label class="note">Note to the team (required to reject or change)</label><textarea id="note" placeholder="e.g. Keep in Commit — I spoke to Tomas at the Nov 12 dinner; not logged.">${s.note}</textarea></div>
+  <div class="decide"><button class="btn pri" id="approve">Approve ${s.choice}</button><button class="btn" id="modify">Approve with changes</button><button class="btn danger" id="reject">Reject</button></div>`}
+function bindDecide(k){const s=STATE[k],d=DECISIONS[k];
+ view.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{s.choice=o.dataset.k;s.note=$('#note').value;$('#R7').innerHTML=decidePanel(k);bindDecide(k)});
+ const note=()=>$('#note').value.trim();
+ if($('#approve'))$('#approve').onclick=()=>{s.status='approved';s.note=note();s.log.push([now(),`Maya Okafor approved option ${s.choice}. ${d.actions.length} actions created; evidence snapshot v3 frozen.`]);renderThread(k);toast('Approved. Actions created.')};
+ if($('#modify'))$('#modify').onclick=()=>{if(!note()){toast('Add a note describing the change');$('#note').focus();return}s.status='modified';s.note=note();s.log.push([now(),`Approved option ${s.choice} with changes: "${s.note}"`]);renderThread(k);toast('Approved with changes')};
+ if($('#reject'))$('#reject').onclick=()=>{if(!note()){toast('A reason is required to reject');$('#note').focus();return}s.status='rejected';s.note=note();s.log.push([now(),`Recommendation rejected: "${s.note}". Sent to reasoning review queue.`]);renderThread(k);toast('Rejected. Reason logged.')};
+ if($('#reopen'))$('#reopen').onclick=()=>{s.status='open';s.log.push([now(),'Decision reopened.']);renderThread(k)};
+}
+function execPanel(d,s){return `<div class="panel v2" id="R8" style="margin-top:14px"><span class="v2pin">R8 · New · Decision → actions</span>
+  <div class="ph"><h2>Execution</h2><span class="sub">Created from option ${s.choice} · owners notified via their manager in Slack</span></div>
+  <div class="act-row" style="font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4)"><span>Action</span><span>Owner</span><span>Due</span><span>Status</span></div>
+  ${d.actions.map((a,i)=>`<div class="act-row"><span>${a.a}<div class="note">${a.fn}</div>${a.u?`<span class="uses">Uses ${a.u}</span>`:''}</span><span class="note">${a.o}</span><span class="mono" style="font-size:12px">${a.due}</span><span>${i===4?'<span class="tag t-fact">Done</span>':'<span class="tag t-gray">Not started</span>'}</span></div>`).join('')}
+  <div class="ph" style="border-top:1px solid var(--line2)"><h3>What we will measure</h3><span class="sub">Pre-registered before the outcome is known</span></div>
+  <ul class="watch">${d.watch.map(w=>`<li>${w}</li>`).join('')}</ul>
+  <div class="legend">This decision is linked to the outcome ledger as a treatment event. Revenue from it counts as attributable only if the outcome follows the pre-registered indicators and holds against the matched comparison.</div>
+ </div>`}
+function now(){const t=new Date();return 'Nov 16 '+String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')}
+
+/* ============ OUTCOMES ============ */
+const QT=(on)=>`<div class="qtabs"><a href="#analytics-urgency" class="${on==='u'?'on':''}">Focus on high-urgency accounts</a><a href="#analytics-whitespace" class="${on==='w'?'on':''}">Uncover white space</a><a href="#analytics-coach" class="${on==='c'?'on':''}">Coach usage</a><a href="#outcomes" class="${on==='o'?'on':''}" style="color:#5b4a8a">Outcome ledger <span class="nb" style="margin-left:4px">v2</span></a></div>`;
+let ledgerTab='ladder';
+function renderOutcomes(){
+ view.innerHTML=`
+ <h1>Analytics</h1>
+ ${QT('o')}
+ <div class="v2" id="R11" style="padding:2px 0"><span class="v2pin">R11 · New · Outcome ledger</span>
+ <h2 style="font-size:17px">Outcome ledger</h2>
+ <div class="sub">How decisions connect to revenue, and what does and does not count toward the outcome fee. CRO, CFO, RevOps and Databook all see the same ledger.</div>
+
+ <div class="panel" style="margin-top:16px">
+  <div class="ph"><h2>Agreement</h2><span class="sub">Signed Jul 1, 2026 · illustrative terms</span><span class="r"><a href="javascript:void(0)" onclick="showTerms()">View measurement terms</a></span></div>
+  <div class="agree">
+   <div><div class="k">Scope</div><div class="v">Strategic accounts segment</div><div class="n">180 accounts · 4 workflows in scope</div></div>
+   <div><div class="k">Measurement period</div><div class="v">Jul 1 – Dec 31, 2026</div><div class="n">Day 139 of 184</div></div>
+   <div><div class="k">CFO plan (baseline)</div><div class="v num">$186.0M bookings</div><div class="n">Plan to date $149.5M · locked at signing</div></div>
+   <div><div class="k">Outcome fee</div><div class="v">3% of verified attributable</div><div class="n">Illustrative rate; platform fee separate</div></div>
+  </div>
+ </div>
+
+ </div>
+ <div class="tabs"><button data-t="ladder" class="${ledgerTab==='ladder'?'on':''}">Measurement ladder</button><button data-t="walk" class="${ledgerTab==='walk'?'on':''}">Plan-to-attribution walk</button><button data-t="cmp" class="${ledgerTab==='cmp'?'on':''}">Comparison</button><button data-t="deals" class="${ledgerTab==='deals'?'on':''}">Attribution by deal</button></div>
+ <div id="ltab"></div>
+
+ <div class="panel" style="margin-top:18px">
+  <div class="ph"><h2>Measurement limitations</h2><span class="sub">Stated in the product, not in a footnote</span></div>
+  <ul class="limits">
+   <li>Matched comparison reduces but does not remove selection bias: leaders may route decisions to accounts they already expected to move.</li>
+   <li>Long cycles mean most H2 decisions have not reached an outcome yet; 71% of linked opportunities are still open.</li>
+   <li>Unlogged activity (calls, dinners, private messages) is invisible to the system and can make "no evidence" look like "no action".</li>
+   <li>Attribution is shared: when several decisions touch one deal, credit is split by pre-agreed rules, not by the model's judgment.</li>
+   <li>A decision the CRO rejected that was later proven right is also logged. The ledger records misses, not only wins.</li>
+  </ul>
+ </div>`;
+ view.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{ledgerTab=b.dataset.t;renderOutcomes()});
+ const L=$('#ltab');
+ if(ledgerTab==='ladder')L.innerHTML=ladder();
+ if(ledgerTab==='walk')L.innerHTML=walk();
+ if(ledgerTab==='cmp')L.innerHTML=cmp();
+ if(ledgerTab==='deals')L.innerHTML=deals();
+ L.querySelectorAll('.ladder-row').forEach(r=>r.onclick=()=>r.nextElementSibling.classList.toggle('open'));
+ L.querySelectorAll('[data-dispute]').forEach(b=>b.onclick=()=>dispute(b.dataset.dispute));
+}
+const LADDER=[
+ ['Usage','People using the system','412 of 460 weekly active','Activity','Context only','Usage proves access, not value.'],
+ ['Adoption','Decisions reviewed within 5 days','188 of 214 surfaced (88%)','Activity','Context only','Shows the decision rhythm is real. Says nothing about quality.'],
+ ['Decision quality','Approved, changed or rejected','131 · 29 · 28','Judgment','Context only','Rejections with reasons are reviewed monthly. A high approval rate is not the goal.'],
+ ['Workflow execution','Actions completed on time','412 of 556 (74%)','Behavior','Leading indicator','Late actions are the most common reason an approved decision fails.'],
+ ['Behavior change','Deals multi-threaded (2+ exec contacts)','38% → 57% vs. 36% → 41%','Behavior','Leading indicator','Measured against matched comparison accounts, not against last year.'],
+ ['Opportunity progression','Stage advance within 30 days','46% vs. 34% comparison','Pipeline','Leading indicator','Difference holds within segment and deal size bands.'],
+ ['Pipeline impact','Pipeline created vs. expected','+$21.4M vs. comparison-adjusted','Pipeline','Leading indicator','Pipeline is not revenue. Shown so leaders can act before outcomes arrive.'],
+ ['Closed-won revenue','Bookings in scope','$158.2M (plan to date $149.5M)','Revenue','Input to fee calc','Includes revenue that would have happened anyway.'],
+ ['Incremental revenue','Above plan after adjustments','$3.4M','Revenue','Input to fee calc','Adjusted for price increase, acquired bookings and market growth. See walk.'],
+ ['Causally attributable','Incremental, linked to executed decisions, holds vs. comparison','$2.6M est. (range $1.1M–$4.0M)','Revenue','Fee basis: verified only','Verified $1.9M plus provisional $0.7M. A further $0.6M is disputed and held out until resolved.']
+];
+function ladder(){return `<div class="panel"><div class="ph"><h2>From usage to causally attributable revenue</h2><span class="sub">Each rung is a different claim. Only the top rung is billable. Click a rung for its definition.</span></div>
+ <div class="ladder-row" style="cursor:default;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4)"><span></span><span>Rung</span><span>Measure</span><span>Value (synthetic)</span><span>Role in contract</span></div>
+ ${LADDER.map((r,i)=>`<div class="ladder-row ${i===9?'fee':''}"><span class="lvl">${String(i+1).padStart(2,'0')}</span><span><div class="t">${r[0]}</div><div class="d">${r[3]}</div></span><span class="d" style="color:var(--ink2)">${r[1]}</span><span class="v">${r[2]}</span><span>${r[4]==='Fee basis: verified only'?'<span class="tag t-fact">'+r[4]+'</span>':r[4].startsWith('Input')?'<span class="tag t-rec">'+r[4]+'</span>':r[4]==='Leading indicator'?'<span class="tag t-inf">'+r[4]+'</span>':'<span class="tag t-gray">'+r[4]+'</span>'}</span></div><div class="ladder-detail">${r[5]}</div>`).join('')}
+ </div>`}
+function walk(){const rows=[
+ ['Closed-won in scope, to date',158.2,'Salesforce · closed-won, strategic segment','#c9d6e3'],
+ ['Less: CFO plan to date',-149.5,'Locked at signing; not re-based mid-period','#e4e2dd'],
+ ['Above plan, unadjusted',8.7,'What a naive "above plan" model would bill on','#b9c9d9',true],
+ ['Less: list-price increase (Sep 1)',-2.1,'Price effect on renewals and expansions','#f0d4cc'],
+ ['Less: bookings from acquired company',-1.4,'Pellam Logistics joined the parent in Aug; excluded','#f0d4cc'],
+ ['Less: market growth adjustment',-1.8,'Peer index for segment growth over the period','#f0d4cc'],
+ ['Incremental above plan, adjusted',3.4,'','#8fb3d1',true],
+ ['Less: not linked to an executed decision, or disputed',-0.8,'Includes Vireo $0.6M, held out while disputed','#e4e2dd'],
+ ['Causally attributable (estimate)',2.6,'Holds vs. matched comparison; range $1.1M–$4.0M','#5f8fb8',true],
+ ['Less: provisional',-0.7,'Osk Marine: within 30-day review window','#efdcb3'],
+ ['Verified attributable — fee basis',1.9,'Illustrative fee at 3%: $57K','#2c6a4c',true]
+ ];const max=158.2;
+ return `<div class="panel"><div class="ph"><h2>Plan-to-attribution walk</h2><span class="sub">$M · synthetic · reconciles to Salesforce closed-won</span></div><div class="walk">
+ ${rows.map(r=>`<div class="walk-row ${r[4]?'tot':''}" style="${r[4]?'border-top:1px solid var(--line);border-bottom:0':''}"><span>${r[0]}<div class="note">${r[2]}</div></span><span class="num" style="text-align:right">${r[1]<0?'−':''}$${Math.abs(r[1]).toFixed(1)}M</span><span><div class="wbar" style="width:${Math.max(2,Math.min(100,Math.abs(r[1])/ (Math.abs(r[1])>20?max:9)*100))}%;background:${r[3]}"></div></span></div>`).join('')}
+ <p class="note" style="margin-top:10px">Bars for the first two rows use a different scale from the rest. The point of the walk is the drop from $8.7M to $1.9M: most revenue above plan is not caused by the system.</p>
+ </div></div>`}
+function cmp(){const rows=[
+ ['Stage advance within 30 days',46,34,'Difference 12 pts · 90% interval 5–19 pts'],
+ ['Win rate, closed deals',31,26,'Difference 5 pts · interval −2 to 12 pts (not yet conclusive)'],
+ ['Multi-threaded deals',57,41,'Starting point 38% vs 36%'],
+ ['Slipped close dates',22,29,'Lower is better']];
+ return `<div class="panel"><div class="ph"><h2>Decision accounts vs. matched comparison</h2><span class="sub">62 accounts with executed decisions · 58 comparison accounts matched on segment, size, stage, propensity and prior-year growth</span></div><div class="cmp">
+ ${rows.map(r=>`<div class="cmp-row"><span>${r[0]}</span><div class="pair"><div><b style="width:${r[1]*4}px;background:var(--accent)"></b><span class="num">${r[1]}%</span> decision accounts</div><div><b style="width:${r[2]*4}px;background:#b9bec6"></b><span class="num">${r[2]}%</span> comparison</div></div><span class="note">${r[3]}</span></div>`).join('')}
+ <p class="note">Comparison set is fixed at signing and refreshed only by pre-agreed rules. A randomized holdout (decisions surfaced but withheld from 15% of eligible accounts) is the stronger design and is offered as an option in the agreement.</p>
+ </div></div>`}
+const DEALS=[
+ ['Kestrel Foods','$1.2M','D-1042 · Re-sponsor via CFO office','Verified','Approved Sep 12; EB meeting held Sep 20; closed Oct 30. Indicators met.'],
+ ['Brightwater Utilities','$0.7M','D-1077 · Expand into Asset Analytics','Verified','Use case validated, closed Oct 14.'],
+ ['Osk Marine','$0.7M','D-1120 · Competitive displacement','Provisional','Closed Nov 7. In 30-day review window.'],
+ ['Vireo Health Systems','$0.6M','D-1098 · Exec briefing program','Disputed','Customer RevOps: partner sourced the deal before the decision.'],
+ ['Pellam Logistics','$1.4M','—','Excluded','Acquired by customer parent in Aug. Removed from plan and actuals.']
+];
+function deals(){const st={Verified:'t-fact',Provisional:'t-seller',Disputed:'t-risk',Excluded:'t-gray'};
+ return `<div class="panel"><div class="ph"><h2>Attribution by deal</h2><span class="sub">Every billable dollar traces to a decision record, its evidence snapshot and its executed actions</span></div>
+ <table><tr><th>Account</th><th>Revenue</th><th>Linked decision</th><th>Status</th><th>Basis</th><th></th></tr>
+ ${DEALS.map((r,i)=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="note">${r[2]}</td><td><span class="tag ${st[r[3]]}">${r[3]}</span></td><td class="note">${r[4]}</td><td>${r[3]==='Verified'||r[3]==='Provisional'?`<button class="btn ghost" data-dispute="${i}">Dispute</button>`:''}</td></tr>`).join('')}
+ </table></div>`}
+function dispute(i){const r=DEALS[i];modal(`<div class="ph"><h2>Dispute attribution · ${r[0]}</h2></div><div class="bd">
+ <p style="margin-top:0">Disputed revenue is removed from the fee basis until RevOps and Databook resolve it. Both sides see the same evidence.</p>
+ <label class="note">Reason</label><select><option>Revenue would have happened anyway</option><option>Another initiative caused the outcome</option><option>Decision was not actually executed</option><option>Data error in CRM</option></select>
+ <label class="note" style="display:block;margin-top:10px">Detail</label><textarea placeholder="What evidence supports the dispute?"></textarea></div>
+ <div class="ft"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" id="dsp">Submit dispute</button></div>`);
+ $('#dsp').onclick=()=>{DEALS[i][3]='Disputed';DEALS[i][4]='Dispute opened Nov 16 by CRO office.';closeModal();renderOutcomes();toast('Dispute opened. Removed from fee basis.')}}
+window.showTerms=()=>modal(`<div class="ph"><h2>Measurement terms (illustrative)</h2></div><div class="bd" style="line-height:1.55">
+ <p style="margin-top:0"><b>Baseline.</b> CFO plan for the segment, locked at signing. Plan changes during the period do not move the baseline unless both parties agree in writing.</p>
+ <p><b>Adjustments.</b> Price changes, acquisitions and divestitures, and segment market growth are removed using pre-agreed methods.</p>
+ <p><b>Attribution.</b> Revenue counts when it follows an executed decision, its pre-registered indicators were met, and the effect holds against the matched comparison.</p>
+ <p><b>Shared credit.</b> Split by pre-agreed weights when several decisions touch one deal.</p>
+ <p style="margin-bottom:0"><b>Disputes.</b> Disputed revenue is excluded until resolved.</p></div><div class="ft"><button class="btn" onclick="closeModal()">Close</button></div>`);
+
+
+function scatter(kind){const pts=[[4.4,22,'Brightwater'],[3.9,6,'Halvorsen'],[4.2,4,'Lumen Freight'],[3.7,1,'Corrin Steel'],[2.1,25,'Arlo Retail'],[1.8,4,''],[2.6,14,''],[3.3,18,'Kestrel'],[1.5,9,''],[4.6,5,'Tavira Ports'],[2.9,7,''],[3.6,20,'Okafor-Brandt']];
+ const W=620,H=300,x=v=>40+v/5*(W-60),y=v=>H-30-v/26*(H-50);
+ return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:720px;display:block;margin:6px 18px 10px"><line x1="${x(2.5)}" y1="10" x2="${x(2.5)}" y2="${H-30}" stroke="#ddd" stroke-dasharray="3 3"/><line x1="40" y1="${y(13)}" x2="${W-20}" y2="${y(13)}" stroke="#ddd" stroke-dasharray="3 3"/>
+ <line x1="40" y1="${H-30}" x2="${W-20}" y2="${H-30}" stroke="#bbb"/><line x1="40" y1="10" x2="40" y2="${H-30}" stroke="#bbb"/>
+ <text x="${W/2}" y="${H-6}" font-size="11" fill="#6b7380" text-anchor="middle">Propensity to buy (0–5)</text><text x="12" y="${H/2}" font-size="11" fill="#6b7380" transform="rotate(-90 12 ${H/2})" text-anchor="middle">${kind==='u'?'Active days in Databook':'# strong use cases'}</text>
+ <text x="${W-24}" y="${H-38}" font-size="11" fill="#a8402a" text-anchor="end">${kind==='u'?'Hot account going cold':'White space'}</text>
+ ${pts.map(p=>{const yy=kind==='u'?p[1]:Math.max(1,Math.round(p[1]/5));return `<circle cx="${x(p[0])}" cy="${y(kind==='u'?yy:yy*4)}" r="5" fill="${p[0]>2.5&&(kind==='u'?yy<13:yy<3)?'#a8402a':'#8aa4bd'}"/>${p[2]?`<text x="${x(p[0])+8}" y="${y(kind==='u'?yy:yy*4)+4}" font-size="10.5" fill="#3f4650">${p[2]}</text>`:''}`}).join('')}</svg>`}
+function renderAnalytics(t){
+ const m={u:['Focus on high-urgency accounts','Propensity to buy vs. active days in Databook. Bottom right: ready to buy, little recent activity.'],w:['Uncover white space','Propensity to buy vs. number of strong use cases. Bottom right: buying signals, narrow coverage.'],c:['Coach usage','Runs, active users, hours saved and estimated cost savings (hours × cost per hour set in Admin Console).']}[t];
+ view.innerHTML=`<h1>Analytics</h1>${QT(t)}
+ <div class="panel v1 ${t!=='c'?'v1u':''}"><div class="ph"><h2>${m[0]}</h2><span class="sub">${m[1]}</span></div>
+ ${t==='c'?`<div class="ledger-strip" style="margin:0;grid-template-columns:repeat(4,1fr)"><div><div class="ls-k">Total coach runs</div><div class="ls-v">6,412</div></div><div><div class="ls-k">Active users</div><div class="ls-v">412</div></div><div><div class="ls-k">Hours saved</div><div class="ls-v">9,870</div></div><div><div class="ls-k">Cost savings</div><div class="ls-v">$1.1M</div></div></div>`:scatter(t)}
+ </div>
+ <div class="panel v2" id="R12" style="margin-top:16px"><span class="v2pin">R12 · Upgrade · Analytics that measure customers, not clicks</span><div class="ph"><h2>What v2 changes here</h2></div><div class="limits" style="padding-left:36px"><ul style="margin:0;padding:0">
+ ${t==='u'?'<li>"Active days" counts activity inside Databook. v2 adds customer-side engagement (meetings, replies, exec contacts from CRM, Gong, calendar) so "going cold" means the customer went quiet, not that the seller stopped opening the app.</li><li>Each red dot can open a thread and, above policy thresholds, becomes a decision in a leader\'s queue.</li>'
+ :t==='w'?'<li>White-space clusters become allocation decisions (e.g. fund an SE pod) with a stop rule and pre-registered indicators, not just a chart to review.</li><li>Inferred pipeline ranges are labeled as inference with the peer conversion basis shown.</li>'
+ :'<li>Hours saved stays, but it moves to rung 1 of the measurement ladder as context only. It is a productivity proxy and cannot support an outcome fee.</li><li>v2 adds the rungs above it: execution, behavior change, progression, pipeline, closed-won, incremental and causally attributable revenue.</li><li>Open pipeline per account (currently shown next to coach runs) is joined to decisions, so correlation is not presented as impact.</li>'}
+ </ul></div></div>`}
+
+const WF=[
+ ['Marketing',[
+  ['Dynamic account prioritization','Which accounts to target this quarter','Live','Allocation','42','Pipeline from tier-1 vs comparison'],
+  ['Demand generation','Which scored accounts get which sequence','Available','—','',''],
+  ['Lead scoring','Route or nurture an inbound lead','Available','—','',''],
+  ['Account based marketing','Which accounts get 1:1 programs','Calibrating','Allocation','',''],
+  ['Executive briefings','None: productivity asset','Live','—','','Assets generated (context only)'],
+  ['Campaigns','Which campaign per segment','Available','—','','']]],
+ ['Sales operations',[
+  ['Sales forecasting','Forecast category on large deals','Live · in agreement','Forecast call','64','Slip rate, Commit accuracy'],
+  ['Account planning','None: productivity asset','Live','—','','Plans refreshed (context only)'],
+  ['Territory planning','Coverage and capacity by territory','Available','Allocation','',''],
+  ['Sales plays','Which play to run on a signal','Calibrating','Play choice','',''],
+  ['Sales enablement','Who needs coaching on what','Available','—','',''],
+  ['Sales content and playbooks','None: productivity asset','Available','—','','']]],
+ ['Value engineering',[
+  ['Deal support and value enablement','Re-sponsor, escalate, re-scope a deal','Live · in agreement','Deal risk','121','Stage progression 30d vs comparison'],
+  ['Post-sales value realization','Where to prove value after signature','Available','—','',''],
+  ['Executive presentation and storytelling','None: productivity asset','Live','—','',''],
+  ['Discovery and diagnosis','Which hypothesis to test first','Available','—','',''],
+  ['Business case and ROI modeling','Which value case to lead with','Live','Value case','',"Business case used in won deals"]]],
+ ['Customer enablement',[
+  ['Post-sale value realization','Adoption path per account','Available','—','',''],
+  ['Expansions and renewals','Start a save plan or wait','Live · in agreement','Renewal risk','58','Usage recovery; renewal outcome'],
+  ['Consumption analysis and strategy','Where consumption is pacing below plan','Calibrating','Consumption','',''],
+  ['Whitespace','Where to put SE and AE capacity','Live · in agreement','Allocation','35','Use cases validated; pipeline vs model'],
+  ['Quarterly business reviews','None: productivity asset','Live','—','','']]]
+];
+function renderWorkflows(){
+ const st=x=>x.startsWith('Live · in')?'<span class="tag t-fact">'+x+'</span>':x==='Live'?'<span class="tag t-rec">Live</span>':x==='Calibrating'?'<span class="tag t-seller">Calibrating</span>':'<span class="tag t-gray">Available</span>';
+ view.innerHTML=`<h1>Workflows</h1><div class="sub">Databook documents 22 GTM workflows across four teams. Today each produces guidance or an asset; v2 asks of every workflow: what decision does it drive, who makes it, and how will we know it worked?</div>
+ <div class="panel v2" id="R17" style="margin-top:18px"><span class="v2pin">R17 · New · Workflow → decision catalog</span>
+  <div class="ph"><h2>From 22 workflows to measurable decisions</h2><span class="sub">4 in the outcome agreement · 6 more live · 3 calibrating · 9 available</span></div>
+  <table><tr><th>Workflow (from help center)</th><th>Decision it drives (v2)</th><th>Status</th><th>Decision type</th><th>Decisions H2</th><th>Pre-registered measure</th></tr>
+  ${WF.map(g=>`<tr><td colspan="6" style="background:#faf9f7;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3)">${g[0]}</td></tr>`+g[1].map(w=>`<tr><td>${w[0]}</td><td class="note" style="color:${w[1].startsWith('None')?'var(--ink4)':'var(--ink2)'}">${w[1]}</td><td>${st(w[2])}</td><td class="note">${w[3]}</td><td class="num">${w[4]}</td><td class="note">${w[5]}</td></tr>`).join('')).join('')}
+  </table>
+  <div class="legend">Workflow names are from Databook's help center (GTM Decision System). Statuses, counts and measures are synthetic. Webinar guidance: start production with 2–4 of 22 workflows. Workflows with no decision (assets only) are measured as productivity context, never toward the outcome fee.</div>
+ </div>
+ <div class="grid2">
+  <div class="panel v2"><span class="v2pin">v2 rule</span><div class="ph"><h2>What a workflow must declare before it goes live</h2></div><ul class="limits" style="margin:0"><li>The decision it drives and the role that makes it</li><li>The evidence types it relies on and its coverage threshold</li><li>The actions approval creates, using Library items</li><li>The leading indicator and the outcome it is measured on</li><li>Its eval set and quality bar (R13)</li></ul></div>
+  <div class="panel v1 v1u"><div class="ph"><h2>What exists today</h2></div><ul class="limits" style="margin:0"><li>22 workflows, configured with the account team; some co-designed</li><li>Coaches, agents, assets and inline guidance chain on the same context</li><li>Services start customers on 2–4 workflows in a ~90-day production period</li><li>Gap: no per-workflow decision, owner or outcome measure is documented</li></ul></div>
+ </div>`;
+}
+
+let ssStep=0;
+const SS_STEPS=['Connect your data','Setup interview','Pick workflows','Set the baseline','Coverage check','Go live'];
+function renderSelfServe(){
+ const done=i=>i<ssStep, cur=i=>i===ssStep;
+ view.innerHTML=`<div class="crumb">Moonshot concept · not a Databook product · synthetic</div>
+ <h1>Databook for a 40-person sales team, set up in a day</h1>
+ <div class="sub">An AI deployment agent does what a forward-deployed team does today: connects data, interviews the sales leader, configures 2–4 workflows, sets the baseline. Context for private accounts is built from the customer's own data and labelled by confidence.</div>
+ <div class="panel v2" style="margin-top:16px;padding:14px 18px;display:flex;gap:8px;flex-wrap:wrap"><span class="v2pin" style="background:#B4531A">Moonshot</span>
+  ${SS_STEPS.map((t,i)=>`<span class="tag ${done(i)?'t-fact':cur(i)?'t-rec':'t-gray'}" style="font-size:12px;padding:4px 10px">${done(i)?'✓ ':''}${i+1}. ${t}</span>`).join('')}
+ </div>
+ <div class="th-grid" style="margin-top:16px">
+  <div class="panel">${ssBody()}</div>
+  <div class="side">
+   <div class="panel"><div class="ph"><h2>Why this could matter</h2></div><ul class="limits" style="margin:0">
+    <li>Reviews: coverage and ROI fall off for mid-market and startups (TrustRadius “negative ROI”; G2 small-account gaps)</li>
+    <li>Setup today runs through account teams and forward-deployed services</li>
+    <li>Rivals win mid-market on data and outreach (Apollo, Clay, ZoomInfo); none sells accountable decisions</li></ul></div>
+   <div class="panel"><div class="ph"><h2>Open questions</h2></div><ul class="limits" style="margin:0">
+    <li>Licensed data rights below enterprise tiers</li><li>Privacy and consent for cross-customer decision memory</li><li>Not undercutting enterprise pricing</li></ul></div>
+  </div>
+ </div>`;
+ view.querySelectorAll('[data-ss]').forEach(b=>b.onclick=()=>{ssStep=Math.max(0,Math.min(SS_STEPS.length-1,ssStep+(+b.dataset.ss)));renderSelfServe()});
+}
+function ssNav(){return `<div class="decide">${ssStep>0?'<button class="btn" data-ss="-1">Back</button>':''}${ssStep<SS_STEPS.length-1?'<button class="btn pri" data-ss="1">Continue</button>':''}</div>`}
+function ssBody(){
+ const b=[
+ `<div class="ph"><h2>1. Connect your data</h2><span class="sub">About 10 minutes, admin approves in each app</span></div>
+  <table><tr><th>Source</th><th>What it adds</th><th>Status</th></tr>
+  <tr><td>HubSpot or Salesforce</td><td>Accounts, deals, contacts, stages</td><td><span class="tag t-fact">Connected</span></td></tr>
+  <tr><td>Call recorder (Gong, Zoom)</td><td>What buyers actually said</td><td><span class="tag t-fact">Connected</span></td></tr>
+  <tr><td>Google or Outlook calendar</td><td>Who is in the room next</td><td><span class="tag t-fact">Connected</span></td></tr>
+  <tr><td>Slack deal channels</td><td>Internal deal reasoning (opt-in, private channels redacted)</td><td><span class="tag t-gray">Optional</span></td></tr></table>${ssNav()}`,
+ `<div class="ph"><h2>2. Setup interview</h2><span class="sub">The deployment agent asks the VP of Sales 8 questions</span></div>
+  <div class="log" style="font-size:13px">
+  <div><span class="mono">Agent</span><span>What is the one number you are accountable for this half?</span></div>
+  <div><span class="mono">VP Sales</span><span>New ARR from mid-size logistics and manufacturing companies.</span></div>
+  <div><span class="mono">Agent</span><span>Your CRM shows 31% of Stage 3 deals slip. Your calls show single-threaded deals slip twice as often. Should I treat multi-threading as a milestone?</span></div>
+  <div><span class="mono">VP Sales</span><span>Yes, by Stage 3.</span></div>
+  <div><span class="mono">Agent</span><span>Drafted your methodology milestones from your won deals. Review them in step 3.</span></div></div>${ssNav()}`,
+ `<div class="ph"><h2>3. Pick 2–4 workflows</h2><span class="sub">Suggested from your data; each declares its decision and measure</span></div>
+  <table><tr><th>Workflow</th><th>Decision</th><th>Measure</th><th></th></tr>
+  <tr><td>Deal risk</td><td>Re-thread or re-scope a slipping deal</td><td>Stage progression vs. last year's cohort</td><td><span class="tag t-fact">Selected</span></td></tr>
+  <tr><td>Account prioritization</td><td>Which 25 accounts each AE works this month</td><td>Pipeline from prioritized accounts</td><td><span class="tag t-fact">Selected</span></td></tr>
+  <tr><td>Renewal risk</td><td>Start a save plan or wait</td><td>Gross retention</td><td><span class="tag t-gray">Later</span></td></tr></table>${ssNav()}`,
+ `<div class="ph"><h2>4. Set the baseline</h2><span class="sub">From your last four quarters, locked before go-live</span></div>
+  <table><tr><th>Measure</th><th>Baseline</th><th>Comparison</th></tr>
+  <tr><td>Stage 3 slip rate</td><td class="num">31%</td><td>Holdout: 15% of eligible deals, chosen at random</td></tr>
+  <tr><td>Pipeline from prioritized accounts</td><td class="num">$1.8M / qtr</td><td>Same AEs, prior two quarters</td></tr></table>
+  <p class="note" style="padding:8px 18px">Illustrative synthetic figures. The holdout makes results credible without a services-led measurement design.</p>${ssNav()}`,
+ `<div class="ph"><h2>5. Coverage check</h2><span class="sub">Your 1,240 target accounts, honestly labelled</span></div>
+  <table><tr><th>Accounts</th><th>Context available</th><th>Confidence</th></tr>
+  <tr><td class="num">180 public</td><td>Licensed financials, filings, transcripts</td><td><span class="tag t-fact">Strong</span></td></tr>
+  <tr><td class="num">610 private, with your calls or CRM history</td><td>Your first-party data plus web and hiring signals</td><td><span class="tag t-rec">Moderate</span></td></tr>
+  <tr><td class="num">450 private, no history</td><td>Web, hiring and peer-group inference only</td><td><span class="tag t-seller">Inferred</span></td></tr></table>
+  <p class="note" style="padding:8px 18px">Inferred context is labelled and never presented as fact. Decision memory from enterprise customers (opt-in, anonymized) suggests plays that worked in similar situations.</p>${ssNav()}`,
+ `<div class="ph"><h2>6. Go live</h2><span class="sub">Self-serve, priced on verified outcomes</span></div>
+  <div class="confbox" style="margin:16px 18px"><div><div class="lbl">Ready</div></div><div style="flex:1">Two workflows live in Slack and HubSpot. First decisions arrive tomorrow morning. Outcome report every two weeks against the locked baseline and holdout.</div></div>
+  <ul class="limits" style="margin:0"><li>Pricing shape (illustrative): small platform fee plus a fee per verified outcome, paid by card, cancel anytime</li><li>No forward-deployed team; human help on request</li></ul>${ssNav()}`];
+ return b[ssStep];
+}
+
+/* ============ COACH (AI Studio made real) ============ */
+let coachState={upgraded:false,evalRun:false,running:false,live:false};
+const EVAL=[['Halvorsen Industrial','public','pass','pass','4.5'],['Meridia Retail Group','private parent','pass','pass','4.2'],['Brightwater Utilities','public','pass','pass','4.6'],['Okafor-Brandt Chemicals','public','pass','fail','3.4'],['Lumen Freight','private, no history','pass','pass','4.0'],['Tavira Ports','non-US public','fail','pass','3.1']];
+function renderCoach(){
+ const c=coachState, passN=c.evalRun?EVAL.filter(r=>r[2]==='pass'&&r[3]==='pass').length:0, avgN=EVAL.reduce((a,r)=>a+ +r[4],0)/EVAL.length, avg=c.evalRun?avgN.toFixed(1):'—';
+ const gateOk=c.evalRun&&avgN>=3.9;
+ view.innerHTML=`<div class="crumb"><a href="#studio">AI Studio</a> / Coach Studio / Meeting prep — Corvane</div>
+ <div style="display:flex;align-items:flex-end;gap:16px"><div><h1>Meeting prep — Corvane</h1><div class="sub">Cloned from base coach “Meeting preparation” v14 · owner Rina Das · <span style="color:var(--ok)">● Saved 2s ago</span></div></div>
+ <div style="margin-left:auto">${c.live?'<span class="tag t-fact">Live for Sales — West</span>':'<span class="tag t-gray">Draft</span>'}</div></div>
+ <div class="th-grid" style="margin-top:16px">
+ <div>
+  <div class="panel v2" id="C1"><span class="v2pin">New · Base upgrade with diff</span>
+   <div class="ph"><h2>${c.upgraded?'Up to date with base v15':'Base update available: v15'}</h2><span class="sub">Today, edited clones stop receiving base improvements</span></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div style="padding:12px 18px;border-right:1px solid var(--line2)"><div class="cell-k">Databook changed in v15</div>
+     <p style="font-size:13px;margin:6px 0"><span class="tag t-fact">+ step</span> Check the last two earnings calls for analyst issues tied to our use cases</p>
+     <p style="font-size:13px;margin:6px 0"><span class="tag t-rec">~ step</span> Stakeholder step now uses buying-group roles</p></div>
+    <div style="padding:12px 18px"><div class="cell-k">Your edits (kept)</div>
+     <p style="font-size:13px;margin:6px 0"><span class="tag t-seller">yours</span> Discovery framework: Corvane “3 Whys”</p>
+     <p style="font-size:13px;margin:6px 0"><span class="tag t-seller">yours</span> Output: one-page brief, no deck</p></div>
+   </div>
+   <div class="decide">${c.upgraded?'<span class="note">Merged v15 into your clone. Your edits kept. Version 7 saved.</span>':'<button class="btn pri" id="upg">Accept upgrade, keep my edits</button><button class="btn" id="dif">View full diff</button>'}</div>
+  </div>
+  <div class="panel v2" id="C2" style="margin-top:14px"><span class="v2pin">New · Eval before going live</span>
+   <div class="ph"><h2>Golden accounts</h2><span class="sub">The kind of test set Databook’s deployment engineers already use internally</span><span class="r"><button class="btn ${c.evalRun?'':'pri'}" id="runEval">${c.running?'Running…':c.evalRun?'Run again':'Run eval'}</button></span></div>
+   <table><tr><th>Account</th><th>Type</th><th>Every claim cited</th><th>Absence handled</th><th>“Would a CRO accept this?”</th></tr>
+   ${EVAL.map(r=>`<tr><td>${r[0]}</td><td class="note">${r[1]}</td><td>${c.evalRun?(r[2]==='pass'?'<span class="tag t-fact">Pass</span>':'<span class="tag t-risk">Fail</span>'):'<span class="note">—</span>'}</td><td>${c.evalRun?(r[3]==='pass'?'<span class="tag t-fact">Pass</span>':'<span class="tag t-risk">Fail</span>'):'<span class="note">—</span>'}</td><td class="num">${c.evalRun?r[4]+' / 5':'—'}</td></tr>`).join('')}
+   </table>
+   ${c.evalRun?`<div class="legend">${passN} of ${EVAL.length} accounts pass both checks · rubric average ${avg} / 5 (bar: 3.9). Failures: Tavira Ports cites a non-US filing without a date; Okafor-Brandt treats a missing champion as confirmed. Both become new eval cases.</div>`:''}
+  </div>
+ </div>
+ <div class="side">
+  <div class="panel v2" id="C3"><span class="v2pin">New · Team publishing</span><div class="ph"><h2>Set live</h2></div>
+   <div style="padding:12px 16px;font-size:13px">
+    <label class="note">Audience</label><select id="aud"><option>Sales — West (pilot, 38 sellers)</option><option>All of Sales</option><option>Just me</option></select>
+    <p class="note" style="margin-top:10px">${c.live?'Live. Adoption shows in Coach Usage.':gateOk?'Eval bar met. Ready to set live.':'Run the eval and meet the bar before setting live for a team.'}</p>
+   </div>
+   <div class="decide"><button class="btn pri" id="goLive" ${gateOk&&!c.live?'':'disabled'}>Set live</button></div></div>
+  <div class="panel"><div class="ph"><h2>Version history</h2></div><div class="log">
+   ${c.upgraded?'<div><span class="mono">v7 · now</span><span>Merged base v15 (Rina Das)</span></div>':''}
+   <div><span class="mono">v6 · Nov 12</span><span>Output changed to one-page brief</span></div>
+   <div><span class="mono">v5 · Nov 3</span><span>Added “3 Whys” discovery step</span></div>
+   <div><span class="mono">v4 · Oct 21</span><span>Cloned from base v14</span></div></div></div>
+  <div class="panel v1 v1u"><div class="ph"><h2>Exists today</h2></div><ul class="limits" style="margin:0"><li>Clone and edit, Composer, preview on a real account, restore versions, four roles</li><li>Gaps: clones miss base updates, no team publishing, roles edited one by one, no auto-save in SmartTemplate Studio</li></ul></div>
+ </div></div>`;
+ $('#runEval').onclick=()=>{coachState.running=true;renderCoach();setTimeout(()=>{coachState.running=false;coachState.evalRun=true;renderCoach()},900)};
+ const u=$('#upg');if(u)u.onclick=()=>{coachState.upgraded=true;coachState.evalRun=false;renderCoach();toast('Upgraded to base v15; your edits kept')};
+ const df=$('#dif');if(df)df.onclick=()=>toast('Full diff opens side by side');
+ const gl=$('#goLive');if(gl)gl.onclick=()=>{coachState.live=true;renderCoach();toast('Live for Sales — West')};
+}
+
+/* ============ SURFACES ============ */
+function renderSurfaces(){
+ const s=STATE.halvorsen, done=s.status!=='open';
+ view.innerHTML=`<div class="crumb"><a href="#decision-halvorsen">Halvorsen Industrial / D-2217</a> / Other surfaces</div>
+ <h1>The same decision, where people already work</h1><div class="sub">Account research is now bundled in Salesforce and Microsoft. The idea: Databook supplies the verified decision inside those tools, and every surface writes to one decision record.</div>
+ <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;margin-top:18px">
+  <div class="panel v2" id="S1"><span class="v2pin">Slack</span>
+   <div style="padding:14px 16px;font-size:13px">
+    <div style="display:flex;gap:8px;align-items:center"><div class="av">DB</div><b>Databook</b><span class="note">APP · 7:05 AM</span></div>
+    <div style="border-left:3px solid #4C8DFF;padding:8px 12px;margin-top:8px;background:#fafbfd">
+     <b>Decision needed: Halvorsen Industrial ($4.2M, Commit)</b><br>Sponsor left Oct 28; capex guided down 8%. Confidence: moderate.<br><span class="note">9 evidence · 2 conflicting · 3 missing</span><br>
+     <b>Recommended:</b> re-sponsor and move to Best Case.</div>
+    <div style="display:flex;gap:6px;margin-top:10px">${done?'<span class="tag t-fact">Decided · '+s.status+'</span>':'<button class="btn pri" id="slkA">Approve</button><button class="btn" id="slkC">Change</button><button class="btn" id="slkO">Open thread</button>'}</div>
+    <p class="note" style="margin-top:8px">Sent via Priya Raman (VP Sales), so the AE hears it from their manager.</p>
+   </div></div>
+  <div class="panel v2" id="S2"><span class="v2pin">Salesforce</span>
+   <div style="padding:14px 16px;font-size:13px">
+    <div class="note">Opportunity · Halvorsen — Plant Operations Platform</div>
+    <div style="border:1px solid var(--line);border-radius:6px;margin-top:8px">
+     <div style="padding:8px 12px;background:#f3f6fa;font-weight:600">Databook decision card</div>
+     <div style="padding:10px 12px;line-height:1.6">Status: <b>${done?'Approved · in execution':'Awaiting CRO decision'}</b><br>Forecast category: <b>${done?'Best Case (updated by decision)':'Commit'}</b><br>Coverage: <b>Strong</b> · Confidence: <b>Moderate</b><br>Next action: ${done?'Intro to interim CIO · Jordan Pike · Nov 20':'—'}</div>
+    </div>
+    <p class="note" style="margin-top:8px">Uses the Salesforce integration’s write permission, which admins can already grant.</p>
+   </div></div>
+  <div class="panel v2" id="S3"><span class="v2pin">Claude or Copilot (MCP)</span>
+   <div style="padding:14px 16px;font-size:13px">
+    <div style="background:#f4f3f0;border-radius:8px;padding:8px 10px">What deals in my Commit need me before Thursday?</div>
+    <div style="margin-top:10px">One needs you: <b>Halvorsen Industrial</b>.</div>
+    <div style="border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px">
+     <div class="note">databook.get_decision · D-2217</div>
+     <b>Keep $4.2M in Commit, or re-sponsor?</b><br>Evidence: CIO departed (S&amp;P, Oct 28); capex −8% (earnings, Nov 4); “budget approved” call predates both.<br>
+     ${done?'<span class="tag t-fact">Recorded</span>':'<button class="btn" id="mcpA" style="margin-top:6px">Approve via record_decision</button>'}
+    </div>
+    <p class="note" style="margin-top:8px">Rendered as an in-chat app card (2026 MCP spec); same record as the app.</p>
+   </div></div>
+ </div>
+ <p class="note" style="margin-top:12px">Illustrative mock-ups of third-party surfaces; not real integrations.</p>`;
+ const ap=(who)=>{s.status='approved';s.choice='A';s.log.push([now(),'Approved option A via '+who+'. Same decision record.']);renderSurfaces();toast('Approved via '+who+'; all surfaces updated')};
+ const a=$('#slkA');if(a)a.onclick=()=>ap('Slack (Priya Raman)');
+ const c=$('#slkC');if(c)c.onclick=()=>location.hash='decision-halvorsen';
+ const o=$('#slkO');if(o)o.onclick=()=>location.hash='decision-halvorsen';
+ const m=$('#mcpA');if(m)m.onclick=()=>ap('MCP (Maya Okafor in Claude)');
+}
+
+/* ============ COVERAGE GAP ============ */
+window.reportGap=b=>{b.outerHTML='<span class="tag t-rec" style="font-size:11px">Gap sent to Data &amp; Insights · typical fix 3 business days (illustrative)</span>';toast('Gap reported. Analysts prioritize what customers ask for most.')};
+
+/* ============ GUIDED TOUR ============ */
+const TOUR=[
+ ['home','R1','The starting point','A CRO’s home shows decisions, not an insight feed: three questions that need her before Thursday’s forecast call.'],
+ ['decision-halvorsen','R4','How the system reasons','Assessment, confidence and what would change it. Evidence is typed: verified fact, CRM record, seller claim, AI inference, not found.'],
+ ['decision-halvorsen','R14','Idea 1 · Coverage and freshness','Every account shows how strong its data is and why. One click reports a gap to the analyst team.'],
+ ['decision-halvorsen','R16','Idea 3 · Buying group','Who decides now, how we know, and when we last engaged. Deals die at sponsor changes.'],
+ ['decision-halvorsen','R7','The human decision','Approve, change or reject, with reasons. Approval creates owned actions using existing coaches and assets.'],
+ ['surfaces','S1','Idea 5 · Decide where you already work','The same decision in Slack, Salesforce and Claude via MCP. Try approving it in Slack.'],
+ ['coach','C2','Idea 2 · AI Studio, production-grade','Run the eval on golden accounts before a coach goes live; accept base upgrades without losing your edits; publish to one team.'],
+ ['workflows','R17','From workflows to decisions','Databook’s 22 workflows, each declaring the decision it drives and how it is measured.'],
+ ['outcomes','R11','Idea 4 · An outcome ledger a CFO would sign','From $8.7M above plan to $1.9M verified. Showing the drop is what earns the CFO’s trust.'],
+ ['selfserve','','Moonshot · mid-market, self-serve','An AI deployment agent sets up a 40-person team in a day, with honest coverage labels and outcome pricing.']
+];
+let tourI=-1;
+function tourShow(){
+ const t=TOUR[tourI]; let box=$('#tourbox');
+ if(!box){box=document.createElement('div');box.id='tourbox';document.body.appendChild(box);}
+ box.innerHTML=`<div style="font-size:11px;color:#9FD3CD;letter-spacing:.5px;text-transform:uppercase">Story ${tourI+1} of ${TOUR.length}</div><div style="font-weight:600;font-size:15px;margin:4px 0">${t[2]}</div><div style="font-size:13px;line-height:1.5;color:#dfe5ec">${t[3]}</div><div style="display:flex;gap:6px;margin-top:10px">${tourI>0?'<button class="btn" id="tPrev">Back</button>':''}<button class="btn pri" id="tNext">${tourI<TOUR.length-1?'Next':'Finish'}</button><button class="btn ghost" id="tEnd" style="color:#9FD3CD;margin-left:auto">Exit</button></div>`;
+ if(location.hash.slice(1)!==t[0])location.hash=t[0];else route();
+ setTimeout(()=>{if(t[1]){const el=document.getElementById(t[1]);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}}},200);
+ $('#tNext').onclick=()=>{if(tourI<TOUR.length-1){tourI++;tourShow()}else tourEnd()};
+ const pv=$('#tPrev');if(pv)pv.onclick=()=>{tourI--;tourShow()};
+ $('#tEnd').onclick=tourEnd;
+}
+function tourEnd(){tourI=-1;const b=$('#tourbox');if(b)b.remove()}
+window.startTour=()=>{document.body.classList.add('diff');$('#drawer').classList.remove('on');tourI=0;tourShow()};
+/* ============ OTHER VIEWS ============ */
+function renderSimple(r){
+ const pages={
+  accounts:['Accounts','My accounts and lists, with Databook Score. v2 adds thread state and open decisions per account.','v1 v1u',`<table><tr><th>Account</th><th>Databook Score</th><th>Subscores (FCC · MI · IS · BC)</th><th>Open pipeline</th><th>Threads</th><th>Decision</th></tr>
+   <tr><td><a href="#decision-halvorsen">Halvorsen Industrial</a></td><td><span class="score">3.9</span></td><td class="mono note">4.1 · 3.8 · 2.9 · 4.4</td><td class="num">$4.2M</td><td><span class="tag t-risk">Sponsor &amp; budget risk</span></td><td><a href="#decision-halvorsen">D-2217</a></td></tr>
+   <tr><td><a href="#decision-meridia">Meridia Retail Group</a></td><td><span class="score">3.1</span></td><td class="mono note">3.6 · 2.4 · 2.2 · 3.9</td><td class="num">$2.8M ARR</td><td><span class="tag t-risk">Renewal risk</span></td><td><a href="#decision-meridia">D-2209</a></td></tr>
+   <tr><td>Brightwater Utilities</td><td><span class="score">4.4</span></td><td class="mono note">4.5 · 4.6 · 3.8 · 4.2</td><td class="num">$1.9M</td><td><span class="tag t-rec">Expansion signal</span></td><td class="note">—</td></tr>
+   <tr><td>Okafor-Brandt Chemicals</td><td><span class="score">3.6</span></td><td class="mono note">3.9 · 3.1 · 3.4 · 3.7</td><td class="num">$3.1M</td><td><span class="tag t-seller">Single-threaded</span></td><td class="note">With VP Sales</td></tr></table>
+   <p class="note" style="padding:0 18px 12px">FCC financial case for change · MI management intent · IS investor sentiment · BC buying cycle. v2 note: the buying-cycle subscore assumes a nine-month sales cycle; v2 lets RevOps set it per segment from closed-won history.</p>`],
+  library:['Library','Every coach, prompt and asset, by go-to-market stage. v2 links each item to the decisions it can execute.','v1 v1u',`<table><tr><th>Item</th><th>Type</th><th>Stage</th><th>v2: used by decisions</th></tr>
+   <tr><td>Executive briefing</td><td>Asset</td><td>Advance &amp; close</td><td>Re-sponsorship plays (14 this quarter)</td></tr>
+   <tr><td>Business case &amp; ROI</td><td>Coach</td><td>Advance &amp; close</td><td>Budget-risk decisions (9)</td></tr>
+   <tr><td>Mutual close plan</td><td>Asset</td><td>Advance &amp; close</td><td>Missing-milestone actions (22)</td></tr>
+   <tr><td>Renewal value review</td><td>Coach</td><td>Retain &amp; expand</td><td>Renewal-risk decisions (11)</td></tr>
+   <tr><td>Strategic Priorities Summary</td><td>Prompt</td><td>Engage &amp; qualify</td><td>New-sponsor research (14)</td></tr></table>`],
+  studio:['AI Studio','Coach Studio, Prompt Studio and SmartTemplate Studio exist today. v2 adds Decision Policy Studio, using the same clone-edit-preview-set live pattern.','v1 v1u',`<table><tr><th>Studio</th><th>Builds</th><th>Status</th></tr>
+   <tr><td><a href="#coach">Coach Studio</a> <span class="note">· open example</span></td><td>Guided multi-step workflows, edited in natural language via the Composer</td><td><span class="tag t-gray">Exists today</span></td></tr>
+   <tr><td>Prompt Studio</td><td>One-click prompts with variables</td><td><span class="tag t-gray">Exists today</span></td></tr>
+   <tr><td>SmartTemplate Studio</td><td>Branded PowerPoint / Word assets generated per account</td><td><span class="tag t-gray">Exists today (beta)</span></td></tr>
+   <tr><td><a href="#governance">Decision Policy Studio</a></td><td>When a thread becomes a decision, who decides, what agents may do alone, what gets measured</td><td><span class="tag t-inf">New in v2</span></td></tr></table>
+   <div class="v2" id="R18" style="margin:18px;border:1px solid var(--line2);border-radius:6px"><span class="v2pin">R18 · Upgrade · Studio fixes from feedback</span>
+   <div class="ph"><h2>What to fix in AI Studio</h2><span class="sub">From help-center limits and customer reviews</span></div>
+   <table><tr><th>Today</th><th>Evidence</th><th>v2 change</th></tr>
+   <tr><td>Edited clones stop receiving base-coach improvements</td><td class="note">Help center: Agentic Network</td><td>"Upgrade available" diff on clones; accept base changes, keep your edits</td></tr>
+   <tr><td>Publish only for yourself or the whole org</td><td class="note">Help center: User roles</td><td>Team-level publishing for pilots (e.g. one region first)</td></tr>
+   <tr><td>Can't co-edit a colleague's coach or prompt</td><td class="note">Help center: User roles</td><td>Shared editing with an owner and version history</td></tr>
+   <tr><td>Coach prompts "can be unreliable"</td><td class="note">SoftwareFinder review, Aug 2026</td><td>Every coach previews against its eval set before set live (R13)</td></tr>
+   <tr><td>Studio builds coaches, prompts and templates, not decisions</td><td class="note">Help center: AI Studio</td><td>Decision Policy Studio (R10) with the same clone-edit-preview-set live flow</td></tr></table></div>`],
+  governance:['Decision policies','Who sees which decision, what agents may do without approval, and what is measured. Built and set live by Strategists, like coaches.','v2',`<table><tr><th>Policy</th><th>Condition</th><th>Route</th><th>Agent autonomy</th><th>Pre-registered measure</th></tr>
+   <tr><td class="mono">G-01</td><td>Any deal-risk thread</td><td>AE and manager (via Slack)</td><td>Draft only</td><td>Stage progression 30d</td></tr>
+   <tr><td class="mono">G-04</td><td>Deal &gt; $2M in Commit with sponsor-level risk</td><td>CRO</td><td>None: human decision</td><td>EB meeting held; close in quarter</td></tr>
+   <tr><td class="mono">G-07</td><td>Renewal &gt; $1.5M ARR, usage decline &gt; 20%</td><td>CCO</td><td>Draft only</td><td>Usage recovery; renewal outcome</td></tr>
+   <tr><td class="mono">G-11</td><td>Account brief refresh</td><td>Seller</td><td>Autonomous, logged</td><td>None (productivity only)</td></tr></table>
+   <div class="v2" id="R13" style="margin:18px;border:1px solid var(--line2);border-radius:6px"><span class="v2pin">R13 · New · Workflow quality bar</span><div class="ph"><h2>Quality bar every workflow ships against</h2><span class="sub">Evals gate release; production monitoring feeds back</span></div>
+   <table><tr><th>Workflow</th><th>Eval set</th><th>Evidence grounding</th><th>"Would a CRO accept this?"</th><th>Absence handled correctly</th><th>Release</th></tr>
+   <tr><td>Strategic deal risk</td><td class="num">212 cases</td><td class="num">98.6%</td><td class="num">4.3 / 5</td><td class="num">94%</td><td><span class="tag t-fact">Live</span></td></tr>
+   <tr><td>Renewal risk</td><td class="num">140 cases</td><td class="num">97.9%</td><td class="num">4.1 / 5</td><td class="num">91%</td><td><span class="tag t-fact">Live</span></td></tr>
+   <tr><td>Whitespace allocation</td><td class="num">96 cases</td><td class="num">96.2%</td><td class="num">3.6 / 5</td><td class="num">88%</td><td><span class="tag t-seller">Gated: below 4.0 rubric</span></td></tr></table>
+   <p class="note" style="padding:8px 18px 12px">Synthetic. Rubric scored by sales leaders on sampled outputs; "flag as wrong" and rejected decisions become new eval cases.</p></div>
+   <p class="note" style="padding:0 18px 12px">Roles reuse today's model: Builders draft policies for themselves; Strategists set them live org-wide. v2 adds team-level publishing, which roles do not support today.</p>`],
+  admin:['Admin Console','Licences, teams, roles, integrations, branding and analytics values exist today. v2 adds the outcome agreement record.','v1 v1u',`<table><tr><th>Area</th><th>Today</th><th>v2</th></tr>
+   <tr><td>Integrations</td><td>Salesforce, Gong, Slack (public channels), Teams, calendar</td><td>Write-back of decisions and actions to Salesforce tasks</td></tr>
+   <tr><td>Slack</td><td>Read-only, public channels mapped to CRM accounts</td><td>Opt-in private deal-room channels, with redaction and admin consent</td></tr>
+   <tr><td>Analytics values</td><td>Hours and cost per hour per asset and coach</td><td>Kept as context; outcome terms added</td></tr>
+   <tr><td>Org hierarchy sync</td><td>Segments analytics by team</td><td>Routes decisions by team and threshold</td></tr>
+   <tr><td>Outcome agreement</td><td>—</td><td>Baseline, adjustments, comparison set, dispute log</td></tr></table>`]
+ };const p=pages[r];
+ view.innerHTML=`<h1>${p[0]}</h1><div class="sub">${p[1]}</div><div class="panel ${p[2]}" id="${r==='governance'?'R10':''}" style="margin-top:16px">${p[2]==='v2'?'<span class="v2pin">R10 · New · Decision policies</span>':''}${p[3]}</div><p class="note" style="margin-top:10px">Supporting view. The concept focuses on the Home decision queue, the account thread and the Outcome ledger.</p>`;
+}
+
+
+const RECS=[
+ ['R1','Decision queue for revenue leaders','home','Home today serves the individual seller: Ask anything, GTM-stage cards, a library. A CRO has no place where the questions that need their judgment are waiting.','Leaders get a ranked queue of decisions, not insights: the question, value at stake, decide-by date, confidence, and counts of evidence, conflicts and gaps.','Webinar demo opened with a revenue leader reviewing pipeline and spotting a recurring risk. "Decision System" names the decision, but the product has no decision object.'],
+ ['R2','Plan context on Home','home','Insights are not tied to the targets the board and CFO set.','The CFO plan and FY priorities sit above the queue, so every decision reads against plan-to-date.','Webinar: boards set growth targets and allocate capital; Databook wants to connect those objectives to daily work. Also the same plan is the outcome-fee baseline.'],
+ ['R3','Account- and decision-aware recommendations','home','Help center: Recommended is ordered only by role, org usage and pins. It ignores followed accounts, CRM stage and the fiscal quarter.','Recommended coaches, prompts and assets come from open decisions and threads (e.g. Executive briefing for the new interim CIO).','help.databook.com, "How recommendations work".'],
+ ['R4','Thread assessment with calibrated confidence','decision-halvorsen','Threads exist (webinar) but users can\'t tell how sure the system is or what would change its mind.','Each thread shows the assessment, confidence with the reason, and "what would change this".','Webinar: threads maintain a developing assessment and must handle contradictory evidence.'],
+ ['R5','Evidence typed as fact, record, seller claim, inference or not found','decision-halvorsen','Provenance (source, last updated, last checked) exists, but users can\'t tell verified fact from seller opinion from AI inference.','Five evidence types, a weight on each item, contradicting evidence shown separately, and flag-as-wrong or outdated.','Webinar: a positive call shouldn\'t outweigh a sponsor departure. Help center: core intelligence carries provenance and can\'t be edited.'],
+ ['R6','Expected-but-missing, with an "ask" loop','decision-halvorsen','The graph only sees what connected systems capture. Absence of evidence looks like absence of action.','Missing methodology milestones are listed as "not found", never "didn\'t happen", with one click to ask the owner via Slack.','Webinar: detecting expected events that didn\'t happen. Help center: unrecorded calls and private messages are invisible.'],
+ ['R7','Approve, change or reject, with reasons captured','decision-halvorsen','Recommendations stop at insight; there\'s no structured human decision and no learning from rejections.','Options with trade-offs; reject or change requires a reason; rejections feed a monthly reasoning review.','Webinar: human judgment and approval remain necessary. Launch release: a governance layer for executives.'],
+ ['R8','Decision becomes tracked actions using existing coaches and assets','decision-halvorsen','Generated assets and coaches are run ad hoc; nobody sees whether the follow-through happened.','Approval creates owned, dated actions that call existing Library items, delivered through the owner\'s manager, and tracked to completion.','Webinar: people ignore pushed material unless it comes from a manager or colleague.'],
+ ['R9','Decision record','decision-halvorsen','No audit trail of why a forecast or resourcing call was made.','Every decision keeps its evidence snapshot, who decided, when, and what happened. Decision history becomes an asset that compounds.','Launch release: governance layer that measures outcomes the system produces.'],
+ ['R10','Decision Policy Studio','governance','AI Studio builds coaches, prompts and templates, but nothing governs routing, thresholds or what agents may do alone.','Strategists set policies: which threads become decisions, who decides, agent autonomy, and the pre-registered measure.','Reuses AI Studio roles (Builder, Strategist). Fills a gap: no team-level publishing today.'],
+ ['R11','Outcome ledger','outcomes','Analytics value = admin-set hours saved × cost per hour. That cannot support a fee on revenue.','A shared CRO/CFO/RevOps ledger: a 10-rung measurement ladder, plan-to-attribution walk, matched comparison, per-deal attribution and disputes. Only verified attributable revenue is billable.','Webinar: ~3% of attributable revenue above the CFO plan; baseline and attribution written into the contract. Release: results measured by the platform, not self-reported.'],
+ ['R13','Workflow quality bar','governance','Quality is asserted ("six-sigma accuracy", 99%) without published definitions; custom work risks one-off quality.','Every workflow ships against an eval set: grounding, absence handling, and a CRO-acceptance rubric. Releases are gated; flags and rejections become eval cases.','Job posting: define a quality bar every workflow ships against; evals, acceptance criteria, regression tests, production monitoring.'],
+ ['R14','Coverage confidence per account','decision-meridia','Top G2 complaints: missing or outdated data on private, mid-market, non-US companies. Under outcome pricing, coverage gaps are revenue gaps.','Every account and decision shows coverage strength and why (public vs private, sources connected); inferred data is labelled, gaps route to Data & Insights.','G2 pros/cons (Nov 2026); job posting: work with Data & Insights on coverage, freshness and confidence.'],
+ ['R15','Decide where you already work','decision-halvorsen','Account research is now bundled in Salesforce editions and Microsoft Sales Agent; the Copilot for Sales connector is still Preview.','The same decision appears in Salesforce, Slack and via MCP tools for Copilot, Agentforce or Claude, all writing to one ledger.','Help center deployment layer ("no new destination application"); 2026 bundling by Salesforce and Microsoft.'],
+ ['R16','Buying group, with how we know','decision-halvorsen','Reviewers ask for org charts, personas and buying-committee data; a 1-star 2026 review says missing org structure hurts account planning. Deals die at sponsor changes.','Each decision shows the buying group: who now decides, the evidence type behind each role, and last engagement. Inferred roles are labelled and must be confirmed.','Voice of customer (G2, SoftwareFinder 2026); webinar: deals slip on executive changes the champion does not control.'],
+ ['R17','Workflow → decision catalog','workflows','Databook documents 22 workflows, but none declares the decision it drives, who makes it or how its impact is measured. Customers reach value on 2–4 of them first.','Each workflow declares its decision, owner, evidence, actions, leading indicator and eval set; only decision workflows count toward the outcome fee.','Help center: GTM Decision System (22 workflows by team); webinar: start with 2–4 workflows, ~90-day production.'],
+ ['R18','AI Studio fixes from feedback','studio','Edited coach clones stop receiving base improvements; publishing is only self or whole org; no shared editing; reviewers call coach prompts unreliable.','Upgrade diffs for clones, team-level publishing, shared editing with version history, and an eval preview before any coach goes live.','Help center: Agentic Network and User roles; SoftwareFinder review (Aug 2026).'],
+ ['R12','Analytics that measure the customer, not app usage','analytics-urgency','"Active days" counts activity inside Databook, so "going cold" can mean the rep stopped opening the app.','Customer-side engagement from CRM, Gong and calendar; white-space clusters become allocation decisions; hours saved drops to context.','help.databook.com, "Interpreting Focus on High Urgency Accounts".']
+];
+const CAT=[
+ ['Where technology and the market are heading',[['P0','R15'],['P0','R5'],['P1','R13'],['P1','R4']]],
+ ['Today\u2019s customer pain points, including AI Studio',[['P0','R14'],['P0','R18'],['P1','R16'],['P1','R6'],['P2','R3'],['P2','R12']]],
+ ['Future of GTM decisions and outcome-based pricing',[['P0','R11'],['P0','R17'],['P1','R1'],['P1','R7'],['P1','R8'],['P1','R9'],['P2','R10'],['P2','R2']]]
+];
+const TOP5=[['1','Close the coverage and freshness gap','Customer feedback','R14','decision-meridia'],['2','Make AI Studio production-grade','Customer feedback','C1','coach'],['3','Know the buying group, act in the CRM','Customer feedback','R16','decision-halvorsen'],['4','An outcome ledger a CFO would sign','Outcome pricing · webinar','R11','outcomes'],['5','Be the decision layer inside other tools','Market and competitors','S1','surfaces'],['★','Moonshot: self-serve for mid-market','Segment expansion','','selfserve']];
+function renderRecs(){const pc={P0:'#B4531A',P1:'#0F6E6C',P2:'#6b7380'};$('#reclist').innerHTML=`<div style="padding:16px 18px 4px;font-weight:700;font-size:13px;color:#B4531A;text-transform:uppercase;letter-spacing:.4px">Start here: five ideas and a moonshot</div>`+TOP5.map(t=>`<div class="ri" style="display:flex;gap:10px;align-items:center"><span class="rn" style="background:${t[0]==='★'?'#B4531A':'#7b5fc7'}">${t[0]}</span><div style="flex:1"><div class="rt">${t[1]}</div><div class="anc" style="margin-top:2px">${t[2]}</div></div><button class="btn" onclick="goRec('${t[3]||'x'}','${t[4]}')">Show me</button></div>`).join('')+`<div style="padding:18px 18px 0;font-size:12px;color:var(--ink3)">All options, by theme</div>`+CAT.map(([c,items])=>`<div style="padding:16px 18px 4px;font-weight:700;font-size:13px;color:#5b4a8a;text-transform:uppercase;letter-spacing:.4px">${c}</div>`+items.map(([pr,id])=>{const r=RECS.find(x=>x[0]===id);if(!r)return '';return `<div class="ri"><div><span class="rn">${r[0]}</span><span style="display:inline-block;background:${pc[pr]};color:#fff;font-size:11px;font-weight:700;border-radius:3px;padding:2px 6px;margin-right:8px">${pr}</span><span class="rt">${r[1]}</span></div><div class="rk">Problem today</div><div class="rv">${r[3]}</div><div class="rk">Idea</div><div class="rv">${r[4]}</div><div class="anc">Source: ${r[5]}</div><div style="margin-top:8px"><button class="btn" onclick="goRec('${r[0]}','${r[2]}')">Show me</button></div></div>`}).join('')).join('')}
+window.goRec=(id,route)=>{document.body.classList.add('diff');const target=route;if(location.hash.slice(1)!==target)location.hash=target;else route_();setTimeout(()=>{if(id==='R8'&&!document.getElementById('R8')){STATE.halvorsen.status='approved';STATE.halvorsen.log.push([now(),'Maya Okafor approved option A (demo).']);renderThread('halvorsen')}const el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}},120);if(window.innerWidth<1500)$('#drawer').classList.remove('on')};
+/* ============ ROUTER ============ */
+function route(){const h=(location.hash||'#home').slice(1);
+ const sect=h.startsWith('decision-')?'home':(h==='outcomes'||h.startsWith('analytics'))?'analytics':h==='coach'?'studio':h==='surfaces'?'home':h;
+ document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===sect));
+ if(h.startsWith('decision-'))renderThread(h.slice(9));
+ else if(h==='outcomes')renderOutcomes();
+ else if(h==='analytics-urgency')renderAnalytics('u');
+ else if(h==='analytics-whitespace')renderAnalytics('w');
+ else if(h==='analytics-coach')renderAnalytics('c');
+ else if(h==='workflows')renderWorkflows();
+ else if(h==='selfserve')renderSelfServe();
+ else if(h==='coach')renderCoach();
+ else if(h==='surfaces')renderSurfaces();
+ else if(['accounts','library','studio','governance','admin'].includes(h))renderSimple(h);
+ else renderHome();
+ window.scrollTo(0,0);
+}
+$('#dt').onclick=()=>{document.body.classList.toggle('diff')};
+const route_=route;window.addEventListener('hashchange',route);renderRecs();$('#recbtn').onclick=()=>$('#drawer').classList.toggle('on');route();
+</script>
+</body>
+</html>
