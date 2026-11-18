@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MonetizeIQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: a vivid gradient masthead with tabs; each tab is a grid of cards. Market map → cockpit → outcome lab → scenarios. */
+  --bg:#F4F5FB; --surface:#FFFFFF; --sunken:#F1F2F9; --ink:#14152B; --muted:#5B5F7A; --faint:#8C90A8; --line:#E3E5F0;
+  --c1:#FF5E5B; --c2:#E040A0; --c3:#7C3AED; --c4:#2563EB; --c5:#06B6D4; --c6:#10B981; --c7:#F59E0B; --c8:#84CC16;
+  --seat:#64748B; --credit:#0EA5C6; --hybrid:#F59E0B; --outcome:#D63AA6;
+  --m-effort:#0EA5C6; --m-output:#65A30D; --m-event:#D63AA6; --m-lift:#F2542D;
+  --gain:#2563EB; --loss:#F2542D; --good:#059669; --warn:#D97706; --crit:#DC2626;
+  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --r:14px; --shadow:0 1px 2px rgba(20,21,43,.06),0 8px 24px -12px rgba(20,21,43,.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C0D1A; --surface:#15172A; --sunken:#1C1F36; --ink:#EEF0FA; --muted:#A6AAC6; --faint:#7479A0; --line:#2A2E4D;
+  --seat:#94A3B8; --credit:#22D3EE; --hybrid:#FBBF24; --outcome:#F472D0;
+  --m-effort:#22D3EE; --m-output:#A3E635; --m-event:#F472D0; --m-lift:#FF7A59;
+  --gain:#60A5FA; --loss:#FF7A59; --good:#34D399; --warn:#FBBF24; --crit:#F87171;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.8); color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0C0D1A; --surface:#15172A; --sunken:#1C1F36; --ink:#EEF0FA; --muted:#A6AAC6; --faint:#7479A0; --line:#2A2E4D;
+  --seat:#94A3B8; --credit:#22D3EE; --hybrid:#FBBF24; --outcome:#F472D0;
+  --m-effort:#22D3EE; --m-output:#A3E635; --m-event:#F472D0; --m-lift:#FF7A59;
+  --gain:#60A5FA; --loss:#FF7A59; --good:#34D399; --warn:#FBBF24; --crit:#F87171;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.8); color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+h2{font-size:17px;font-weight:600}
+h3{font-size:15px;font-weight:600}
+a{color:var(--c4)}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* masthead */
+.mast{position:relative;color:#fff;overflow:hidden;
+  background:radial-gradient(120% 140% at 0% 0%,#FF5E5B 0%,transparent 45%),radial-gradient(90% 120% at 35% 120%,#E040A0 0%,transparent 55%),radial-gradient(90% 140% at 75% -20%,#7C3AED 0%,transparent 55%),radial-gradient(80% 140% at 110% 60%,#06B6D4 0%,transparent 55%),#3B1C8C}
+.mast::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(90deg,transparent,#000 40%,#000 70%,transparent);pointer-events:none}
+.mast-in{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:22px 20px 0;display:grid;gap:16px}
+.brand{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;backdrop-filter:blur(6px)}
+.logo h1{font-size:30px;font-weight:800;line-height:1}
+.logo .tag{font-size:13px;opacity:.9;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;border-radius:999px;padding:4px 11px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3)}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:10px 12px;backdrop-filter:blur(6px)}
+.stat b{display:block;font:600 22px var(--mono);letter-spacing:-.02em}
+.stat span{font-size:12px;opacity:.92}
+.stat a{color:#fff;opacity:.75;font-size:11px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs a{color:#fff;text-decoration:none;font:600 14px var(--body);padding:10px 16px;border-radius:12px 12px 0 0;opacity:.85;display:inline-flex;align-items:center;gap:8px}
+.tabs a:hover{opacity:1;background:rgba(255,255,255,.12)}
+.tabs a[aria-current="page"]{background:var(--bg);color:var(--ink);opacity:1}
+.tabs .n{font:600 11px var(--mono);border-radius:6px;padding:1px 6px;background:rgba(255,255,255,.22)}
+.tabs a[aria-current="page"] .n{background:var(--sunken);color:var(--muted)}
+.wrap{max-width:1360px;margin:0 auto;padding:20px;display:grid;gap:16px}
+.view[hidden]{display:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:12px;align-content:start;min-width:0;box-shadow:var(--shadow);position:relative}
+.card.ac{border-top:4px solid var(--acc,var(--c3))}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hint{font-size:12px;color:var(--muted)}
+.lbl{font-size:12px;color:var(--muted);font-weight:500}
+.g2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:16px}
+.g2e{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* controls */
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow)}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+select,input[type=text]{font:inherit;color:var(--ink);background:var(--sunken);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+:focus-visible{outline:2px solid var(--c3);outline-offset:2px}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--sunken);border:1px solid var(--line);border-radius:11px;padding:3px;gap:2px}
+.seg button{white-space:nowrap;font:500 13px var(--body);color:var(--muted);background:transparent;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.seg.models button[aria-pressed="true"]{color:#fff;background:var(--mc)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.kpi{border-radius:var(--r);padding:12px 14px;display:grid;gap:3px;align-content:start;color:var(--ink);background:linear-gradient(135deg,color-mix(in srgb,var(--k) 16%,var(--surface)),var(--surface) 70%);border:1px solid color-mix(in srgb,var(--k) 35%,var(--line));box-shadow:var(--shadow)}
+.kpi .k{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.kpi .k i{width:8px;height:8px;border-radius:3px;background:var(--k)}
+.kpi .v{font:600 23px var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .d{font-size:12px;color:var(--muted)}
+.up{color:var(--good)} .down{color:var(--crit)}
+/* banners */
+.banner{display:flex;gap:12px;align-items:flex-start;border-radius:12px;padding:12px 14px;border:1px solid;font-size:13px}
+.banner b{font-weight:600}
+.banner.good{background:color-mix(in srgb,var(--good) 10%,var(--surface));border-color:color-mix(in srgb,var(--good) 40%,var(--line))}
+.banner.warn{background:color-mix(in srgb,var(--warn) 12%,var(--surface));border-color:color-mix(in srgb,var(--warn) 45%,var(--line))}
+.banner.crit{background:color-mix(in srgb,var(--crit) 10%,var(--surface));border-color:color-mix(in srgb,var(--crit) 45%,var(--line))}
+.banner.info{background:color-mix(in srgb,var(--c3) 9%,var(--surface));border-color:color-mix(in srgb,var(--c3) 35%,var(--line))}
+.banner .ico{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#fff;font:700 13px var(--body)}
+.banner.good .ico{background:var(--good)} .banner.warn .ico{background:var(--warn)} .banner.crit .ico{background:var(--crit)} .banner.info .ico{background:var(--c3)}
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px;color:var(--cc);background:color-mix(in srgb,var(--cc) 13%,transparent);border:1px solid color-mix(in srgb,var(--cc) 35%,transparent);white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+/* builder */
+.field{display:grid;gap:3px}
+.field-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.field-row .num{font-size:13px;font-weight:600}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;margin:8px 0;background:linear-gradient(90deg,var(--rc,var(--c3)) var(--p,50%),var(--line) var(--p,50%));cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--surface);border:3px solid var(--rc,var(--c3));box-shadow:0 1px 4px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--rc,var(--c3))}
+.group-t{font:600 11px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--gc,var(--faint));padding-top:6px;border-top:1px dashed var(--line);display:flex;align-items:center;gap:6px}
+.group-t:first-of-type{border-top:0;padding-top:0}
+/* map */
+.meters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.meter{border-radius:12px;padding:12px;border:1px solid color-mix(in srgb,var(--mc) 40%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--mc) 14%,var(--surface)),var(--surface) 75%);display:grid;gap:4px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.meter[aria-pressed="true"]{box-shadow:0 0 0 2px var(--mc) inset}
+.meter .step{font:600 11px var(--mono);color:var(--mc)}
+.meter b{font-family:var(--display);font-size:15px}
+.meter span{font-size:12px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;border-radius:14px;padding:14px;background:var(--surface);border:1px solid var(--line);display:grid;gap:8px;align-content:start;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.tile::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--fc),color-mix(in srgb,var(--fc) 40%,#fff))}
+.tile:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px color-mix(in srgb,var(--fc) 60%,transparent)}
+.tile[aria-pressed="true"]{box-shadow:0 0 0 2px var(--fc),0 14px 30px -14px color-mix(in srgb,var(--fc) 60%,transparent)}
+.tile.dim{opacity:.35}
+.tile-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.tile .fam{font:600 11px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--fc)}
+.tile h3{margin-top:2px}
+.tile .vend{font-size:12px;color:var(--muted)}
+.tile .unit{font-size:13px}
+.ring{flex:none}
+.detail{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}
+dl.pb{display:grid;grid-template-columns:118px 1fr;gap:7px 12px;margin:0;font-size:13px}
+dl.pb dt{color:var(--muted)}
+dl.pb dd{margin:0}
+.formula{font:500 13px var(--mono);background:var(--sunken);border:1px solid var(--line);border-left:4px solid var(--fc,var(--c3));border-radius:10px;padding:10px 12px;line-height:1.6}
+.ladder{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px}
+.ladder .st{padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--sunken);color:var(--muted)}
+.ladder .st.on{color:#fff;border-color:transparent;background:var(--lc)}
+.ladder .arr{color:var(--faint)}
+.btn{font:600 13px var(--body);color:#fff;background:linear-gradient(135deg,var(--c3),var(--c2));border:0;border-radius:10px;padding:8px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.ghost{color:var(--ink);background:var(--sunken);border:1px solid var(--line)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+/* charts */
+svg text{font-family:var(--body);fill:var(--muted);font-size:11px}
+svg .t-ink{fill:var(--ink)} svg .t-num{font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font:500 12px var(--body);color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.r,th.r{text-align:right}
+tr.sel td{background:color-mix(in srgb,var(--c3) 9%,transparent)}
+.tbl-wrap{overflow-x:auto}
+/* heat */
+.heat{display:grid;gap:10px}
+.heat-g{display:grid;gap:4px}
+.heat-g .lbl{display:flex;justify-content:space-between}
+.cells{display:flex;flex-wrap:wrap;gap:3px}
+.cell{width:19px;height:19px;border-radius:5px;border:0;padding:0;cursor:pointer;background:var(--sunken);transition:transform .1s}
+.cell:hover{transform:scale(1.25)}
+.cell.on{outline:2.5px solid var(--ink);outline-offset:1px}
+.cell.flag{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.25) 0 2px,transparent 2px 5px)}
+.dimg{opacity:.28}
+.scale{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.scale i{display:block;height:9px;width:170px;border-radius:5px;background:linear-gradient(90deg,var(--loss),var(--sunken),var(--gain))}
+#tip{position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--surface);font-size:12px;padding:7px 10px;border-radius:8px;max-width:280px;opacity:0;transition:opacity .1s}
+/* ask */
+.ask-in{display:flex;gap:8px}
+.ask-in input{flex:1;min-width:0}
+.sugs{display:flex;flex-wrap:wrap;gap:6px}
+.sugs button{font:12px var(--body);color:var(--ink);background:var(--sunken);border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+.sugs button:hover{border-color:var(--c3)}
+.answers{display:grid;gap:10px}
+.ans{border-left:3px solid var(--c2);padding:2px 0 2px 12px;display:grid;gap:4px}
+.ans .q{font-size:12px;color:var(--muted)}
+.ans ol{margin:4px 0 0;padding-left:18px}
+/* account */
+.acct{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:20px}
+.f-row{display:grid;grid-template-columns:110px 1fr 72px;gap:8px;align-items:center;font-size:12px}
+.hbar{height:12px;border-radius:6px;background:var(--sunken);overflow:hidden;display:flex}
+.hbar > i{display:block;height:100%}
+.funnel{display:grid;gap:6px}
+.st{font-size:12px;font-weight:600;white-space:nowrap}
+.st.good{color:var(--good)} .st.warn{color:var(--warn)} .st.crit{color:var(--crit)} .st.muted{color:var(--muted)}
+/* lab */
+.lab-out{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.big{border-radius:14px;padding:14px;color:#fff;background:linear-gradient(135deg,var(--b1),var(--b2));display:grid;gap:2px;box-shadow:var(--shadow)}
+.big span{font-size:12px;opacity:.9}
+.big b{font:600 26px var(--mono);letter-spacing:-.02em}
+.big small{font-size:12px;opacity:.85}
+.split{height:30px;border-radius:10px;overflow:hidden;display:flex;font:600 12px var(--body);color:#fff}
+.split > div{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;transition:width .35s}
+.checks{display:grid;gap:6px;font-size:13px}
+.checks div{display:flex;gap:8px;align-items:flex-start}
+.checks i{flex:none;width:18px;height:18px;border-radius:6px;background:var(--good);color:#fff;font:700 11px var(--body);display:grid;place-items:center;font-style:normal}
+/* scenarios */
+.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.sc{all:unset;box-sizing:border-box;cursor:pointer;border-radius:14px;padding:14px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--sc);display:grid;gap:8px;box-shadow:var(--shadow);transition:transform .15s}
+.sc:hover{transform:translateY(-3px)}
+.sc .n{font:600 12px var(--mono);color:var(--sc)}
+.sc p{margin:0;font-size:13px;color:var(--muted)}
+footer{font-size:12px;color:var(--muted);display:grid;gap:6px;max-width:1360px;margin:0 auto;padding:0 20px 36px}
+@keyframes pop{0%{transform:scale(.97);opacity:.4}100%{transform:none;opacity:1}}
+.pop{animation:pop .3s ease-out}
+@media (max-width:1150px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:1fr 1fr}.g3>:first-child{grid-column:1/-1}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.lab-out{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:800px){.g2,.g2e,.g3,.acct,.detail{grid-template-columns:1fr}.kpis,.stats,.meters{grid-template-columns:repeat(2,minmax(0,1fr))}dl.pb{grid-template-columns:1fr}.logo h1{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="mast-in">
+    <div class="brand">
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 18 L8 11 L12 14 L17 6 L21 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="6" r="2.4" fill="#fff"/></svg></div>
+        <div><h1>MonetizeIQ</h1><div class="tag">Price the work, not the seat. Where AI fits, how outcomes are measured, and what each pricing model does to your book.</div></div>
+      </div>
+      <span class="pill">Synthetic demo · fictional companies · public 2026 benchmarks</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>44%</b><span>of software firms absorb AI inference cost entirely</span> <a href="https://nalpeiron.com/resources/program/2026-state-of-b2b-software-monetization/ai-inference-cost-handling/">Nalpeiron</a></div>
+      <div class="stat"><b>8%</b><span>of leaders are fully confident in what AI features cost</span> <a href="https://info.digitalroute.com/state-of-ai-monetization-2026">DigitalRoute</a></div>
+      <div class="stat"><b>61%</b><span>say forecasting AI usage and revenue got harder</span> <a href="https://info.digitalroute.com/state-of-ai-monetization-2026">DigitalRoute</a></div>
+      <div class="stat"><b>~10%</b><span>of hybrid AI meters are outcome-based</span> <a href="https://www.bain.com/it/insights/ai-pricing-a-reality-check-on-effort-usage-and-outcomes/">Bain</a></div>
+      <div class="stat"><b>53%</b><span>projected AI gross margin in 2026, vs. 70%+ for SaaS</span> <a href="https://www.iconiq.com/growth/insights/state-of-ai-2026">ICONIQ</a></div>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <a href="#map" data-v="map"><span class="n">01</span>Market map</a>
+      <a href="#cockpit" data-v="cockpit"><span class="n">02</span>Pricing cockpit</a>
+      <a href="#lab" data-v="lab"><span class="n">03</span>Outcome lab</a>
+      <a href="#scenarios" data-v="scenarios"><span class="n">04</span>Scenarios</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- MARKET MAP -->
+<section class="wrap view" id="v-map">
+  <div class="card ac" style="--acc:var(--c2)">
+    <div class="card-h"><h2>Four ways to meter AI, from effort to proven results</h2><span class="hint">click a meter to filter the map</span></div>
+    <div class="meters" id="meters"></div>
+  </div>
+  <div class="g2">
+    <div class="card ac" style="--acc:var(--c3)">
+      <div class="card-h"><h2>Where AI fits: 12 categories across industries</h2><span class="hint" id="tile-h"></span></div>
+      <div class="chips" id="famf"></div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card ac" style="--acc:var(--c5)">
+        <div class="card-h"><h2>Readiness map</h2><span class="hint">hover or click a dot</span></div>
+        <div id="bubble"></div>
+        <div class="hint">Right = the result is measurable in a trusted system. Up = the result can be credited to the AI and known quickly. Bain's three conditions: observable, attributable, contractible.</div>
+      </div>
+      <div class="card ac" id="detail" style="--acc:var(--c2)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- COCKPIT -->
+<section class="wrap view" id="v-cockpit" hidden>
+  <div class="bar">
+    <div class="ctl"><label class="lbl" for="cat">AI category</label><select id="cat"></select></div>
+    <div class="ctl"><span class="lbl" id="model-l">Pricing model</span><div class="seg models" id="model" role="group" aria-labelledby="model-l"></div></div>
+    <div class="ctl"><span class="lbl" id="segf-l">Segment</span><div class="seg" id="segf" role="group" aria-labelledby="segf-l"></div></div>
+  </div>
+  <div id="gate"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="g3">
+    <div class="card ac" style="--acc:var(--c3)">
+      <div class="card-h"><h2>Terms and tokens</h2><span class="hint" id="b-unit"></span></div>
+      <div class="group-t" style="--gc:var(--m-effort)"><span class="dot" style="background:var(--m-effort)"></span>Agent workload</div>
+      <div class="field" style="--rc:var(--m-effort)"><div class="field-row"><label for="ktok" class="lbl">Tokens per task</label><span class="num" id="ktok-v"></span></div><input type="range" id="ktok" min="0.25" max="3" step="0.05"></div>
+      <div class="field" style="--rc:var(--m-effort)"><div class="field-row"><label for="tokp" class="lbl">Model cost, blended $ per 1M tokens</label><span class="num" id="tokp-v"></span></div><input type="range" id="tokp" min="0.25" max="15" step="0.25"></div>
+      <div class="group-t" style="--gc:var(--credit)"><span class="dot" style="background:var(--credit)"></span>Credit terms</div>
+      <div class="field"><span class="lbl" id="cmode-l">How credits are charged</span><div class="seg" id="cmode" role="group" aria-labelledby="cmode-l"></div></div>
+      <div class="field" id="markup-f" style="--rc:var(--credit)"><div class="field-row"><label for="markup" class="lbl">Markup on token cost</label><span class="num" id="markup-v"></span></div><input type="range" id="markup" min="0" max="150" step="5"></div>
+      <div class="group-t" style="--gc:var(--outcome)"><span class="dot" style="background:var(--outcome)"></span>Outcome terms</div>
+      <div class="field" style="--rc:var(--outcome)"><div class="field-row"><label for="price" class="lbl" id="price-l"></label><span class="num" id="price-v"></span></div><input type="range" id="price"></div>
+      <div class="field" style="--rc:var(--outcome)"><div class="field-row"><label for="shift" class="lbl" id="shift-l"></label><span class="num" id="shift-v"></span></div><input type="range" id="shift"></div>
+      <div class="field" style="--rc:var(--outcome)"><div class="field-row"><label for="win" class="lbl" id="win-l"></label><span class="num" id="win-v"></span></div><input type="range" id="win" min="0" step="1"></div>
+      <div class="group-t" style="--gc:var(--hybrid)"><span class="dot" style="background:var(--hybrid)"></span>Hybrid terms</div>
+      <div class="field" style="--rc:var(--hybrid)"><div class="field-row"><label for="fee" class="lbl">Platform fee, share of today's seat bill (prepays outcomes)</label><span class="num" id="fee-v"></span></div><input type="range" id="fee" min="0" max="100" step="5"></div>
+      <div class="field" style="--rc:var(--hybrid)"><div class="field-row"><label for="cap" class="lbl">Cap, multiple of today's seat bill</label><span class="num" id="cap-v"></span></div><input type="range" id="cap" min="1" max="5" step="0.25"></div>
+    </div>
+    <div class="card ac" style="--acc:var(--c4)">
+      <div class="card-h"><h2>Revenue bridge</h2><span class="hint" id="bridge-h"></span></div>
+      <div id="bridge"></div>
+      <div class="hint" id="bridge-n"></div>
+    </div>
+    <div class="card ac" style="--acc:var(--c7)">
+      <div class="card-h"><h2>Forecast and margin</h2><span class="hint">annual, 80% range</span></div>
+      <div id="fcast"></div>
+      <div class="tbl-wrap"><table id="mtbl"></table></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card ac" style="--acc:var(--c5)">
+      <div class="card-h"><h2>Token economics: gross margin as model prices move</h2><span class="hint" id="tok-h"></span></div>
+      <div id="curve"></div>
+      <div class="legend" id="curve-l"></div>
+      <div class="hint" id="curve-n"></div>
+    </div>
+    <div class="card ac" style="--acc:var(--c2)">
+      <div class="card-h"><h2>Ask the pane</h2><span class="hint">rule-based answers from the same engine</span></div>
+      <form class="ask-in" id="askf"><label for="askq" class="lbl" style="position:absolute;left:-9999px">Question</label><input type="text" id="askq" placeholder="What if token prices drop 50%?" autocomplete="off"><button class="btn" type="submit">Ask</button></form>
+      <div class="sugs" id="sugs"></div>
+      <div class="answers" id="answers"></div>
+    </div>
+  </div>
+  <div class="card ac" style="--acc:var(--c1)">
+    <div class="card-h"><h2>Book heatmap</h2><span class="hint" id="heat-h"></span></div>
+    <div class="scale"><span>vendor earns less</span><i></i><span>vendor earns more</span><span style="margin-left:10px">striped = data issue</span></div>
+    <div class="heat" id="heat"></div>
+  </div>
+  <div class="card ac" id="acct" style="--acc:var(--c3)"></div>
+</section>
+
+<!-- OUTCOME LAB -->
+<section class="wrap view" id="v-lab" hidden>
+  <div class="bar">
+    <div class="ctl"><label class="lbl" for="labcat">AI category</label><select id="labcat"></select></div>
+    <div id="lab-meter" class="chips"></div>
+    <span class="hint" style="margin-left:auto">Defaults are editable assumptions; benchmark sources are linked where public.</span>
+  </div>
+  <div class="lab-out" id="labout"></div>
+  <div class="g2">
+    <div class="card ac" style="--acc:var(--c1)" id="labin"></div>
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card ac" style="--acc:var(--c2)">
+        <div class="card-h"><h2>Who keeps the value</h2><span class="hint">per month</span></div>
+        <div class="split" id="split"></div>
+        <div id="drivers"></div>
+      </div>
+      <div class="card ac" style="--acc:var(--c6)">
+        <div class="card-h"><h2>Evidence the invoice needs</h2></div>
+        <div class="checks" id="checks"></div>
+        <div class="tbl-wrap"><table id="inv"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section class="wrap view" id="v-scenarios" hidden>
+  <div class="card ac" style="--acc:var(--c3)">
+    <div class="card-h"><h2>Ten demo records, each proving one behavior</h2><span class="hint">click to open it in the cockpit</span></div>
+    <div class="scen" id="scen"></div>
+  </div>
+</section>
+</main>
+<footer>
+  <div><strong>How the numbers work.</strong> Each category has 96 fictional accounts sized from public benchmarks. Cost to serve = tokens per task × model price + tool and infrastructure cost. Per-action credits are $0.10 per agent action; with the customer's own model key the vendor charges a $0.03 platform fee per action. Outcome revenue counts only verified, undisputed outcomes. Hybrid = the larger of the platform fee and outcome charges, capped. Accounts with missing outcome signals are excluded from totals and shown as unknown. Ask-the-pane answers are rule-based, not a live model.</div>
+  <div>Price anchors: <a href="https://www.intercom.com/help/en/articles/8205718-fin-ai-agent-pricing">Intercom Fin, $0.99 per outcome</a> · <a href="https://www.salesforce.com/blog/flex-credits/">Salesforce Flex Credits, $0.10 per action</a> · <a href="https://salestools.io/da/pricing">AI SDR, $75–$150 per qualified meeting</a> · <a href="https://coworker.ai/blog/gong-pricing">Gong AI credits, Jun 2026</a> · <a href="https://www.aquant.ai/solutions/drive-service-revenue">Aquant, $200–$1,000+ per avoidable dispatch</a> · <a href="https://legaltechnology.com/evenup-launches-ai-drafts-suite-smart-workflow-and-per-case-pricing-model/">EvenUp per-case pricing</a> · <a href="https://www.bain.com/it/insights/ai-pricing-a-reality-check-on-effort-usage-and-outcomes/">Bain AI pricing reality check</a></div>
+</footer>
+<div id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+'use strict';
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const ROOTS=['Arvella','Brekwell','Corvane','Delmora','Estrova','Fenwyck','Galvane','Halvero','Istera','Jorvell','Kestane','Lowmere','Marvane','Norvane','Orlesse','Pellwyn','Quillon','Ravenmoor','Solvane','Tarrow','Ulvane','Vardell','Wexmoor','Yarrowby'];
+const fmtInt=n=>Math.round(n).toLocaleString('en-US');
+const FAM={cx:{n:'Customer experience',c:'var(--c2)'},gtm:{n:'Go-to-market',c:'var(--c3)'},ops:{n:'Operations',c:'var(--c5)'},health:{n:'Healthcare',c:'var(--c6)'},legfin:{n:'Legal and finance',c:'var(--c7)'},build:{n:'Build and create',c:'var(--c1)'}};
+const METERS=[
+ {id:'effort',n:'Effort',c:'var(--m-effort)',d:'Tokens, actions, agent hours. Always measurable; says nothing about value.',ex:'Credits, per action, token pass-through'},
+ {id:'output',n:'Work completed',c:'var(--m-output)',d:'A finished unit of work: a case processed, a note signed, a PR merged.',ex:'Per case, per document, per task'},
+ {id:'event',n:'Outcome event',c:'var(--m-event)',d:'A business result recorded in a system: a resolution, a meeting held, a claim paid.',ex:'Per resolution, per meeting, per claim'},
+ {id:'lift',n:'Outcome lift',c:'var(--m-lift)',d:'Measured improvement against a baseline or holdout: dollars saved, win rate up.',ex:'Share of verified savings, lift bonus'}];
+const L=(t,u)=>`<a href="${u}">${t}</a>`;
+/* ---------- 12 AI categories: map + cockpit + lab ---------- */
+const CATS=[
+ {id:'support',fam:'cx',meter:'event',name:'Customer support agents',vend:'e.g. Sierra, Intercom Fin, Decagon, Zendesk AI',
+  what:'Resolves customer conversations end to end across chat, email and voice.',
+  quant:'billable = conversations × resolution rate × (1 − reopen rate in window)',market:'Per resolution is now standard: '+L('Fin $0.99 per outcome','https://www.intercom.com/help/en/articles/8205718-fin-ai-agent-pricing')+'; '+L('Sierra negotiates per resolution','https://fin.ai/learn/sierra-ai-pricing')+'.',
+  tool:'AI support agent',unit:'resolved conversation',task:'conversation',tasks:'conversations',rate:'Resolution rate',
+  seatPrice:139,seatName:'helpdesk seat',perSeat:250,scale:1,s:.65,sd:.05,vol:.12,actions:4,ktok:40,infra:.03,
+  price:.99,pmin:.25,pmax:3,pstep:.01,excl:.08,disp:.04,tau:4,win:7,wmax:30,winLabel:'Verification window: no reopen within',
+  metrics:'Resolution rate, 7-day reopen rate, CSAT on AI conversations',source:'Helpdesk ticket and conversation events',rule:'No human handoff; no reopen in the window; 2% weekly QA sample',trail:'Transcript, resolution event, QA verdict',
+  exclReason:'Reopened in window',disputeReason:'Customer says not resolved',prefix:'HD',ready:[95,85,95,90],
+  suffix:['Mobile','Air','Bank','Home','Outfitters','Insurance'],profile:a=>`${fmtInt(a.att)} conversations/mo · ${fmtInt(a.seats)} support agents`,
+  lab:{drivers:[{vol:['Conversations per month',100000,5000,500000,5000],base:['Resolved by AI before (%)',0,0,90,1],ai:['Resolved by AI now (%)',65,0,95,1],unit:['Cost of a human-handled conversation ($)',6,1,30,.5],kind:'pct',out:'resolutions'}],attr:100,share:15,attrNote:'Event outcome: every resolution is verified, so attribution is 100%.'}},
+ {id:'field',fam:'ops',meter:'lift',name:'Service intelligence (field service)',vend:'e.g. Aquant, ServiceMax, Salesforce Field Service',
+  what:'Guides technicians and call centers to the right fix and the right part, and resolves cases remotely.',
+  quant:'savings = jobs × (parts per job before − after) × part cost + jobs × (avoidable dispatch rate before − after) × dispatch cost',market:L('Aquant: each avoidable dispatch costs $200–$1,000+','https://www.aquant.ai/solutions/drive-service-revenue')+'; '+L('RATIONAL cut parts per job 34%','https://www.casestudies.com/company/aquant/case-study/rational-transforms-service-provider-performance-with-aquant')+'. Pricing is mostly subscription; a share of verified savings is the outcome path.',
+  tool:'Service intelligence agent',unit:'truck roll avoided',task:'service case',tasks:'service cases',rate:'Remote-fix rate',
+  seatPrice:250,seatName:'technician seat',perSeat:30,scale:.5,s:.18,sd:.04,vol:.15,actions:40,ktok:150,infra:.30,
+  price:60,pmin:10,pmax:200,pstep:5,excl:.20,disp:.05,tau:7,win:14,wmax:45,winLabel:'Verification window: no dispatch within',
+  metrics:'First-time fix rate, parts per job, avoidable dispatch rate, mean time to repair',source:'Field service work orders, parts consumption in the ERP, dispatch log',rule:'Case closed remotely; no technician dispatched for the same asset in the window; parts savings compared with a 90-day baseline',trail:'Work order, asset ID, parts issued, dispatch log',
+  exclReason:'Technician dispatched in window',disputeReason:'Fix credited to customer self-service',prefix:'WO',ready:[70,55,80,55],
+  suffix:['HVAC Services','Elevator Co.','Solar','Fiber','Medical Devices','Utilities'],profile:a=>`${fmtInt(a.seats)} technicians · ${fmtInt(a.att)} cases/mo`,
+  lab:{drivers:[{vol:['Service jobs per month',12000,1000,100000,1000],base:['Parts replaced per job, before',2.4,.5,5,.1],ai:['Parts replaced per job, with AI',1.6,.3,5,.1],unit:['Average part cost ($)',180,20,2000,10],kind:'num',out:'unnecessary parts avoided'},
+   {vol:['Service cases per month',12000,1000,100000,1000],base:['Avoidable dispatch rate, before (%)',18,0,40,1],ai:['Avoidable dispatch rate, with AI (%)',12,0,40,1],unit:['Cost per dispatch ($)',450,200,1500,25],kind:'pct',out:'truck rolls avoided',lower:true}],attr:70,share:12,attrNote:'Lift outcome: savings are measured against a holdout of technicians, so only part is credited to the AI.'}},
+ {id:'revintel',fam:'gtm',meter:'lift',name:'Revenue and sales intelligence',vend:'e.g. Gong, Clari, Salesloft',
+  what:'Reads calls, emails and CRM to flag deal risk, coach reps, update records and forecast.',
+  quant:'value = deals × (win rate with AI − holdout win rate) × deal size + reps × admin hours saved × hourly cost',market:L('Gong added metered AI credits on top of seats in June 2026','https://coworker.ai/blog/gong-pricing')+'. Usage and workflow meters lead; outcome pricing needs a holdout to prove lift.',
+  tool:'Deal and forecast agent',unit:'at-risk deal saved',task:'deal flagged',tasks:'deals flagged',rate:'Save rate on flagged deals',
+  seatPrice:120,seatName:'rep seat',perSeat:6,scale:1,s:.08,sd:.035,vol:.20,actions:60,ktok:600,infra:.40,
+  price:400,pmin:50,pmax:1500,pstep:25,excl:.35,disp:.08,tau:30,win:60,wmax:180,winLabel:'Verification window: deal outcome known within',
+  metrics:'Win rate vs. holdout, forecast error, workflows completed, rep hours saved',source:'CRM opportunity history, call recordings, frozen forecast snapshots',rule:'Rep acted on the flag; deal closed-won; lift measured against a 10% holdout of reps',trail:'Flag, rep action, stage history, holdout comparison',
+  exclReason:'No lift vs. holdout',disputeReason:'Deal was already committed',prefix:'OPP',ready:[35,30,70,35],
+  suffix:['Software','Payments','Cloud','Networks','Health Tech','Freight'],profile:a=>`${fmtInt(a.seats)} quota reps · ${fmtInt(a.att)} deals flagged/mo`,
+  lab:{drivers:[{vol:['Qualified deals closing per month',150,10,2000,10],base:['Win rate, holdout reps (%)',22,5,60,1],ai:['Win rate, reps using AI (%)',25,5,60,1],unit:['Average deal size ($)',60000,5000,500000,5000],kind:'pct',out:'extra deals won'},
+   {vol:['Reps using the agent',300,10,3000,10],base:['Admin hours per rep per month, before',26,0,60,1],ai:['Admin hours per rep per month, with AI',15,0,60,1],unit:['Loaded rep hour ($)',90,30,250,5],kind:'num',out:'rep hours saved',lower:true}],attr:50,share:10,attrNote:'Lift outcome: half the win-rate gain is credited to the AI after the holdout comparison.'}},
+ {id:'sdr',fam:'gtm',meter:'event',name:'AI sales development',vend:'e.g. 11x, Qualified, Outreach agents',
+  what:'Researches prospects, writes outreach and books meetings for account executives.',
+  quant:'billable = prospects × meeting rate × (1 − no-show and AE-reject rate)',market:L('$75–$150 per qualified meeting on some enterprise plans','https://salestools.io/da/pricing')+'; a human SDR costs '+L('about $766 per meeting booked','https://aisdr.com/?p=25591')+'.',
+  tool:'AI SDR agent',unit:'qualified meeting held',task:'prospect worked',tasks:'prospects worked',rate:'Meeting rate per prospect',
+  seatPrice:1500,seatName:'AI SDR seat',perSeat:800,scale:.06,s:.025,sd:.008,vol:.20,actions:12,ktok:120,infra:.10,
+  price:120,pmin:25,pmax:300,pstep:5,excl:.30,disp:.06,tau:3,win:5,wmax:21,winLabel:'Verification window: AE accepts within',
+  metrics:'Meeting rate, show rate, meeting-to-opportunity rate, cost per meeting',source:'CRM and calendar',rule:'Meeting held and accepted as qualified by the AE in the window',trail:'CRM activity, calendar event, AE acceptance stamp',
+  exclReason:'No-show or AE rejected',disputeReason:'Duplicate of existing opportunity',prefix:'MTG',ready:[80,70,85,70],
+  suffix:['Analytics','Cloud','Security','Software','Data','Robotics'],profile:a=>`${fmtInt(a.seats)} AI SDR seats · ${fmtInt(a.att)} prospects/mo`,
+  lab:{drivers:[{vol:['Prospects worked per month',20000,1000,200000,1000],base:['Meeting rate before (%)',0,0,5,.1],ai:['Qualified meeting rate with AI (%)',1.5,0,6,.1],unit:['Cost per meeting with a human SDR ($)',766,100,1500,10],kind:'pct',out:'qualified meetings'}],attr:90,share:15,attrNote:'Event outcome: AE acceptance verifies each meeting; 10% held back for meetings that would have come inbound anyway.'}},
+ {id:'it',fam:'ops',meter:'event',name:'IT and employee service',vend:'e.g. ServiceNow, Moveworks',
+  what:'Resolves employee requests: access, devices, HR and IT questions.',
+  quant:'billable = tickets × auto-resolve rate × (1 − repeat-ticket rate)',market:'Mostly seats plus usage; per-resolution offers are emerging. Modeled here.',
+  tool:'AI service desk agent',unit:'ticket auto-resolved',task:'ticket',tasks:'tickets',rate:'Auto-resolve rate',
+  seatPrice:95,seatName:'service desk seat',perSeat:150,scale:1,s:.55,sd:.05,vol:.10,actions:5,ktok:50,infra:.03,
+  price:1.25,pmin:.25,pmax:5,pstep:.05,excl:.10,disp:.04,tau:4,win:7,wmax:30,winLabel:'Verification window: no repeat ticket within',
+  metrics:'Auto-resolve rate, repeat-ticket rate, time to resolve',source:'IT service management system',rule:'Closed without agent touch; no repeat ticket from the same user in the window',trail:'Ticket history and closure event',
+  exclReason:'Repeat ticket',disputeReason:'Employee reopened via chat',prefix:'INC',ready:[90,85,90,90],
+  suffix:['Systems','Logistics','Manufacturing','University','Engineering','Pharma'],profile:a=>`${fmtInt(a.seats*42)} employees · ${fmtInt(a.att)} tickets/mo`,
+  lab:{drivers:[{vol:['Tickets per month',20000,1000,200000,1000],base:['Auto-resolved before (%)',0,0,80,1],ai:['Auto-resolved with AI (%)',55,0,90,1],unit:['Cost of a human-handled ticket ($, assumption)',22,5,80,1],kind:'pct',out:'auto-resolutions'}],attr:100,share:10,attrNote:'Event outcome, verified per ticket.'}},
+ {id:'claims',fam:'ops',meter:'event',name:'Insurance claims automation',vend:'e.g. Tractable, Shift Technology',
+  what:'Assesses damage, checks coverage and settles simple claims straight through.',
+  quant:'billable = claims × straight-through rate × (1 − reopen or supplement rate)',market:'Mostly enterprise licenses; per-claim pricing fits because the claim is the unit of work. Modeled here.',
+  tool:'Claims automation agent',unit:'claim settled straight-through',task:'claim',tasks:'claims',rate:'Straight-through rate',
+  seatPrice:300,seatName:'adjuster seat',perSeat:120,scale:.4,s:.45,sd:.06,vol:.12,actions:20,ktok:120,infra:.20,
+  price:6,pmin:1,pmax:25,pstep:.5,excl:.10,disp:.03,tau:15,win:30,wmax:90,winLabel:'Verification window: no reopen or supplement within',
+  metrics:'Straight-through rate, cycle time, leakage, reopen rate',source:'Claims system and payments ledger',rule:'Paid without adjuster touch; no supplement or reopen in the window',trail:'Claim file, photos, coverage check, payment record',
+  exclReason:'Supplement filed',disputeReason:'Policyholder appeal',prefix:'CLA',ready:[90,80,95,75],
+  suffix:['Mutual','Assurance','Insurance Group','Auto Club','Casualty','Underwriters'],profile:a=>`${fmtInt(a.att)} claims/mo · ${fmtInt(a.seats)} adjusters`,
+  lab:{drivers:[{vol:['Claims per month',8000,500,100000,500],base:['Straight-through before (%)',10,0,80,1],ai:['Straight-through with AI (%)',45,0,90,1],unit:['Adjuster cost per manual claim ($, assumption)',85,20,400,5],kind:'pct',out:'claims settled straight-through'}],attr:90,share:12,attrNote:'Event outcome; 10% held back for claims that were already simple.'}},
+ {id:'rcm',fam:'health',meter:'event',name:'Healthcare revenue cycle',vend:'e.g. AKASA, Infinitus, AGS Health',
+  what:'Works denials, writes appeals and chases payers to recover revenue.',
+  quant:'billable = denials worked × overturn rate × recovered dollars × share',market:L('Vendors often propose a share of the added revenue','https://medcitynews.com/?p=145272')+'.',
+  tool:'Denials management agent',unit:'denial overturned',task:'denial worked',tasks:'denials worked',rate:'Overturn rate',
+  seatPrice:650,seatName:'coder seat',perSeat:60,scale:.4,s:.42,sd:.06,vol:.12,actions:25,ktok:250,infra:.50,
+  price:24,pmin:5,pmax:80,pstep:1,excl:.10,disp:.03,tau:20,win:30,wmax:90,winLabel:'Verification window: payment posted, no reversal within',
+  metrics:'Clean-claim rate, denial rate, overturn rate, dollars recovered',source:'Clearinghouse and payer remittance files',rule:'Payer payment posted; no reversal in the window; price about 4% of a $600 average recovery',trail:'Claim ID, appeal packet, remittance record',
+  exclReason:'Payer reversed payment',disputeReason:'Recovered by manual appeal',prefix:'CLM',ready:[90,80,95,60],
+  suffix:['Health System','Medical Group','Orthopedics',"Children's Hospital",'Cancer Center','Physician Partners'],profile:a=>`${Math.max(1,Math.round(a.seats/25))} hospital${Math.round(a.seats/25)>1?'s':''} · ${fmtInt(a.att)} denials/mo`,
+  lab:{drivers:[{vol:['Denials worked per month',5000,500,50000,500],base:['Overturn rate before (%)',35,0,80,1],ai:['Overturn rate with AI (%)',48,0,90,1],unit:['Average recovery per overturned denial ($)',600,100,5000,50],kind:'pct',out:'extra denials overturned'}],attr:80,share:6,attrNote:'Event outcome; uplift over the prior overturn rate is what is credited.'}},
+ {id:'clinical',fam:'health',meter:'output',name:'Clinical documentation',vend:'e.g. Abridge, Microsoft Dragon Copilot, Suki',
+  what:'Listens to the visit and drafts the clinical note for the clinician to sign.',
+  quant:'billable = encounters × notes signed without major edits',market:'Mostly per clinician; per-encounter pricing ties cost to visit volume. Modeled here.',
+  tool:'Ambient documentation agent',unit:'note signed without major edits',task:'patient encounter',tasks:'encounters',rate:'Sign-without-edit rate',
+  seatPrice:400,seatName:'clinician seat',perSeat:300,scale:.3,s:.70,sd:.06,vol:.10,actions:6,ktok:60,infra:.05,
+  price:2,pmin:.25,pmax:6,pstep:.05,excl:.12,disp:.02,tau:2,win:2,wmax:14,winLabel:'Verification window: signed within',
+  metrics:'Sign-without-edit rate, documentation minutes per visit, after-hours charting',source:'EHR note audit log',rule:'Clinician signs the note with edits under 15% of text in the window',trail:'Note version history, signer, edit distance',
+  exclReason:'Heavy clinician edits',disputeReason:'Note amended after signing',prefix:'ENC',ready:[80,85,90,90],
+  suffix:['Health','Medical Center','Clinics','Pediatrics','Family Medicine','Specialty Care'],profile:a=>`${fmtInt(a.seats)} clinicians · ${fmtInt(a.att)} encounters/mo`,
+  lab:{drivers:[{vol:['Encounters per month',30000,1000,300000,1000],base:['Documentation minutes per visit, before',16,2,30,1],ai:['Documentation minutes per visit, with AI',6,1,30,1],unit:['Value of a clinician minute ($, assumption)',3,1,8,.25],kind:'num',out:'clinician minutes saved',lower:true}],attr:85,share:10,attrNote:'Output outcome: each signed note is counted; minutes saved are measured against a pre-launch time study.'}},
+ {id:'legal',fam:'legfin',meter:'output',name:'Legal work',vend:'e.g. Harvey, EvenUp, Spellbook',
+  what:'Reviews contracts, drafts demands and researches matters for lawyers to approve.',
+  quant:'billable = matters processed (per case) or redlines accepted by counsel',market:L('EvenUp moved to per-case pricing','https://legaltechnology.com/evenup-launches-ai-drafts-suite-smart-workflow-and-per-case-pricing-model/')+'; '+L('Harvey and CoCounsel are mostly per seat','https://amicoreai-website.pages.dev/research/ai_pricing_models_legal_tech')+'.',
+  tool:'Contract review agent',unit:'redline accepted',task:'contract',tasks:'contracts',rate:'Acceptance rate',
+  seatPrice:180,seatName:'legal seat',perSeat:15,scale:.2,s:.60,sd:.08,vol:.18,actions:80,ktok:400,infra:.30,
+  price:25,pmin:5,pmax:120,pstep:5,excl:.20,disp:.05,tau:5,win:10,wmax:30,winLabel:'Verification window: counsel accepts within',
+  metrics:'Review cycle time, share auto-approved, redline acceptance rate',source:'Contract management system',rule:'Counsel accepts the AI redline without rewrite in the window',trail:'Version history, reviewer, acceptance stamp',
+  exclReason:'Counsel rewrote redline',disputeReason:'Contract withdrawn',prefix:'CTR',ready:[65,60,70,65],
+  suffix:['Capital','Realty','Biosciences','Reinsurance','Holdings','Energy'],profile:a=>`${fmtInt(a.seats)} legal staff · ${fmtInt(a.att)} contracts/mo`,
+  lab:{drivers:[{vol:['Contracts per month',300,10,5000,10],base:['Review hours per contract, before',4,.5,20,.5],ai:['Review hours per contract, with AI',1.5,.25,20,.25],unit:['Loaded legal hour ($)',350,100,1200,25],kind:'num',out:'lawyer hours saved',lower:true}],attr:80,share:12,attrNote:'Output outcome; hours saved come from matter time records against a baseline quarter.'}},
+ {id:'ap',fam:'legfin',meter:'event',name:'Finance operations',vend:'e.g. Vic.ai, Stampli, Ramp',
+  what:'Reads invoices, matches them to orders and posts them to the ledger.',
+  quant:'billable = invoices × no-touch rate × (1 − human edit before posting)',market:'Mostly per invoice volume tiers; true no-touch pricing is an outcome meter. Modeled here.',
+  tool:'Accounts payable agent',unit:'invoice processed with no touch',task:'invoice',tasks:'invoices',rate:'No-touch rate',
+  seatPrice:110,seatName:'AP clerk seat',perSeat:600,scale:.3,s:.78,sd:.04,vol:.08,actions:2,ktok:15,infra:.01,
+  price:.25,pmin:.05,pmax:1.5,pstep:.05,excl:.06,disp:.02,tau:2,win:3,wmax:14,winLabel:'Verification window: no human edit within',
+  metrics:'Straight-through rate, exception rate, days payable outstanding',source:'ERP journal and AP sub-ledger',rule:'Posted to the ERP with no human edit in the window; three-way match passed',trail:'Invoice image, match result, journal entry',
+  exclReason:'Human edit before posting',disputeReason:'Duplicate invoice',prefix:'INV',ready:[95,90,95,95],
+  suffix:['Foods','Industrial','Distribution','Retail Group','Construction','Hospitality'],profile:a=>`${fmtInt(a.att)} invoices/mo · ${fmtInt(a.seats)} AP staff`,
+  lab:{drivers:[{vol:['Invoices per month',50000,1000,500000,1000],base:['No-touch before (%)',20,0,90,1],ai:['No-touch with AI (%)',78,0,98,1],unit:['Cost of a manually processed invoice ($, assumption)',9,2,30,.5],kind:'pct',out:'invoices processed with no touch'}],attr:100,share:10,attrNote:'Event outcome, verified in the ERP journal.'}},
+ {id:'code',fam:'build',meter:'output',name:'Software engineering agents',vend:'e.g. GitHub Copilot, Cursor, Devin',
+  what:'Writes, tests and fixes code, and opens pull requests for engineers to review.',
+  quant:'billable = agent tasks × PRs merged without rework',market:L('GitHub moved Copilot plans to usage-based billing in 2026','https://www.digitalapplied.com/blog/ai-unit-economics-pricing-margins-services-2026-framework')+'. Heavy token use makes flat seats unprofitable for power users.',
+  tool:'AI coding agent',unit:'pull request merged',task:'agent task',tasks:'agent tasks',rate:'Merged-without-rework rate',
+  seatPrice:40,seatName:'developer seat',perSeat:120,scale:1,s:.35,sd:.07,vol:.25,actions:30,ktok:250,infra:.05,
+  price:3,pmin:.5,pmax:15,pstep:.25,excl:.10,disp:.03,tau:5,win:7,wmax:30,winLabel:'Verification window: not reverted within',
+  metrics:'Merge rate, rework rate, cycle time, escaped defects',source:'Git host and CI pipeline',rule:'PR merged by a human reviewer; tests pass; not reverted in the window',trail:'PR, review approval, CI run, commit hash',
+  exclReason:'Reverted in window',disputeReason:'Engineer rewrote most of the diff',prefix:'PR',ready:[75,65,90,85],
+  suffix:['Labs','Technologies','Systems','Software','Digital','Platforms'],profile:a=>`${fmtInt(a.seats)} developers · ${fmtInt(a.att)} agent tasks/mo`,
+  lab:{drivers:[{vol:['Agent tasks per month',10000,500,200000,500],base:['Merged without rework before (%)',0,0,60,1],ai:['Merged without rework (%)',35,0,80,1],unit:['Value of a merged PR, 2 hours of engineering ($)',200,50,800,10],kind:'pct',out:'PRs merged'}],attr:70,share:5,attrNote:'Output outcome; 30% held back because engineers would have written some of this code anyway.'}},
+ {id:'marketing',fam:'build',meter:'lift',name:'Marketing and content',vend:'e.g. Jasper, Writer, Typeface',
+  what:'Generates campaigns, copy and creative, and tests variants.',
+  quant:'value = sessions × (conversion with AI − control) × value per conversion',market:'Mostly seats and credits; lift-based fees need a control group. Modeled here.',
+  tool:'AI content and campaign agent',unit:'asset approved and shipped',task:'asset',tasks:'assets',rate:'Approval rate',
+  seatPrice:125,seatName:'marketer seat',perSeat:80,scale:.5,s:.55,sd:.08,vol:.20,actions:15,ktok:30,infra:.02,
+  price:3.5,pmin:.5,pmax:15,pstep:.25,excl:.15,disp:.03,tau:3,win:5,wmax:21,winLabel:'Verification window: shipped without rewrite within',
+  metrics:'Conversion lift vs. control, approval rate, time to launch',source:'Web analytics, marketing automation, approvals in the content system',rule:'Asset shipped without rewrite; lift measured with a 10% control audience',trail:'Asset version, approver, experiment ID, conversion events',
+  exclReason:'Rewritten by editor',disputeReason:'Brand review rejected',prefix:'AST',ready:[55,40,65,70],
+  suffix:['Beauty','Apparel','Travel','Media','Home Goods','Fitness'],profile:a=>`${fmtInt(a.seats)} marketers · ${fmtInt(a.att)} assets/mo`,
+  lab:{drivers:[{vol:['Sessions per month',500000,10000,5000000,10000],base:['Conversion, control group (%)',2.0,.2,10,.1],ai:['Conversion, AI variants (%)',2.3,.2,10,.1],unit:['Value per conversion ($)',40,5,500,5],kind:'pct',out:'extra conversions'}],attr:40,share:15,attrNote:'Lift outcome: only 40% of the measured lift is credited after the control comparison.'}}
+];
+const READY_LBL=['Outcome is binary','Attributable to the AI','Trusted system of record','Known quickly'];
+const MODELS=[{id:'seat',n:'Seat'},{id:'credit',n:'Credit'},{id:'hybrid',n:'Hybrid'},{id:'outcome',n:'Outcome'}];
+const CMODES=[{id:'action',n:'Per action'},{id:'pass',n:'Token pass-through'},{id:'byok',n:'Customer’s own key'}];
+const SEGS=[{id:'all',n:'All'},{id:'Enterprise',n:'Enterprise'},{id:'Mid-market',n:'Mid-market'},{id:'SMB',n:'SMB'}];
+const CREDIT_PER_ACTION=.10,BYOK_PER_ACTION=.03;
+/* ---------- Ten demo records (PRD section 5) ---------- */
+const SCEN=[
+ {n:1,cat:'support',name:'Ulvane Home',seg:'Enterprise',seats:891,u:1.19,s:.70,t:'Hero run',d:'Hybrid lifts revenue and margin; every billed outcome traces to a helpdesk record.',set:{model:'hybrid'},c:'var(--good)'},
+ {n:2,cat:'support',name:'Corvane Outfitters',seg:'SMB',seats:22,u:.29,s:.50,t:'Renewal risk caught',d:'A light adopter pays far less under pure outcome. The pane recommends a hybrid floor.',set:{model:'outcome'},c:'var(--warn)'},
+ {n:3,cat:'revintel',name:'Halvero Software',seg:'Enterprise',seats:620,u:1.0,s:.08,t:'Product should stop',d:'Readiness 43: the gate refuses pure outcome and recommends credits plus a lift bonus.',set:{model:'outcome'},c:'var(--crit)'},
+ {n:4,cat:'ap',name:'Kestane Distribution',seg:'Mid-market',seats:40,u:1.0,s:.78,t:'Pass-through trap',d:'Halve model prices and pass-through credit revenue halves too. Try the token slider.',set:{model:'credit',cmode:'pass'},c:'var(--c5)'},
+ {n:5,cat:'sdr',name:'Wexmoor Cloud',seg:'Mid-market',seats:6,u:1.0,s:.025,t:'Dispute-heavy window',d:'A 2-day AE acceptance window triples disputes. Move it to 5 days and watch them fall.',set:{model:'outcome',win:2},c:'var(--c7)'},
+ {n:6,cat:'rcm',name:'Norvane Health System',seg:'Enterprise',seats:300,u:1.1,s:.48,t:'Clean run',d:'Outcome-ready; priced at about 4% of recovered dollars.',set:{model:'outcome'},c:'var(--good)'},
+ {n:7,cat:'legal',name:'Pellwyn Realty',seg:'Mid-market',seats:28,u:1.0,s:.60,t:'Customer’s own model key',d:'The vendor bills a platform fee; the customer’s model bill shows separately, striped.',set:{model:'credit',cmode:'byok'},c:'var(--c3)'},
+ {n:8,cat:'field',name:'Estrova Fiber',seg:'Mid-market',seats:45,u:1.0,s:.18,t:'Stale data',d:'Usage feed is 52 days old, so the recommendation is withheld and marked stale.',set:{model:'hybrid'},flag:'stale',c:'var(--warn)'},
+ {n:9,cat:'it',name:'Delmora Pharma',seg:'Enterprise',seats:520,u:1.0,s:.55,t:'Missing data',d:'No outcome signal connected: outcome revenue shows as unknown, not $0, and stays out of totals.',set:{model:'outcome'},flag:'missing',c:'var(--crit)'},
+ {n:10,cat:'revintel',name:'Tarrow Payments',seg:'Mid-market',seats:110,u:1.4,s:.07,t:'Token exposure',d:'600k tokens per task: at $10 per 1M tokens, per-action credit margin turns negative.',set:{model:'credit',cmode:'action',tokp:10},c:'var(--c1)'}];
+
+/* ---------- Deterministic synthetic book ---------- */
+function rng(seed){let t=seed>>>0;return function(){t+=0x6D2B79F5;let r=Math.imul(t^t>>>15,1|t);r^=r+Math.imul(r^r>>>7,61|r);return((r^r>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const BOOKS={};
+const SCEN_NAMES=new Set(SCEN.map(s=>s.name));
+function book(C){
+  if(BOOKS[C.id])return BOOKS[C.id];
+  const R=rng(hash(C.id));
+  const names=[];ROOTS.forEach(r=>C.suffix.forEach(s=>{const n=r+' '+s;if(!SCEN_NAMES.has(n))names.push(n);}));
+  for(let i=names.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[names[i],names[j]]=[names[j],names[i]];}
+  const plan=[['Enterprise',20,150,900],['Mid-market',44,30,150],['SMB',32,5,30]];
+  const out=[];let k=0;
+  plan.forEach(([seg,n,lo,hi])=>{for(let i=0;i<n;i++){
+    const seats=Math.max(1,Math.round((lo+(hi-lo)*Math.pow(R(),1.6))*C.scale));
+    const u=.45+R()*1.1, att=Math.max(1,Math.round(seats*C.perSeat*u)), s=clamp(C.s*(.72+.56*R()),.002,.97);
+    out.push({id:k,name:names[k],seg,seats,att,s,renew:MONTHS[Math.floor(R()*12)]+' 2027',fresh:Math.floor(R()*9)+1});k++;}});
+  SCEN.filter(x=>x.cat===C.id).forEach((x,i)=>{const idx=out.findIndex(a=>a.seg===x.seg&&!a.scen);const a=out[idx];
+    Object.assign(a,{name:x.name,seats:x.seats,att:Math.round(x.seats*C.perSeat*x.u),s:x.s,scen:x.n,flag:x.flag||null,fresh:x.flag==='stale'?52:2});});
+  BOOKS[C.id]=out;return out;
+}
+
+/* ---------- State ---------- */
+const S={tab:'map',cat:'support',model:'hybrid',seg:'all',cmode:'action',markup:30,tokp:3,ktokMult:1,price:.99,shift:0,win:7,fee:40,cap:2.5,sel:null,mapCat:'field',meterF:null,famF:null,labCat:'field',lab:{},scenNote:null};
+const C_=()=>CATS.find(c=>c.id===S.cat);
+const byId=id=>CATS.find(c=>c.id===id);
+
+/* ---------- Pricing engine ---------- */
+function calc(a,C,P){
+  const s=clamp(a.s+P.shift/100,.001,.98), succ=a.att*s, f=1-Math.exp(-P.win/C.tau);
+  const excl=succ*C.excl*f, ver=succ-excl, disp=ver*C.disp*Math.exp(-P.win/C.tau), bill=ver-disp;
+  const ktok=C.ktok*P.ktokMult, tok=a.att*ktok*1000*P.tokp/1e6, infra=a.att*C.infra, seat=a.seats*C.seatPrice;
+  let credit;if(P.cmode==='pass')credit=(tok+infra)*(1+P.markup/100);else if(P.cmode==='byok')credit=a.att*C.actions*BYOK_PER_ACTION;else credit=a.att*C.actions*CREDIT_PER_ACTION;
+  const outcome=bill*P.price, fee=seat*P.fee/100, hybrid=Math.min(Math.max(outcome,fee),Math.max(fee,seat*P.cap)), full=tok+infra;
+  const missing=a.flag==='missing';
+  return {rev:{seat,credit,hybrid:missing?null:hybrid,outcome:missing?null:outcome},cost:{seat:full,credit:P.cmode==='byok'?infra:full,hybrid:full,outcome:full},custTok:P.cmode==='byok'?tok:0,succ,excl,disp,bill,tok,infra,fee,s,ktok,failedCost:(a.att-bill)*(full/a.att),missing};
+}
+function agg(P,seg,catId){
+  const C=catId?byId(catId):C_(), B=book(C).filter(a=>seg==='all'||a.seg===seg);
+  const T={rev:{seat:0,credit:0,hybrid:0,outcome:0},cost:{seat:0,credit:0,hybrid:0,outcome:0},tok:0,custTok:0,att:0,fee:0,hybVar:0,failed:0,rows:[],excluded:0};
+  B.forEach(a=>{const c=calc(a,C,P);T.rows.push({a,c});if(c.missing){T.excluded++;return;}
+    MODELS.forEach(m=>{T.rev[m.id]+=c.rev[m.id];T.cost[m.id]+=c.cost[m.id];});
+    T.tok+=c.tok;T.custTok+=c.custTok;T.att+=a.att;T.fee+=c.fee;T.hybVar+=Math.max(0,c.rev.hybrid-c.fee);T.failed+=c.failedCost;});
+  const cvOut=Math.sqrt(C.vol*C.vol+Math.pow(C.sd/C.s,2))*.6;
+  T.cv={seat:.02,credit:C.vol*.6,outcome:cvOut,hybrid:cvOut*(T.rev.hybrid?T.hybVar/T.rev.hybrid:0)+.01};
+  return T;
+}
+const P_=()=>({cmode:S.cmode,markup:S.markup,tokp:S.tokp,ktokMult:S.ktokMult,price:S.price,shift:S.shift,win:S.win,fee:S.fee,cap:S.cap});
+
+/* ---------- Helpers ---------- */
+function money(v,d){if(v==null)return 'Unknown';const a=Math.abs(v),sg=v<0?'−':'';let s;
+  if(a>=1e9)s=(a/1e9).toFixed(2)+'B';else if(a>=1e6)s=(a/1e6).toFixed(a>=1e7?1:2)+'M';else if(a>=1e3)s=(a/1e3).toFixed(a>=1e4?0:1)+'K';else s=a.toFixed(d==null?(a<10?2:0):d);return sg+'$'+s;}
+const pct=(v,d=0)=>(v>=0?'+':'−')+Math.abs(v*100).toFixed(d)+'%';
+const pct0=(v,d=0)=>(v*100).toFixed(d)+'%';
+const priceFmt=v=>v<10?'$'+v.toFixed(2):'$'+fmtInt(v);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const col=m=>`var(--${m})`;
+const mName=m=>m==='credit'?'Credit ('+CMODES.find(c=>c.id===S.cmode).n.toLowerCase()+')':MODELS.find(x=>x.id===m).n;
+function readiness(C){const v=C.ready.reduce((x,y)=>x+y,0)/4;
+  if(v>=80)return{v,cls:'good',c:'var(--good)',t:'Outcome-ready',d:'Move this workflow to outcome pricing with a floor.',best:'outcome'};
+  if(v>=60)return{v,cls:'warn',c:'var(--warn)',t:'Hybrid first',d:'Platform fee that prepays outcomes, overage above it.',best:'hybrid'};
+  return{v,cls:'crit',c:'var(--crit)',t:'Credits + lift bonus',d:'Usage credits plus a bonus for lift measured against a holdout.',best:'credit'};}
+const $=id=>document.getElementById(id);
+const paint=el=>{const mn=+el.min||0,mx=+el.max||100;el.style.setProperty('--p',((+el.value-mn)/(mx-mn)*100)+'%');};
+const paintAll=()=>document.querySelectorAll('input[type=range]').forEach(paint);
+document.addEventListener('input',e=>{if(e.target.type==='range')paint(e.target);});
+const PREV={};
+function tween(el,key,to,fmt){if(!el)return;const from=PREV[key]==null?to:PREV[key];PREV[key]=to;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||from===to||!isFinite(from)){el.textContent=fmt(to);return;}
+  const t0=performance.now(),dur=420;const step=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+function ring(v,c,size=46){const r=size/2-5,cir=2*Math.PI*r,off=cir*(1-v/100);
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Readiness ${Math.round(v)}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round" stroke-dasharray="${cir.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" class="t-ink t-num" style="font-size:12px;font-weight:600">${Math.round(v)}</text></svg>`;}
+const meterOf=id=>METERS.find(m=>m.id===id);
+
+/* ---------- Tabs ---------- */
+function route(){const h=(location.hash||'#map').slice(1);S.tab=['map','cockpit','lab','scenarios'].includes(h)?h:'map';
+  document.querySelectorAll('.tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.v===S.tab?'page':'false'));
+  ['map','cockpit','lab','scenarios'].forEach(v=>{$('v-'+v).hidden=v!==S.tab;});
+  if(S.tab==='map')renderMap();if(S.tab==='cockpit')render();if(S.tab==='lab')renderLab();if(S.tab==='scenarios')renderScen();}
+function go(tab){if(location.hash==='#'+tab)route();else location.hash=tab;window.scrollTo({top:0,behavior:'smooth'});}
+
+/* ---------- MARKET MAP ---------- */
+function renderMap(){
+  $('meters').innerHTML=METERS.map((m,i)=>`<button type="button" class="meter" style="--mc:${m.c}" data-m="${m.id}" aria-pressed="${S.meterF===m.id}"><span class="step">0${i+1} · ${['least proof','some proof','strong proof','strongest proof'][i]}</span><b>${m.n}</b><span>${m.d}</span><span style="color:var(--ink)">${m.ex}</span></button>`).join('');
+  $('famf').innerHTML=`<button type="button" class="chip" style="--cc:var(--muted);cursor:pointer" data-f="">All families</button>`+Object.entries(FAM).map(([k,f])=>`<button type="button" class="chip" style="--cc:${f.c};cursor:pointer;${S.famF===k?'box-shadow:0 0 0 2px '+f.c:''}" data-f="${k}">${f.n}</button>`).join('');
+  const shown=CATS.filter(c=>(!S.meterF||c.meter===S.meterF)&&(!S.famF||c.fam===S.famF));
+  $('tile-h').textContent=`${shown.length} of ${CATS.length} shown`;
+  $('tiles').innerHTML=CATS.map(c=>{const r=readiness(c),m=meterOf(c.meter),f=FAM[c.fam],on=shown.includes(c);
+    return `<button type="button" class="tile ${on?'':'dim'}" style="--fc:${f.c}" data-c="${c.id}" aria-pressed="${S.mapCat===c.id}"><div class="tile-top"><div><div class="fam">${f.n}</div><h3>${esc(c.name)}</h3></div>${ring(r.v,r.c)}</div><div class="vend">${esc(c.vend)}</div><div class="unit"><span class="lbl">Outcome unit</span><br>${esc(c.unit)}</div><div class="chips"><span class="chip" style="--cc:${m.c}">${m.n}</span><span class="chip" style="--cc:${r.c}">${r.t}</span></div></button>`;}).join('');
+  renderBubble();renderDetail();
+}
+function renderBubble(){
+  const W=560,H=380,pl=44,pr=118,pt=16,pb=40,X=v=>pl+(W-pl-pr)*(v-40)/60,Y=v=>pt+(H-pt-pb)*(1-(v-25)/75);
+  const pos={support:'r',it:'b',ap:'r',clinical:'l',claims:'r',rcm:'r',sdr:'l',code:'l',field:'r',legal:'r',revintel:'r',marketing:'l'};
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="AI categories by how measurable and how attributable their outcomes are">`;
+  s+=`<rect x="${X(70)}" y="${Y(100)}" width="${X(100)-X(70)}" height="${Y(70)-Y(100)}" fill="var(--good)" opacity=".08" rx="6"/><rect x="${X(40)}" y="${Y(55)}" width="${X(70)-X(40)}" height="${Y(25)-Y(55)}" fill="var(--crit)" opacity=".07" rx="6"/>`;
+  [40,55,70,85,100].forEach(v=>{s+=`<line x1="${X(v)}" x2="${X(v)}" y1="${pt}" y2="${H-pb}" stroke="var(--line)"/><text x="${X(v)}" y="${H-pb+14}" text-anchor="middle" class="t-num">${v}</text>`;});
+  [25,40,55,70,85,100].forEach(v=>{s+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pl-6}" y="${Y(v)+4}" text-anchor="end" class="t-num">${v}</text>`;});
+  s+=`<text x="${(pl+W-pr)/2}" y="${H-6}" text-anchor="middle">Can you measure it? (binary result, trusted system of record)</text>`;
+  s+=`<text transform="translate(12 ${(pt+H-pb)/2}) rotate(-90)" text-anchor="middle">Can you credit the AI? (attributable, known quickly)</text>`;
+  s+=`<text x="${X(71)+4}" y="${Y(100)+14}" style="fill:var(--good);font-weight:600">Price on outcomes</text><text x="${X(41)}" y="${Y(27)}" style="fill:var(--crit);font-weight:600">Credits + lift bonus</text>`;
+  CATS.forEach(c=>{const x=(c.ready[0]+c.ready[2])/2,y=(c.ready[1]+c.ready[3])/2,f=FAM[c.fam],on=S.mapCat===c.id,p=pos[c.id];
+    const short=c.name.split(' (')[0].replace('agents','').replace('Software engineering','Coding').replace('Insurance claims automation','Insurance claims').replace('Revenue and sales intelligence','Revenue intelligence').trim();
+    const lx=p==='r'?X(x)+13:p==='l'?X(x)-13:X(x),ly=p==='t'?Y(y)-13:p==='b'?Y(y)+21:Y(y)+4,anc=p==='r'?'start':p==='l'?'end':'middle';
+    s+=`<g class="bub" data-c="${c.id}" style="cursor:pointer"><circle cx="${X(x)}" cy="${Y(y)}" r="${on?11:8}" fill="${f.c}" stroke="var(--surface)" stroke-width="2" ${on?'':'opacity=".9"'}/><text x="${lx}" y="${ly}" text-anchor="${anc}" class="t-ink" style="font-weight:${on?600:500}">${esc(short)}</text></g>`;});
+  s+='</svg>';$('bubble').innerHTML=s;
+}
+function renderDetail(){
+  const c=byId(S.mapCat),r=readiness(c),m=meterOf(c.meter),f=FAM[c.fam];
+  const ladder=METERS.map(x=>`<span class="st ${x.id===c.meter?'on':''}" style="--lc:${x.c}">${x.n}</span>`).join('<span class="arr">→</span>');
+  $('detail').style.setProperty('--acc',f.c);
+  $('detail').innerHTML=`<div class="card-h"><div><div class="hint" style="color:${f.c};font-weight:600">${f.n}</div><h2>${esc(c.name)}</h2></div>${ring(r.v,r.c,54)}</div>
+  <div>${esc(c.what)} <span class="hint">${esc(c.vend)}</span></div>
+  <div class="ladder"><span class="lbl">Best meter:</span>${ladder}</div>
+  <div class="formula" style="--fc:${m.c}">${esc(c.quant)}</div>
+  <dl class="pb"><dt>Outcome unit</dt><dd>${esc(c.unit)}</dd><dt>Metrics</dt><dd>${esc(c.metrics)}</dd><dt>Signal source</dt><dd>${esc(c.source)}</dd><dt>Validation</dt><dd>${esc(c.rule)}</dd><dt>Audit trail</dt><dd>${esc(c.trail)}</dd><dt>Market today</dt><dd>${c.market}</dd><dt>Recommended path</dt><dd><span class="chip" style="--cc:${r.c}">${r.t}</span> ${esc(r.d)}</dd></dl>
+  <div class="btns"><button class="btn" type="button" id="to-cockpit">Price it in the cockpit</button><button class="btn ghost" type="button" id="to-lab">Quantify it in the outcome lab</button></div>`;
+  $('to-cockpit').onclick=()=>{setCat(c.id);go('cockpit');};
+  $('to-lab').onclick=()=>{S.labCat=c.id;go('lab');};
+}
+
+/* ---------- COCKPIT ---------- */
+function segBtns(el,items,key,withDot){el.innerHTML=items.map(it=>`<button type="button" data-v="${it.id}" aria-pressed="${S[key]===it.id}" style="--mc:${col(it.id)}">${withDot?`<span class="dot" style="background:${S[key]===it.id?'#fff':col(it.id)}"></span>`:''}${it.n}</button>`).join('');
+  el.onclick=e=>{const b=e.target.closest('button');if(!b)return;S[key]=b.dataset.v;segBtns(el,items,key,withDot);render();};}
+function setCat(id,keepSel){
+  S.cat=id;const C=C_();S.price=C.price;S.win=C.win;S.shift=0;S.ktokMult=1;S.tokp=3;S.cmode='action';
+  $('cat').value=id;
+  const pr=$('price');pr.min=C.pmin;pr.max=C.pmax;pr.step=C.pstep;pr.value=S.price;$('price-l').textContent='Price per '+C.unit;
+  const sm=Math.max(.5,Math.min(15,Math.round(C.s*100*.6)));const sh=$('shift');sh.min=-sm;sh.max=sm;sh.step=sm<3?.1:1;sh.value=0;$('shift-l').textContent=C.rate+' change (points)';
+  const w=$('win');w.max=C.wmax;w.value=S.win;$('win-l').textContent=C.winLabel;
+  $('ktok').value=1;$('tokp').value=3;$('b-unit').textContent='unit: '+C.unit;
+  if(!keepSel){const B=book(C);S.sel=B.reduce((m,a)=>a.seats>m.seats?a:m,B[0]).id;}
+  S.scenNote=null;$('answers').innerHTML='';segBtns($('cmode'),CMODES,'cmode');
+}
+function renderGate(T){
+  const C=C_(),r=readiness(C);let h='';
+  if(S.scenNote)h+=`<div class="banner info"><span class="ico">${S.scenNote.n}</span><div><b>Scenario ${S.scenNote.n}: ${esc(S.scenNote.t)}.</b> ${esc(S.scenNote.d)}</div></div>`;
+  if(S.model==='outcome'&&r.v<60)h+=`<div class="banner crit"><span class="ico">!</span><div><b>Readiness gate: pure outcome pricing is not recommended for ${esc(C.name.toLowerCase())}</b> (score ${Math.round(r.v)} of 100, below 60). The result is hard to credit to the AI. Recommended: ${esc(r.t.toLowerCase())}. ${esc(r.d)}</div></div>`;
+  else h+=`<div class="banner ${r.cls}"><span class="ico">${r.cls==='good'?'✓':r.cls==='warn'?'~':'!'}</span><div><b>Recommended for ${esc(C.name.toLowerCase())}: ${esc(r.t)}</b> (readiness ${Math.round(r.v)}). ${esc(r.d)}</div></div>`;
+  if(T.excluded)h+=`<div class="banner warn"><span class="ico">?</span><div><b>${T.excluded} account${T.excluded>1?'s':''} excluded from totals:</b> no outcome signal connected, so outcome and hybrid revenue are unknown rather than $0.</div></div>`;
+  $('gate').innerHTML=`<div style="display:grid;gap:8px">${h}</div>`;
+}
+function renderKPIs(T){
+  const C=C_(),m=S.model,seat=T.rev.seat*12,cur=T.rev[m]*12,mg=(T.rev[m]-T.cost[m])/T.rev[m];
+  const rows=T.rows.filter(r=>!r.c.missing);const gain=rows.filter(r=>r.c.rev[m]>r.c.rev.seat*1.02).length,lose=rows.filter(r=>r.c.rev[m]<r.c.rev.seat*.98).length;
+  const who=S.model==='credit'&&S.cmode==='byok'?'paid by customers':'paid by vendor';
+  const k=[
+    {id:'k1',k:'Seat ARR today',c:'var(--seat)',v:seat,f:money,d:`${fmtInt(rows.reduce((x,r)=>x+r.a.seats,0))} ${C.seatName}s`},
+    {id:'k2',k:mName(m)+' ARR',c:col(m),v:cur,f:money,d:`<span class="${cur>=seat?'up':'down'}">${pct(cur/seat-1,1)}</span> vs. seat`},
+    {id:'k3',k:'Gross margin',c:mg<.5?'var(--crit)':'var(--good)',v:mg,f:x=>pct0(x),d:`seat model: ${pct0((T.rev.seat-T.cost.seat)/T.rev.seat)}`},
+    {id:'k4',k:'Model token spend / yr',c:'var(--m-effort)',v:T.tok*12,f:money,d:`${(T.att*C.ktok*S.ktokMult*1000/1e9).toFixed(1)}B tokens/mo · ${who}`},
+    {id:'k5',k:'Forecast range',c:'var(--c7)',v:1.28*T.cv[m],f:x=>'±'+pct0(x),d:'annual, 80% range'},
+    {id:'k6',k:'Accounts pay more / less',c:'var(--c4)',v:null,f:null,d:'vs. today’s seat bill',html:`<span style="color:var(--gain)">${gain}</span> / <span style="color:var(--loss)">${lose}</span>`}];
+  if(!$('k1'))$('kpis').innerHTML=k.map(x=>`<div class="kpi" id="kc-${x.id}"><div class="k"><i></i><span></span></div><div class="v" id="${x.id}"></div><div class="d"></div></div>`).join('');
+  k.forEach(x=>{const el=$('kc-'+x.id);el.style.setProperty('--k',x.c);el.querySelector('.k span').textContent=x.k;el.querySelector('.d').innerHTML=x.d;
+    if(x.html)$(x.id).innerHTML=x.html;else tween($(x.id),x.id,x.v,x.f);});
+}
+function renderBridge(T){
+  const m=S.model,seat=T.rev.seat*12;let g=0,l=0;
+  T.rows.forEach(r=>{if(r.c.missing)return;const d=(r.c.rev[m]-r.c.rev.seat)*12;if(d>0)g+=d;else l+=d;});
+  const end=seat+g+l,W=380,H=240,pl=8,pb=36,pt=28,mx=Math.max(seat+g,end,seat)*1.08,y=v=>pt+(H-pt-pb)*(1-v/mx),bw=64,gap=(W-2*pl-4*bw)/3,x=i=>pl+i*(bw+gap);
+  const bars=[{l:'Seat today',a:0,b:seat,c:col('seat'),v:money(seat)},{l:'Accounts that pay more',a:seat,b:seat+g,c:'var(--gain)',v:'+'+money(g)},{l:'Accounts that pay less',a:seat+g+l,b:seat+g,c:'var(--loss)',v:money(l)},{l:MODELS.find(z=>z.id===m).n,a:0,b:end,c:col(m),v:money(end)}];
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Revenue bridge from seat ARR to ${mName(m)} ARR"><defs>${bars.map((b,i)=>`<linearGradient id="bg${i}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${b.c}"/><stop offset="1" stop-color="${b.c}" stop-opacity=".55"/></linearGradient>`).join('')}</defs>`;
+  s+=`<line x1="${pl}" x2="${W-pl}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)"/>`;
+  bars.forEach((b,i)=>{const top=y(Math.max(b.a,b.b)),h=Math.max(2,Math.abs(y(b.a)-y(b.b)));
+    s+=`<rect x="${x(i)}" y="${top}" width="${bw}" height="${h}" rx="6" fill="url(#bg${i})"/><text x="${x(i)+bw/2}" y="${top-7}" text-anchor="middle" class="t-ink t-num" style="font-weight:600">${b.v}</text>`;
+    const w=b.l.split(' '),l1=w.length>2?w.slice(0,2).join(' '):b.l,l2=w.length>2?w.slice(2).join(' '):'';
+    s+=`<text x="${x(i)+bw/2}" y="${H-pb+16}" text-anchor="middle">${esc(l1)}</text>`;if(l2)s+=`<text x="${x(i)+bw/2}" y="${H-pb+29}" text-anchor="middle">${esc(l2)}</text>`;
+    if(i<3){const yy=i===0?y(seat):i===1?y(seat+g):y(seat+g+l);s+=`<line x1="${x(i)+bw}" x2="${x(i+1)}" y1="${yy}" y2="${yy}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;}});
+  s+='</svg>';$('bridge').innerHTML=s;$('bridge-h').textContent='annual, '+(S.seg==='all'?'whole book':S.seg);
+  $('bridge-n').textContent=m==='seat'?'Pick another model to see which accounts pay more or less.':`Net ${pct(end/seat-1,1)}. Gains come from heavy users with a high ${C_().rate.toLowerCase()}; losses from light adopters whose seats overstated their usage.`;
+}
+function renderForecast(T){
+  const W=380,H=158,pl=86,pr=30,pt=22,rh=28;let mx=0;
+  const rows=MODELS.map(m=>{const v=T.rev[m.id]*12,c=T.cv[m.id]*1.28;mx=Math.max(mx,v*(1+c));return{m,v,lo:v*(1-c),hi:v*(1+c)};});
+  mx*=1.05;const X=v=>pl+(W-pl-pr)*v/mx,seat=T.rev.seat*12;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Annual revenue range by pricing model">`;
+  [0,.25,.5,.75,1].forEach(t=>{const v=t*mx;s+=`<line x1="${X(v)}" x2="${X(v)}" y1="${pt-8}" y2="${pt+rh*4-6}" stroke="var(--line)"/><text x="${X(v)}" y="${H-4}" text-anchor="middle" class="t-num">${money(v)}</text>`;});
+  s+=`<line x1="${X(seat)}" x2="${X(seat)}" y1="${pt-14}" y2="${pt+rh*4-6}" stroke="var(--seat)" stroke-dasharray="4 3"/><text x="${X(seat)+4}" y="${pt-8}">seat today</text>`;
+  rows.forEach((r,i)=>{const yy=pt+12+i*rh,on=r.m.id===S.model;
+    s+=`<text x="${pl-10}" y="${yy+4}" text-anchor="end" class="${on?'t-ink':''}" style="font-weight:${on?600:400}">${r.m.n}</text>`;
+    s+=`<rect x="${X(r.lo)}" y="${yy-5}" width="${Math.max(2,X(r.hi)-X(r.lo))}" height="10" rx="5" fill="${col(r.m.id)}" opacity="${on?.35:.18}"/>`;
+    s+=`<circle cx="${X(r.v)}" cy="${yy}" r="${on?6.5:4.5}" fill="${col(r.m.id)}" stroke="var(--surface)" stroke-width="2"/>`;});
+  s+='</svg>';$('fcast').innerHTML=s;
+  $('mtbl').innerHTML=`<thead><tr><th>Model</th><th class="r">ARR</th><th class="r">Gross margin</th><th class="r">Range</th></tr></thead><tbody>`+
+    MODELS.map(m=>{const mg=(T.rev[m.id]-T.cost[m.id])/T.rev[m.id];return `<tr class="${m.id===S.model?'sel':''}"><td><span class="dot" style="background:${col(m.id)}"></span> ${mName(m.id)}</td><td class="r num">${money(T.rev[m.id]*12)}</td><td class="r num ${mg<.5?'down':''}">${pct0(mg)}</td><td class="r num">±${pct0(1.28*T.cv[m.id])}</td></tr>`;}).join('')+'</tbody>';
+}
+function renderCurve(){
+  const C=C_(),W=640,H=240,pl=44,pr=16,pt=14,pb=36,xs=[];for(let i=0;i<=40;i++)xs.push(.25*Math.pow(60,i/40));
+  const lines={};MODELS.forEach(m=>lines[m.id]=[]);const B=book(C).filter(a=>(S.seg==='all'||a.seg===S.seg)&&a.flag!=='missing');
+  xs.forEach(tp=>{const P=Object.assign(P_(),{tokp:tp});const r={seat:0,credit:0,hybrid:0,outcome:0},c={seat:0,credit:0,hybrid:0,outcome:0};
+    B.forEach(a=>{const k=calc(a,C,P);MODELS.forEach(m=>{r[m.id]+=k.rev[m.id];c[m.id]+=k.cost[m.id];});});MODELS.forEach(m=>lines[m.id].push(clamp((r[m.id]-c[m.id])/r[m.id],-.6,1)));});
+  const lx=v=>Math.log(v/.25)/Math.log(60),X=v=>pl+(W-pl-pr)*lx(v),ymin=-.6,Y=v=>pt+(H-pt-pb)*(1-(v-ymin)/(1-ymin));
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Gross margin by pricing model as model token prices change">`;
+  s+=`<rect x="${pl}" y="${Y(0)}" width="${W-pl-pr}" height="${Y(-.6)-Y(0)}" fill="var(--crit)" opacity=".06"/>`;
+  [-.5,-.25,0,.25,.5,.75,1].forEach(v=>{s+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" ${v===0?'stroke-width="1.5"':''}/><text x="${pl-6}" y="${Y(v)+4}" text-anchor="end" class="t-num">${(v*100).toFixed(0)}%</text>`;});
+  [.25,.5,1,2,5,10,15].forEach(v=>{s+=`<text x="${X(v)}" y="${H-pb+16}" text-anchor="middle" class="t-num">$${v}</text>`;});
+  s+=`<text x="${(pl+W-pr)/2}" y="${H-4}" text-anchor="middle">model price, $ per 1M tokens (log scale)</text><text x="${W-pr-4}" y="${Y(-.45)}" text-anchor="end" style="fill:var(--crit)">losing money on every task</text>`;
+  s+=`<line x1="${X(S.tokp)}" x2="${X(S.tokp)}" y1="${pt}" y2="${H-pb}" stroke="var(--ink)" stroke-dasharray="3 3" opacity=".6"/>`;
+  MODELS.forEach(m=>{const on=m.id===S.model;const d=lines[m.id].map((v,i)=>(i?'L':'M')+X(xs[i]).toFixed(1)+' '+Y(v).toFixed(1)).join('');
+    s+=`<path d="${d}" fill="none" stroke="${col(m.id)}" stroke-width="${on?3.5:2}" opacity="${on?1:.75}" stroke-linecap="round"/>`;
+    const i=clamp(Math.round(lx(S.tokp)*40),0,40);s+=`<circle cx="${X(S.tokp)}" cy="${Y(lines[m.id][i])}" r="${on?5.5:4}" fill="${col(m.id)}" stroke="var(--surface)" stroke-width="2"/>`;});
+  s+='</svg>';$('curve').innerHTML=s;
+  $('curve-l').innerHTML=MODELS.map(m=>`<span><span class="dot" style="background:${col(m.id)}"></span>${mName(m.id)}</span>`).join('');
+  const cpt=C.ktok*S.ktokMult*1000*S.tokp/1e6+C.infra;$('tok-h').textContent=`${fmtInt(C.ktok*S.ktokMult*1000)} tokens per ${C.task} · ${priceFmt(cpt)} to serve each`;
+  const note={action:'Per-action credits fix revenue while token cost floats: margin falls as models get pricier.',pass:`Pass-through locks margin at the ${S.markup}% markup (${pct0(S.markup/(100+S.markup))}), but revenue shrinks whenever model prices fall: you resell someone else's tokens.`,byok:'With the customer’s own key, the vendor stops carrying token cost. Margin is flat and high, but revenue is a thin platform fee.'}[S.cmode];
+  $('curve-n').textContent=note+' Seat, hybrid and outcome revenue ignore token prices, so their margins move with model costs.';
+}
+function renderHeat(){
+  const m=S.model,C=C_(),all=book(C).map(a=>({a,c:calc(a,C,P_())}));
+  $('heat-h').textContent=m==='seat'?'pick a model to compare':'change in vendor revenue vs. seat, per account · click to open';
+  let h='';['Enterprise','Mid-market','SMB'].forEach(seg=>{const rows=all.filter(r=>r.a.seg===seg).sort((x,y)=>((y.c.rev[m]||0)/y.c.rev.seat)-((x.c.rev[m]||0)/x.c.rev.seat));const dim=S.seg!=='all'&&S.seg!==seg;
+    h+=`<div class="heat-g ${dim?'dimg':''}"><div class="lbl"><span>${seg}</span><span>${rows.length} accounts</span></div><div class="cells">`+rows.map(r=>{const unk=r.c.rev[m]==null;const d=unk?0:clamp(r.c.rev[m]/r.c.rev.seat-1,-.6,.6),w=Math.round(Math.abs(d)/.6*85);
+      const bg=unk?'var(--faint)':Math.abs(d)<.02?'var(--sunken)':`color-mix(in srgb, ${d>0?'var(--gain)':'var(--loss)'} ${w+12}%, var(--sunken))`;
+      const tip=`${esc(r.a.name)}${r.a.scen?' · scenario '+r.a.scen:''} · ${esc(C.profile(r.a))}<br>Seat ${money(r.c.rev.seat*12)} → ${MODELS.find(x=>x.id===m).n} ${unk?'unknown (no outcome signal)':money(r.c.rev[m]*12)+' ('+pct(r.c.rev[m]/r.c.rev.seat-1)+')'}${r.a.flag==='stale'?'<br>Data is '+r.a.fresh+' days old':''}`;
+      return `<button type="button" class="cell ${r.a.id===S.sel?'on':''} ${r.a.flag?'flag':''}" style="background-color:${bg}" data-id="${r.a.id}" data-tip="${tip}" aria-label="${esc(r.a.name)}"></button>`;}).join('')+`</div></div>`;});
+  $('heat').innerHTML=h;
+}
+function renderAccount(){
+  const C=C_(),a=book(C).find(x=>x.id===S.sel),c=calc(a,C,P_());
+  const bills=MODELS.map(x=>({m:x.id,v:c.rev[x.id],cust:c.rev[x.id]==null?null:c.rev[x.id]+(x.id==='credit'?c.custTok:0)}));const mxb=Math.max(...bills.map(b=>b.cust||0));
+  const R=rng(hash(C.id+':'+a.id+':'+S.win));const base=Date.UTC(2026,10,18,17,0)-(a.flag==='stale'?52*864e5:0);let t=base;const evs=[];
+  for(let i=0;i<12;i++){t-=Math.round((1+R()*9)*3600e3*Math.max(.05,Math.min(24,2000/a.att)));const tokens=Math.round(c.ktok*1000*(.55+R()*1.3)),mc=tokens*S.tokp/1e6+C.infra;
+    const inWin=i<2&&S.win>0&&a.flag!=='stale';const x=R(),pe=c.excl/c.succ,pd=c.disp/c.succ;let st=inWin?'pend':x<pe?'excl':x<pe+pd?'disp':'ok';if(a.flag==='missing')st='nosig';
+    evs.push({id:`${C.prefix}-${(100000+Math.floor(R()*899999))}`,t,tokens,mc,st});}
+  const stl={ok:['Verified · billed','good'],excl:[C.exclReason,'warn'],disp:['Disputed: '+C.disputeReason.toLowerCase(),'crit'],pend:['In verification window','muted'],nosig:['No outcome signal','muted']};
+  const fmtT=ms=>{const d=new Date(ms);return MONTHS[d.getUTCMonth()]+' '+d.getUTCDate()+', '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+' UTC';};
+  const fun=[['Tasks run',a.att,'var(--m-effort)'],['Succeeded',c.succ,'var(--m-output)'],['Verified',c.succ-c.excl,'var(--c3)'],['Billable',c.bill,'var(--m-event)']];
+  const rule=`${C.prefix.toLowerCase()}-rule v1.${Math.round(S.win)} · ${C.winLabel.replace('Verification window: ','')} ${S.win}d`;
+  let flag='';if(a.flag==='stale')flag=`<div class="banner warn"><span class="ico">⏱</span><div><b>Recommendation withheld: usage data is ${a.fresh} days old</b> (limit 45). Refresh the usage feed before quoting this account.</div></div>`;
+  if(a.flag==='missing')flag=`<div class="banner crit"><span class="ico">?</span><div><b>No outcome signal connected.</b> Outcome and hybrid bills are unknown, not $0. Connect the ${esc(C.source.toLowerCase())} to verify outcomes.</div></div>`;
+  const cur=c.rev[S.model],delta=cur==null?null:cur/c.rev.seat-1;
+  const talk=a.flag?'':delta==null?'':delta<-.15?`Talk track: "Your usage is lighter than your seat count suggests. A hybrid plan with a ${S.fee}% platform fee keeps your bill predictable."`:delta>.15?`Talk track: "Your team gets more done with the agent than seats capture. Outcome terms tie the bill to ${C.units||C.unit+'s'}, capped at ${S.cap}× today."`:'Talk track: "Your bill stays about the same, and now it tracks results."';
+  $('acct').innerHTML=`<div class="card-h"><div><h2>${esc(a.name)}${a.scen?` <span class="chip" style="--cc:var(--c3)">scenario ${a.scen}</span>`:''}</h2><span class="hint">${esc(a.seg)} · ${esc(C.profile(a))} · renews ${a.renew} · data ${a.fresh} days old</span></div></div>${flag}
+  <div class="acct"><div style="display:grid;gap:14px;align-content:start">
+    <div><div class="lbl" style="margin-bottom:6px">Monthly bill by model (striped: model tokens the customer pays directly)</div><div class="funnel">${bills.map(b=>`<div class="f-row"><span>${MODELS.find(z=>z.id===b.m).n}</span><span class="hbar">${b.cust==null?'':`<i style="width:${b.v/mxb*100}%;background:${col(b.m)}"></i>${b.cust>b.v?`<i style="width:${(b.cust-b.v)/mxb*100}%;background:repeating-linear-gradient(45deg,${col(b.m)} 0 3px,transparent 3px 6px)"></i>`:''}`}</span><span class="num" style="text-align:right">${money(b.cust)}</span></div>`).join('')}</div></div>
+    <div><div class="lbl" style="margin-bottom:6px">Outcome funnel this month (${esc(C.tasks)})</div><div class="funnel">${fun.map(f=>`<div class="f-row"><span>${f[0]}</span><span class="hbar"><i style="width:${Math.max(.8,f[1]/a.att*100)}%;background:${f[2]}"></i></span><span class="num" style="text-align:right">${fmtInt(f[1])}</span></div>`).join('')}</div>
+    <div class="hint" style="margin-top:6px">Tasks that never became a billable outcome cost <span class="num">${money(c.failedCost)}</span>/mo in tokens and tools, carried by the vendor under outcome and hybrid terms.</div></div>
+    ${talk?`<div class="formula" style="--fc:var(--c2);font-family:var(--body)">${esc(talk)}</div>`:''}
+  </div><div style="display:grid;gap:8px;align-content:start;min-width:0">
+    <div class="card-h"><span class="lbl">Audit trail · latest outcome events · rule ${esc(rule)}</span><button class="btn ghost" type="button" id="copy">Copy as CSV</button></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Source record</th><th>Time</th><th class="r">Tokens</th><th class="r">Cost to serve</th><th>Status</th><th class="r">Billed</th></tr></thead><tbody>
+    ${evs.map(e=>`<tr><td class="mono">${e.id}</td><td>${fmtT(e.t)}</td><td class="r num">${fmtInt(e.tokens)}</td><td class="r num">${priceFmt(e.mc)}</td><td><span class="st ${stl[e.st][1]}">${esc(stl[e.st][0])}</span></td><td class="r num">${e.st==='ok'?priceFmt(S.price):'$0.00'}</td></tr>`).join('')}</tbody></table></div>
+    <div class="hint">Each billed line links to its source record in the ${esc(C.source.toLowerCase())}, the rule version that verified it and the price in force. Events are append-only; a dispute adds a reversing line.</div>
+  </div></div>`;
+  $('copy').onclick=()=>{const csv=['source_record,time_utc,tokens,cost_to_serve,status,billed,rule'].concat(evs.map(e=>[e.id,new Date(e.t).toISOString(),e.tokens,e.mc.toFixed(4),stl[e.st][0],e.st==='ok'?S.price.toFixed(2):'0.00',rule].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','))).join('\n');
+    const b=$('copy');try{navigator.clipboard.writeText(csv).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy as CSV',1500);},()=>{b.textContent='Copy blocked';});}catch(err){b.textContent='Copy blocked';}};
+}
+function syncLabels(){const C=C_();
+  $('ktok-v').textContent=fmtInt(C.ktok*S.ktokMult*1000);$('tokp-v').textContent='$'+S.tokp.toFixed(2);$('markup-v').textContent=S.markup+'%';$('markup-f').style.display=S.cmode==='pass'?'':'none';
+  $('price-v').textContent=priceFmt(S.price);$('shift-v').textContent=(S.shift>=0?'+':'−')+Math.abs(S.shift).toFixed(Math.abs(S.shift)%1?1:0)+' pts → '+pct0(clamp(C.s+S.shift/100,0,1),C.s<.1?1:0)+' avg';
+  $('win-v').textContent=S.win+' days';$('fee-v').textContent=S.fee+'%';$('cap-v').textContent=S.cap.toFixed(2)+'×';
+  ['ktok','tokp','markup','price','shift','win','fee','cap'].forEach(id=>{});}
+function render(){if(S.tab!=='cockpit')return;syncLabels();paintAll();const T=agg(P_(),S.seg);renderGate(T);renderKPIs(T);renderBridge(T);renderForecast(T);renderCurve();renderHeat();renderAccount();renderSugs();}
+
+/* ---------- Ask the pane ---------- */
+function renderSugs(){const C=C_();const q=[`What if the ${C.rate.toLowerCase()} rises ${C.s<.1?'1':'10'} points?`,'What if token prices drop 50%?','Pass tokens through at cost plus 30%?','Which accounts pay less?','Compare margins','Which categories are ready for outcomes?'];
+  $('sugs').innerHTML=q.map(x=>`<button type="button">${esc(x)}</button>`).join('');}
+function answer(q){
+  const C=C_(),ql=q.toLowerCase(),base=agg(P_(),S.seg),m=S.model==='seat'?'hybrid':S.model;let h='',apply=null;const num=ql.match(/(-?\d+(?:\.\d+)?)/),n=num?parseFloat(num[1]):null;
+  if(/token|model (price|cost)/.test(ql)&&/(drop|fall|cut|cheaper|down|rise|up|double|increase)/.test(ql)){const f=/double/.test(ql)?2:/(rise|up|increase)/.test(ql)?1+(n||50)/100:1-(n||50)/100;const P=Object.assign(P_(),{tokp:clamp(S.tokp*f,.25,15)});const T=agg(P,S.seg);
+    h=`At $${P.tokp.toFixed(2)} per 1M tokens: `+MODELS.map(x=>`${mName(x.id)} margin ${pct0((base.rev[x.id]-base.cost[x.id])/base.rev[x.id])} → <strong>${pct0((T.rev[x.id]-T.cost[x.id])/T.rev[x.id])}</strong>`).join('; ')+`. Token spend: ${money(base.tok*12)} → ${money(T.tok*12)} a year.`;if(S.cmode==='pass')h+=` Pass-through credit revenue moves with it: ${money(base.rev.credit*12)} → ${money(T.rev.credit*12)}.`;apply=()=>{S.tokp=Math.round(P.tokp*4)/4;$('tokp').value=S.tokp;};}
+  else if(/pass|markup|cost.plus|resell/.test(ql)){const mk=n!=null?n:30;const T=agg(Object.assign(P_(),{cmode:'pass',markup:mk}),S.seg),A=agg(Object.assign(P_(),{cmode:'action'}),S.seg);
+    h=`Passing tokens through at cost +${mk}% makes credit ARR <strong>${money(T.rev.credit*12)}</strong> (vs. ${money(A.rev.credit*12)} at $0.10 per action), with margin fixed at ${pct0(mk/(100+mk))}. Easy to explain and safe from model price spikes, but you give up the value premium and revenue falls as models get cheaper.`;apply=()=>{S.cmode='pass';S.markup=mk;$('markup').value=mk;segBtns($('cmode'),CMODES,'cmode');};}
+  else if(/own key|byok|bring/.test(ql)){const T=agg(Object.assign(P_(),{cmode:'byok'}),S.seg);h=`With customers on their own model keys, credit ARR is <strong>${money(T.rev.credit*12)}</strong> and customers pay ${money(T.custTok*12)} a year directly to model providers. Vendor margin is ${pct0((T.rev.credit-T.cost.credit)/T.rev.credit)}.`;apply=()=>{S.cmode='byok';segBtns($('cmode'),CMODES,'cmode');};}
+  else if(/(rate|success|resolution|win|fix|accept|overturn)/.test(ql)&&n!=null){const d=(/(drop|fall|down|lower)/.test(ql)?-1:1)*Math.abs(n);const P=Object.assign(P_(),{shift:clamp(S.shift+d,-15,15)});const T=agg(P,S.seg);
+    h=`${C.rate} ${d>0?'+':''}${d} points: outcome ARR ${money(base.rev.outcome*12)} → <strong>${money(T.rev.outcome*12)}</strong>; hybrid ${money(base.rev.hybrid*12)} → <strong>${money(T.rev.hybrid*12)}</strong>. Seat and credit revenue do not move, which is why vendors with improving agents push toward outcomes.`;apply=()=>{S.shift=P.shift;$('shift').value=S.shift;};}
+  else if(/price/.test(ql)&&n!=null){const T=agg(Object.assign(P_(),{price:n}),S.seg);h=`At ${priceFmt(n)} per ${C.unit}: outcome ARR <strong>${money(T.rev.outcome*12)}</strong> (${pct(T.rev.outcome/base.rev.seat-1,1)} vs. seat), hybrid <strong>${money(T.rev.hybrid*12)}</strong>.`;apply=()=>{S.price=n;$('price').value=n;};}
+  else if(/lose|less|risk|churn/.test(ql)){const rows=base.rows.filter(r=>!r.c.missing).map(r=>({a:r.a,d:(r.c.rev[m]-r.c.rev.seat)*12,p:r.c.rev[m]/r.c.rev.seat-1})).sort((x,y)=>x.d-y.d).slice(0,5);
+    h=`Under ${mName(m)} these accounts pay the least compared with seats:<ol>${rows.map(r=>`<li>${esc(r.a.name)} (${r.a.seg}): ${money(r.d)}/yr, ${pct(r.p)}</li>`).join('')}</ol>Most are light adopters. Offer them a committed hybrid floor before renewal.`;}
+  else if(/margin/.test(ql)){h=MODELS.map(x=>`${mName(x.id)}: <strong>${pct0((base.rev[x.id]-base.cost[x.id])/base.rev[x.id])}</strong>`).join(' · ')+`. Outcome terms carry the cost of failed tasks (${money(base.failed*12)} a year here).`;}
+  else if(/ready|industr|categor/.test(ql)){const r=CATS.map(x=>({x,r:readiness(x)})).sort((p,q)=>q.r.v-p.r.v);h=`Ranked by outcome readiness:<ol>${r.map(o=>`<li>${esc(o.x.name)}: ${Math.round(o.r.v)}, ${o.r.t.toLowerCase()}</li>`).join('')}</ol>`;}
+  else if(/window|dispute|verif/.test(ql)){const lo=Math.max(0,Math.round(S.win/2)),hi=Math.min(C.wmax,S.win*2),a=agg(Object.assign(P_(),{win:lo}),S.seg),b=agg(Object.assign(P_(),{win:hi}),S.seg);h=`A ${lo}-day window bills ${money(a.rev.outcome*12)} a year but invites disputes; a ${hi}-day window bills ${money(b.rev.outcome*12)} with fewer. Pick the window the customer trusts.`;}
+  else h=`Try a what-if about token prices, pass-through, own keys, the ${C.rate.toLowerCase()}, the price per outcome, margins, the verification window, which accounts pay less, or which categories are ready.`;
+  const el=document.createElement('div');el.className='ans pop';el.innerHTML=`<div class="q">${esc(q)}</div><div>${h}</div>`;
+  if(apply){const b=document.createElement('button');b.type='button';b.className='btn ghost';b.style.justifySelf='start';b.textContent='Apply to the pane';b.onclick=()=>{apply();render();b.remove();};el.appendChild(b);}
+  const box=$('answers');box.prepend(el);while(box.children.length>3)box.lastChild.remove();
+}
+
+/* ---------- OUTCOME LAB ---------- */
+function labState(C){if(!S.lab[C.id]){const L0=C.lab;S.lab[C.id]={attr:L0.attr,share:L0.share,d:L0.drivers.map(d=>({vol:d.vol[1],base:d.base[1],ai:d.ai[1],unit:d.unit[1]}))};}return S.lab[C.id];}
+function labCalc(C){const L0=C.lab,st=labState(C);const parts=L0.drivers.map((d,i)=>{const v=st.d[i];const diff=d.kind==='pct'?(d.lower?(v.base-v.ai):(v.ai-v.base))/100:(d.lower?(v.base-v.ai):(v.base-v.ai));const units=Math.max(0,v.vol*diff);return{units,value:units*v.unit,out:d.out};});
+  const gross=parts.reduce((x,p)=>x+p.value,0),value=gross*st.attr/100,fee=value*st.share/100;return{parts,gross,value,fee,keep:value-fee,roi:fee?value/fee:0,perUnit:parts[0].units?fee*(parts[0].value/(gross||1))/(parts[0].units):0};}
+function renderLab(){
+  const C=byId(S.labCat),L0=C.lab,st=labState(C),m=meterOf(C.meter),f=FAM[C.fam];
+  $('labcat').value=C.id;$('lab-meter').innerHTML=`<span class="chip" style="--cc:${m.c}">${m.n}</span><span class="chip" style="--cc:${f.c}">${f.n}</span>`;
+  const sl=(id,lab,val,min,max,step,c)=>`<div class="field" style="--rc:${c}"><div class="field-row"><label class="lbl" for="${id}">${esc(lab)}</label><span class="num" id="${id}-v"></span></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></div>`;
+  let h=`<div class="card-h"><h2>${esc(C.name)}: what the AI changes</h2><span class="hint">monthly</span></div><div class="formula" style="--fc:${m.c}">${esc(C.quant)}</div>`;
+  L0.drivers.forEach((d,i)=>{const v=st.d[i];h+=`<div class="group-t" style="--gc:${i?'var(--c5)':'var(--c1)'}"><span class="dot" style="background:${i?'var(--c5)':'var(--c1)'}"></span>Driver ${i+1}: ${esc(d.out)}</div>`+
+    sl(`l${i}vol`,d.vol[0],v.vol,d.vol[2],d.vol[3],d.vol[4],'var(--c4)')+sl(`l${i}base`,d.base[0],v.base,d.base[2],d.base[3],d.base[4],'var(--seat)')+sl(`l${i}ai`,d.ai[0],v.ai,d.ai[2],d.ai[3],d.ai[4],'var(--c2)')+sl(`l${i}unit`,d.unit[0],v.unit,d.unit[2],d.unit[3],d.unit[4],'var(--c6)');});
+  h+=`<div class="group-t" style="--gc:var(--c3)"><span class="dot" style="background:var(--c3)"></span>Attribution and price</div>`+sl('lattr','Share of the gain credited to the AI (%)',st.attr,10,100,5,'var(--c3)')+`<div class="hint">${esc(L0.attrNote)}</div>`+sl('lshare','Vendor fee, share of credited value (%)',st.share,1,40,1,'var(--c7)');
+  $('labin').innerHTML=h;paintAll();
+  $('labin').querySelectorAll('input[type=range]').forEach(el=>el.addEventListener('input',()=>{const id=el.id,v=parseFloat(el.value);if(id==='lattr')st.attr=v;else if(id==='lshare')st.share=v;else{const i=+id[1],k=id.slice(2);st.d[i][k]=v;}updateLab();}));
+  if(!$('lo1'))$('labout').innerHTML=[['lo1','Value created','var(--c1)','var(--c2)'],['lo2','Vendor fee (outcome revenue)','var(--c3)','var(--c4)'],['lo3','Customer keeps','var(--c6)','var(--c5)'],['lo4','Implied price per outcome','var(--c7)','var(--c1)']].map(x=>`<div class="big" style="--b1:${x[2]};--b2:${x[3]}"><span>${x[1]}</span><b id="${x[0]}">–</b><small id="${x[0]}s"></small></div>`).join('');
+  updateLab();
+}
+function updateLab(){
+  const C=byId(S.labCat),L0=C.lab,st=labState(C),r=labCalc(C);
+  L0.drivers.forEach((d,i)=>{const v=st.d[i];const f=k=>{const x=v[k];if(k==='vol')return fmtInt(x);if(k==='unit')return '$'+(x<10?x.toFixed(2):fmtInt(x));return d.kind==='pct'?x.toFixed(x%1?1:0)+'%':x.toFixed(x%1?(x<1?2:1):0);};['vol','base','ai','unit'].forEach(k=>{const el=$(`l${i}${k}-v`);if(el)el.textContent=f(k);});});
+  $('lattr-v').textContent=st.attr+'%';$('lshare-v').textContent=st.share+'%';
+  tween($('lo1'),'lo1',r.value,money);$('lo1s').textContent=`${money(r.value*12)} a year, after ${st.attr}% attribution`;
+  tween($('lo2'),'lo2',r.fee,money);$('lo2s').textContent=`${money(r.fee*12)} a year at ${st.share}% of value`;
+  tween($('lo3'),'lo3',r.keep,money);$('lo3s').textContent=`${r.roi?r.roi.toFixed(1):'0'}× return on the fee`;
+  tween($('lo4'),'lo4',r.perUnit,v=>priceFmt(v));$('lo4s').textContent=`per ${L0.drivers[0].out.replace(/s$/,'').replace(/^extra /,'')}`;
+  const fp=r.value?r.fee/r.value*100:0;
+  $('split').innerHTML=`<div style="width:${fp}%;background:linear-gradient(90deg,var(--c3),var(--c4))">${fp>12?'Vendor '+money(r.fee):''}</div><div style="width:${100-fp}%;background:linear-gradient(90deg,var(--c6),var(--c5))">${'Customer '+money(r.keep)}</div>`;
+  const mx=Math.max(...r.parts.map(p=>p.value),1);
+  $('drivers').innerHTML=`<div class="funnel">`+r.parts.map((p,i)=>`<div class="f-row" style="grid-template-columns:200px 1fr 80px"><span>${fmtInt(p.units)} ${esc(p.out)}</span><span class="hbar"><i style="width:${p.value/mx*100}%;background:${i?'var(--c5)':'var(--c1)'}"></i></span><span class="num" style="text-align:right">${money(p.value)}</span></div>`).join('')+`</div><div class="hint">Gross gain ${money(r.gross)}/mo before attribution. ${C.meter==='lift'?'A lift meter bills a share of measured savings, so the holdout comparison is the contract.':'An event or output meter bills per verified unit; the implied price above is what a per-outcome rate card would show.'}</div>`;
+  const ev=C.meter==='lift'?['Baseline period or holdout group agreed in the contract','Savings computed from '+C.source.toLowerCase(),'Attribution share written into the contract','Monthly savings statement with evidence IDs','Dispute window and reversal process']:['Outcome definition in writing: '+C.unit,'Signal from '+C.source.toLowerCase(),'Validation: '+C.rule,'Append-only event log with rule version','Dispute window and reversal process'];
+  $('checks').innerHTML=ev.map(e=>`<div><i>✓</i><span>${esc(e)}</span></div>`).join('');
+  const R=rng(hash('inv'+C.id));$('inv').innerHTML=`<thead><tr><th>Invoice line</th><th>Evidence</th><th class="r">Amount</th></tr></thead><tbody>`+r.parts.map((p,i)=>`<tr><td>${fmtInt(p.units)} ${esc(p.out)} × ${st.attr}% credited × ${st.share}% fee</td><td class="mono">${C.prefix}-EV-${(10000+Math.floor(R()*89999))}</td><td class="r num">${money(p.value*st.attr/100*st.share/100)}</td></tr>`).join('')+`<tr><td><strong>Total this month</strong></td><td></td><td class="r num"><strong>${money(r.fee)}</strong></td></tr></tbody>`;
+}
+
+/* ---------- SCENARIOS ---------- */
+function renderScen(){
+  $('scen').innerHTML=SCEN.map(s=>{const C=byId(s.cat),f=FAM[C.fam];return `<button type="button" class="sc" style="--sc:${s.c}" data-n="${s.n}"><span class="n">SCENARIO ${String(s.n).padStart(2,'0')}</span><h3>${esc(s.t)}</h3><div><strong>${esc(s.name)}</strong> <span class="hint">· ${esc(s.seg)} · ${esc(C.name)}</span></div><p>${esc(s.d)}</p><span class="chip" style="--cc:${f.c}">${f.n}</span></button>`;}).join('');
+}
+function openScen(n){const s=SCEN.find(x=>x.n===n);setCat(s.cat);const a=book(byId(s.cat)).find(x=>x.scen===n);S.sel=a.id;
+  Object.entries(s.set).forEach(([k,v])=>{S[k]=v;});$('win').value=S.win;$('tokp').value=S.tokp;segBtns($('model'),MODELS,'model',true);segBtns($('cmode'),CMODES,'cmode');
+  S.scenNote={n:s.n,t:s.t,d:s.d};go('cockpit');}
+
+/* ---------- Wire up ---------- */
+const opts=CATS.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('cat').innerHTML=opts;$('labcat').innerHTML=opts;
+$('cat').onchange=e=>{setCat(e.target.value);render();};
+$('labcat').onchange=e=>{S.labCat=e.target.value;renderLab();};
+segBtns($('model'),MODELS,'model',true);segBtns($('segf'),SEGS,'seg');
+[['ktok','ktokMult'],['tokp','tokp'],['markup','markup'],['price','price'],['shift','shift'],['win','win'],['fee','fee'],['cap','cap']].forEach(([id,k])=>$(id).addEventListener('input',()=>{S[k]=parseFloat($(id).value);render();}));
+$('markup').value=S.markup;$('fee').value=S.fee;$('cap').value=S.cap;
+$('heat').addEventListener('click',e=>{const b=e.target.closest('.cell');if(!b)return;S.sel=+b.dataset.id;renderHeat();renderAccount();});
+const tip=$('tip');
+document.addEventListener('mousemove',e=>{const b=e.target.closest('[data-tip]');if(!b){tip.style.opacity=0;return;}tip.innerHTML=b.dataset.tip;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,window.innerWidth-290)+'px';tip.style.top=(e.clientY+14)+'px';});
+$('askf').addEventListener('submit',e=>{e.preventDefault();const q=$('askq').value.trim();if(q){answer(q);$('askq').value='';}});
+$('sugs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)answer(b.textContent);});
+$('meters').addEventListener('click',e=>{const b=e.target.closest('.meter');if(!b)return;S.meterF=S.meterF===b.dataset.m?null:b.dataset.m;renderMap();});
+$('famf').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;S.famF=b.dataset.f||null;renderMap();});
+$('tiles').addEventListener('click',e=>{const b=e.target.closest('.tile');if(!b)return;S.mapCat=b.dataset.c;renderMap();});
+$('bubble').addEventListener('click',e=>{const g=e.target.closest('.bub');if(!g)return;S.mapCat=g.dataset.c;renderMap();});
+$('scen').addEventListener('click',e=>{const b=e.target.closest('.sc');if(b)openScen(+b.dataset.n);});
+window.addEventListener('hashchange',route);
+setCat('support');
+route();
+})();
+</script>
+</body>
+</html>
