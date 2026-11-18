@@ -37,13 +37,14 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 
 a { color: inherit; }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-header.hero { padding: 72px 0 40px; }
-.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin: 0 0 14px; }
-h1 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: clamp(34px, 5vw, 54px); line-height: 1.08; letter-spacing: -.01em; margin: 0 0 18px; max-width: 18ch; }
-.lede { font-size: 18px; color: var(--ink-2); max-width: 62ch; margin: 0; }
-.lede-2 { margin-top: 12px; }
+header.hero { padding: 48px 0 28px; }
+.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
+h1 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; letter-spacing: -.01em; margin: 0 0 12px; max-width: none; }
+.lede { font-size: 16.5px; line-height: 1.6; color: var(--ink-2); max-width: 68ch; margin: 0; }
+.meta { font-size: 13.5px; color: var(--ink-3); margin: 12px 0 0; }
+.lede-2 { margin-top: 8px; }
 .lede strong { color: var(--ink); font-weight: 600; }
-.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .jump a { text-decoration: none; font-size: 14px; font-weight: 500; padding: 7px 14px; border-radius: 999px; background: var(--chip); border: 1px solid var(--line); }
 .jump a:hover { border-color: var(--ink-3); }
 .jump .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
@@ -88,7 +89,7 @@ footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--i
 footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
 
 @media (max-width: 860px) {
-  header.hero { padding: 44px 0 28px; }
+  header.hero { padding: 32px 0 20px; }
   .project { grid-template-columns: minmax(0, 1fr); }
   .shot { border-right: 0; border-bottom: 1px solid var(--line); aspect-ratio: 16 / 10; }
   .body { padding: 24px 20px 22px; }
@@ -102,11 +103,9 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   <div class="wrap">
     <p class="eyebrow">Hitha Kishore · AI product portfolio</p>
     <h1>Product thinker. Curious by nature. Builder by instinct.</h1>
-    <p class="lede">I&rsquo;m curious about a lot of things. AI, how products come together, ideas that could be done differently, and the occasional &ldquo;I wonder if I can actually build that.&rdquo;</p>
-    <p class="lede lede-2">Turns out, the best way for me to explore an idea is to build it. I prototype, experiment, make mistakes, change direction, and learn far more than I ever could just reading about it.</p>
-    <p class="lede lede-2">AI has opened up an entirely new playground for that curiosity. Things I used to only imagine are now things I can actually make.</p>
-    <p class="lede lede-2">So this is a collection of ideas I&rsquo;ve chased, things I&rsquo;ve built, and experiments I&rsquo;ve had way too much fun working on.</p>
-    <p class="lede lede-2"><strong>Explore each prototype directly in your browser.</strong> All demos use synthetic data, require no installation, and are continuously evolving.</p>
+    <p class="lede">I&rsquo;m curious about a lot of things: AI, how products come together, and the occasional &ldquo;I wonder if I can actually build that.&rdquo; The best way for me to explore an idea is to build it. I prototype, make mistakes, change direction, and learn far more than I would just reading about it.</p>
+    <p class="lede lede-2">AI turned that curiosity into a playground. This is a collection of ideas I&rsquo;ve chased and experiments I&rsquo;ve had way too much fun building.</p>
+    <p class="meta">Every demo runs in your browser &middot; synthetic data &middot; no install &middot; always evolving</p>
     <nav class="jump" aria-label="Projects">
       <a href="#orbit"><span class="dot" style="background:var(--orbit)"></span>GTM Orbit</a>
       <a href="#account-focus"><span class="dot" style="background:var(--focus)"></span>Account Focus</a>
