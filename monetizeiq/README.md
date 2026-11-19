@@ -6,6 +6,8 @@ MonetizeIQ is a pricing decision cockpit for AI and SaaS companies moving custom
 
 Live demo: https://hithakishore-all.github.io/monetizeiq/
 
+Walkthrough video (2 min): https://www.loom.com/share/401e77a5f5c342a5a1ba42140e0c108e
+
 Full app (web console, Slack bot, Postgres, tests): https://github.com/hithakishore-all/monetizeiq
 
 All companies, people and figures are fictional. Defaults are anchored to public 2026 benchmarks, linked in the app's footer.
