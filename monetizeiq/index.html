@@ -203,6 +203,19 @@ tr.sel td{background:color-mix(in srgb,var(--c3) 9%,transparent)}
 .sc .n{font:600 12px var(--mono);color:var(--sc)}
 .sc p{margin:0;font-size:13px;color:var(--muted)}
 footer{font-size:12px;color:var(--muted);display:grid;gap:6px;max-width:1360px;margin:0 auto;padding:0 20px 36px}
+
+/* walkthrough video */
+.watch{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.vid{border-radius:14px;overflow:hidden;background:#0b0d1c;box-shadow:var(--shadow)}
+.vid video{display:block;width:100%;height:auto;aspect-ratio:16/10;background:#0b0d1c}
+.chap{display:grid;gap:8px;align-content:start}
+#chapters{list-style:none;margin:0;padding:0;display:grid;gap:3px;max-height:420px;overflow:auto}
+#chapters button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:40px 58px 1fr;gap:6px;align-items:baseline;padding:6px 8px;border-radius:8px;font-size:13px;color:var(--ink)}
+#chapters button:hover{background:var(--sunken)}
+#chapters button.on{background:color-mix(in srgb,var(--dc) 14%,var(--surface));box-shadow:inset 3px 0 0 var(--dc)}
+#chapters .t{font:500 12px var(--mono);color:var(--muted)}
+#chapters .who{font-weight:600;color:var(--dc)}
+@media (max-width:900px){.watch{grid-template-columns:1fr}}
 @keyframes pop{0%{transform:scale(.97);opacity:.4}100%{transform:none;opacity:1}}
 .pop{animation:pop .3s ease-out}
 @media (max-width:1150px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:1fr 1fr}.g3>:first-child{grid-column:1/-1}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.lab-out{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -235,6 +248,39 @@ footer{font-size:12px;color:var(--muted);display:grid;gap:6px;max-width:1360px;m
     </nav>
   </div>
 </header>
+
+<section class="wrap" aria-labelledby="watch-h" style="padding-bottom:0">
+  <div class="card ac" style="--acc:var(--c2)">
+    <div class="watch">
+      <div class="vid"><video id="walk" controls playsinline preload="metadata" poster="../img/monetizeiq-walkthrough-poster.jpg"><source src="../img/monetizeiq-walkthrough.mp4" type="video/mp4"></video></div>
+      <aside class="chap">
+        <h2 id="watch-h">Watch the walkthrough</h2>
+        <p class="hint">The working app (web console, API and Postgres or offline store), driven end to end. About 2 minutes, no sound: captions and highlights explain each step. Click a chapter to jump. <a href="https://github.com/hithakishore-all/monetizeiq">Code on GitHub</a>.</p>
+        <ol id="chapters">
+      <li><button type="button" data-t="5.1" style="--dc:#E040A0"><span class="t">0:05</span><span class="who">Riley</span>Four ways to meter AI</button></li>
+      <li><button type="button" data-t="11.5" style="--dc:#E040A0"><span class="t">0:11</span><span class="who">Riley</span>Where AI fits</button></li>
+      <li><button type="button" data-t="18.0" style="--dc:#E040A0"><span class="t">0:18</span><span class="who">Riley</span>Service intelligence is a lift outcome</button></li>
+      <li><button type="button" data-t="23.9" style="--dc:#E040A0"><span class="t">0:23</span><span class="who">Riley</span>Measure it, then credit it</button></li>
+      <li><button type="button" data-t="31.4" style="--dc:#E040A0"><span class="t">0:31</span><span class="who">Riley</span>What the AI is worth</button></li>
+      <li><button type="button" data-t="36.8" style="--dc:#E040A0"><span class="t">0:36</span><span class="who">Riley</span>Better AI, bigger shared value</button></li>
+      <li><button type="button" data-t="43.6" style="--dc:#06B6D4"><span class="t">0:43</span><span class="who">Sam</span>One book, four pricing models</button></li>
+      <li><button type="button" data-t="49.0" style="--dc:#06B6D4"><span class="t">0:49</span><span class="who">Sam</span>Who pays more, who pays less</button></li>
+      <li><button type="button" data-t="56.6" style="--dc:#06B6D4"><span class="t">0:56</span><span class="who">Sam</span>Token cost moves margin</button></li>
+      <li><button type="button" data-t="64.1" style="--dc:#06B6D4"><span class="t">1:04</span><span class="who">Sam</span>Passing tokens through</button></li>
+      <li><button type="button" data-t="71.9" style="--dc:#F59E0B"><span class="t">1:11</span><span class="who">Jordan</span>A light adopter is protected</button></li>
+      <li><button type="button" data-t="80.3" style="--dc:#F59E0B"><span class="t">1:20</span><span class="who">Jordan</span>The gate says no</button></li>
+      <li><button type="button" data-t="88.7" style="--dc:#F59E0B"><span class="t">1:28</span><span class="who">Jordan</span>Stale data, no quote</button></li>
+      <li><button type="button" data-t="97.0" style="--dc:#F59E0B"><span class="t">1:37</span><span class="who">Jordan</span>Only the owner approves</button></li>
+      <li><button type="button" data-t="106.4" style="--dc:#E040A0"><span class="t">1:46</span><span class="who">Riley</span>The owner approves</button></li>
+      <li><button type="button" data-t="113.4" style="--dc:#E040A0"><span class="t">1:53</span><span class="who">Riley</span>Every billed outcome is traceable</button></li>
+      <li><button type="button" data-t="119.2" style="--dc:#E040A0"><span class="t">1:59</span><span class="who">Riley</span>Ask the pane</button></li>
+        </ol>
+      </aside>
+    </div>
+  </div>
+  <h2 style="margin-top:20px">Try it yourself</h2>
+  <p class="hint" style="margin:4px 0 0">This in-browser version runs the same pricing engine on its own synthetic book, with no server needed.</p>
+</section>
 
 <main>
 <!-- MARKET MAP -->
@@ -503,10 +549,10 @@ const SEGS=[{id:'all',n:'All'},{id:'Enterprise',n:'Enterprise'},{id:'Mid-market'
 const CREDIT_PER_ACTION=.10,BYOK_PER_ACTION=.03;
 /* ---------- Ten demo records (PRD section 5) ---------- */
 const SCEN=[
- {n:1,cat:'support',name:'Ulvane Home',seg:'Enterprise',seats:891,u:1.19,s:.70,t:'Hero run',d:'Hybrid lifts revenue and margin; every billed outcome traces to a helpdesk record.',set:{model:'hybrid'},c:'var(--good)'},
+ {n:1,cat:'support',name:'Ulvane Home',seg:'Enterprise',seats:891,u:1.19,s:.70,t:'Hero run',d:'Outcome-ready: outcome pricing lifts revenue and margin, and every billed outcome traces to a helpdesk record.',set:{model:'hybrid'},c:'var(--good)'},
  {n:2,cat:'support',name:'Corvane Outfitters',seg:'SMB',seats:22,u:.29,s:.50,t:'Renewal risk caught',d:'A light adopter pays far less under pure outcome. The pane recommends a hybrid floor.',set:{model:'outcome'},c:'var(--warn)'},
  {n:3,cat:'revintel',name:'Halvero Software',seg:'Enterprise',seats:620,u:1.0,s:.08,t:'Product should stop',d:'Readiness 43: the gate refuses pure outcome and recommends credits plus a lift bonus.',set:{model:'outcome'},c:'var(--crit)'},
- {n:4,cat:'ap',name:'Kestane Distribution',seg:'Mid-market',seats:40,u:1.0,s:.78,t:'Pass-through trap',d:'Halve model prices and pass-through credit revenue halves too. Try the token slider.',set:{model:'credit',cmode:'pass'},c:'var(--c5)'},
+ {n:4,cat:'ap',name:'Kestane Distribution',seg:'Mid-market',seats:40,u:1.0,s:.78,t:'Pass-through trap',d:'Halve model prices and pass-through credit revenue falls about 40%. Try the token slider.',set:{model:'credit',cmode:'pass'},c:'var(--c5)'},
  {n:5,cat:'sdr',name:'Wexmoor Cloud',seg:'Mid-market',seats:6,u:1.0,s:.025,t:'Dispute-heavy window',d:'A 2-day AE acceptance window triples disputes. Move it to 5 days and watch them fall.',set:{model:'outcome',win:2},c:'var(--c7)'},
  {n:6,cat:'rcm',name:'Norvane Health System',seg:'Enterprise',seats:300,u:1.1,s:.48,t:'Clean run',d:'Outcome-ready; priced at about 4% of recovered dollars.',set:{model:'outcome'},c:'var(--good)'},
  {n:7,cat:'legal',name:'Pellwyn Realty',seg:'Mid-market',seats:28,u:1.0,s:.60,t:'Customer’s own model key',d:'The vendor bills a platform fee; the customer’s model bill shows separately, striped.',set:{model:'credit',cmode:'byok'},c:'var(--c3)'},
@@ -856,6 +902,11 @@ window.addEventListener('hashchange',route);
 setCat('support');
 route();
 })();
+
+/* walkthrough video chapters */
+(function(){const v=document.getElementById('walk');if(!v)return;const bs=[...document.querySelectorAll('#chapters button')];
+  bs.forEach(b=>b.addEventListener('click',()=>{v.currentTime=+b.dataset.t;v.play().catch(()=>{});}));
+  v.addEventListener('timeupdate',()=>{let cur=null;bs.forEach(b=>{if(+b.dataset.t<=v.currentTime+0.05)cur=b;});bs.forEach(b=>b.classList.toggle('on',b===cur));});})();
 </script>
 </body>
 </html>
