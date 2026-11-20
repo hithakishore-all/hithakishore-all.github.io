@@ -282,3 +282,6 @@ details.more .tbl-wrap { border-radius: 8px; }
 .real { border-top: 4px solid var(--accent); }
 .cs-sec h2 .num { background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 6px; font-size: 12px; align-self: center; }
 @media (prefers-color-scheme: dark) { .cs-sec h2 .num { color: #111; } }
+.own-note { margin: 16px 0 0; max-width: 66ch; font-size: 15px; color: var(--ink-2); padding: 10px 14px; border-radius: 10px; background: color-mix(in srgb, var(--panel) 80%, transparent); border: 1px solid var(--line); border-left: 4px solid var(--readaroo); }
+.own-note b { color: var(--ink); }
+footer.site span:first-child { max-width: 80ch; }

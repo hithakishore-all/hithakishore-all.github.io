@@ -43,7 +43,7 @@
     <div><dt>For</dt><dd>Sales managers, successor AEs, departing AEs who opt in</dd></div>
     <div><dt>Problem</dt><dd>Account knowledge and working patterns leave with the seller</dd></div>
     <div><dt>The bet</dt><dd>Preserve what the best people know, with consent</dd></div>
-    <div><dt>Status</dt><dd>Working prototype · 16 automated tests and CI</dd></div>
+    <div><dt>Status</dt><dd>Personal prototype · 16 automated tests and CI</dd></div>
   </dl>
   </div></div>
 <div class="wrap">
@@ -66,7 +66,7 @@
     </ol></nav>
     <div class="cs-body">
 <section class="cs-sec" id="real" aria-labelledby="h-real"><h2 id="h-real">What's real in this prototype</h2>
-<p>What this prototype actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>A Node app on Postgres with a context graph, a governed view, the Discover → Research → Compose → Validate agents, owner-only approval that can safely run twice, a stop rule and a privacy filter</span></li><li><span class="lbl lbl-built">Built</span><span>A Slack Companion and a web console, 16 automated tests, and a CI check that fails if the seed data drifts</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>Wording is scripted by default. <code>MODEL=anthropic</code> lets a live model phrase the summary, but it never adds claims. The pattern steps are seeded, not learned</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>Call and email signals are fictional rows. There are no real Gong or email connectors yet</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Kestrel Cloud and every account, person, quote and number</span></li></ul></div>
+<p>A personal prototype: my own idea, designed and built independently to explore it. Here is what it actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>A Node app on Postgres with a context graph, a governed view, the Discover → Research → Compose → Validate agents, owner-only approval that can safely run twice, a stop rule and a privacy filter</span></li><li><span class="lbl lbl-built">Built</span><span>A Slack Companion and a web console, 16 automated tests, and a CI check that fails if the seed data drifts</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>Wording is scripted by default. <code>MODEL=anthropic</code> lets a live model phrase the summary, but it never adds claims. The pattern steps are seeded, not learned</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>Call and email signals are fictional rows. There are no real Gong or email connectors yet</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Kestrel Cloud and every account, person, quote and number</span></li></ul></div>
 </section>
 <section class="cs-sec" id="problem" aria-labelledby="h-problem"><h2 id="h-problem"><span class="num">01</span>Problem and opportunity</h2>
 <p class="lead">Sales knowledge is concentrated in a few people, ramping a replacement takes half a year, and much of what the best sellers know never reaches a system.</p><ul class="stats"><li><b>14% → 80%</b>the top 14% of sellers generate 80% of revenue (655K opportunities analyzed)<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.joinpavilion.com/resource/2025-gtm-benchmarks-ebsta-pavilion">Ebsta × Pavilion, 2025 GTM Benchmarks</a></span></li><li><b>6.2 months</b>average time to ramp a new AE, the longest in the study's history<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.bridgegroupinc.com/research/2026-ae-models-motions-metrics">The Bridge Group, 2026 AE report</a></span></li><li><b>42%</b>of institutional knowledge is unique to the individual<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://panopto.com/?p=2088">Panopto, 2018</a></span></li></ul><h3>The opportunity</h3><p>Capture what a departing seller knew, with their consent, and turn it into something a successor can act on and a manager can approve.</p>
@@ -105,7 +105,7 @@
 </main>
 <footer class="site">
   <div class="wrap">
-    <span>Every company, person and figure in the demos is synthetic, except where a page marks a public source.</span>
+    <span>Independent personal projects: my own ideas, prototyped and built by me. Demo data is synthetic unless a page marks a public source. Product names such as Salesforce, Snowflake, Slack, Gong and Stripe describe integrations only and imply no affiliation or endorsement.</span>
     <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
   </div>
 </footer>

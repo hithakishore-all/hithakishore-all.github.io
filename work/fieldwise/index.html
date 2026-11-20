@@ -43,7 +43,7 @@
     <div><dt>For</dt><dd>Service agents, field technicians, knowledge authors and reviewers</dd></div>
     <div><dt>Problem</dt><dd>Wrong-model guidance causes failed first visits</dd></div>
     <div><dt>The bet</dt><dd>Refuse to guess; deliver the approved, cited next step</dd></div>
-    <div><dt>Status</dt><dd>Working prototype · 58 tests passing on PostgreSQL</dd></div>
+    <div><dt>Status</dt><dd>Personal prototype · 58 tests passing on PostgreSQL</dd></div>
   </dl>
   </div></div>
 <div class="wrap">
@@ -66,7 +66,7 @@
     </ol></nav>
     <div class="cs-body">
 <section class="cs-sec" id="real" aria-labelledby="h-real"><h2 id="h-real">What's real in this prototype</h2>
-<p>What this prototype actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>A FastAPI server on Postgres (with a SQLite fallback): an assistant, a pathway executor, imports, review and publish with separation of duties, and an outbox that delivers each update exactly once</span></li><li><span class="lbl lbl-built">Built</span><span>A phone run view that resumes the same pinned run after a refresh or handoff</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>The assistant uses scripted retrieval over stored passages plus response templates. There's no language model in v0.1</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>The &ldquo;Northline Service Desk&rdquo; host CRM is a mock page that embeds the workspace</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Every elevator model, manual, procedure, company and person</span></li><li><span class="lbl lbl-proposed">Proposed</span><span>All pilot metrics in the PRD</span></li></ul></div>
+<p>A personal prototype: my own idea, designed and built independently to explore it. Here is what it actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>A FastAPI server on Postgres (with a SQLite fallback): an assistant, a pathway executor, imports, review and publish with separation of duties, and an outbox that delivers each update exactly once</span></li><li><span class="lbl lbl-built">Built</span><span>A phone run view that resumes the same pinned run after a refresh or handoff</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>The assistant uses scripted retrieval over stored passages plus response templates. There's no language model in v0.1</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>The &ldquo;Northline Service Desk&rdquo; host CRM is a mock page that embeds the workspace</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Every elevator model, manual, procedure, company and person</span></li><li><span class="lbl lbl-proposed">Proposed</span><span>All pilot metrics in the PRD</span></li></ul></div>
 </section>
 <section class="cs-sec" id="problem" aria-labelledby="h-problem"><h2 id="h-problem"><span class="num">01</span>Problem and opportunity</h2>
 <p class="lead">When sibling models share a fault code, a confident answer for the wrong model sends a technician down the wrong path, and the customer waits for a second and third visit.</p><ul class="stats"><li><b>+2 visits, +14 days</b>the average cost of a failed first visit<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://salestechstar.com/predictive-ai-artificial-intelligence/aquants-2025-field-service-benchmark-report-reveals-ai-enabling-39-faster-machinery-repairs-and-more/">Aquant 2025 Field Service Benchmark</a></span></li><li><b>86% vs 53%</b>first-time fix rate for top performers against the bottom group<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://salestechstar.com/predictive-ai-artificial-intelligence/aquants-2025-field-service-benchmark-report-reveals-ai-enabling-39-faster-machinery-repairs-and-more/">Aquant 2025 benchmark</a></span></li><li><b>30%</b>of solutions appear only in data provided by experts<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.businesswire.com/news/home/20230517005191/en/Aquants-Service-Co-Pilot-Delivers-Generative-AI-Purpose-Built-for-Service">Aquant Service Co-Pilot release</a></span></li></ul><h3>The opportunity</h3><p>Don't add another AI answer. Carry the approved next step, pinned to the right model, from the call to the fix.</p>
@@ -105,7 +105,7 @@
 </main>
 <footer class="site">
   <div class="wrap">
-    <span>Every company, person and figure in the demos is synthetic, except where a page marks a public source.</span>
+    <span>Independent personal projects: my own ideas, prototyped and built by me. Demo data is synthetic unless a page marks a public source. Product names such as Salesforce, Snowflake, Slack, Gong and Stripe describe integrations only and imply no affiliation or endorsement.</span>
     <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
   </div>
 </footer>
