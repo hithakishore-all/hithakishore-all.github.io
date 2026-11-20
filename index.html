@@ -3,381 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hitha Kishore · AI Product Portfolio</title>
-<meta name="description" content="AI product prototypes designed and built end to end by Hitha Kishore. Each one runs live in your browser.">
-<meta property="og:title" content="Hitha Kishore · AI Product Portfolio">
-<meta property="og:description" content="From customer problem to working product. Explore each prototype directly in your browser.">
+<title>Hitha Kishore · Enterprise AI, Agentic Systems &amp; Product Innovation</title>
+<meta name="description" content="AI products and interactive prototypes across agentic GTM, enterprise decision intelligence, AI monetization and consumer products. Each runs live in the browser.">
+<link rel="canonical" href="https://hithakishore-all.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hitha Kishore · Enterprise AI, Agentic Systems &amp; Product Innovation">
+<meta property="og:description" content="AI products and interactive prototypes across agentic GTM, enterprise decision intelligence, AI monetization and consumer products. Each runs live in the browser.">
 <meta property="og:image" content="https://hithakishore-all.github.io/img/orbit-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1F24'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' fill='%23F4EFE6' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
-<style>
-:root {
-  --bg: #F6F2EB; --panel: #FFFDF9; --ink: #1B1F24; --ink-2: #4A515A; --ink-3: #7A818A;
-  --line: #E5DED2; --chip: #EFE9DF;
-  --conviction: #0E7C86; --orbit: #C2410C; --readaroo: #5B3FD9; --meridian: #D6336C; --fieldwise: #2450D8; --focus: #8F5A06; --saleslore: #0F5C50; --monetize: #C2187A;
-  --shadow: 0 1px 2px rgba(27,31,36,.04), 0 8px 24px rgba(27,31,36,.06);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #121417; --panel: #1A1D21; --ink: #ECE8E1; --ink-2: #B4B8BE; --ink-3: #8A9097;
-    --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B; --fieldwise: #7B98FF; --focus: #F2B84B; --saleslore: #3FCB97; --monetize: #F472D0;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #121417; --panel: #1A1D21; --ink: #ECE8E1; --ink-2: #B4B8BE; --ink-3: #8A9097;
-  --line: #2A2E34; --chip: #23272C; --conviction: #3FB6BF; --orbit: #F07B45; --readaroo: #9D8CFF; --meridian: #FF6B9B; --fieldwise: #7B98FF; --focus: #F2B84B; --saleslore: #3FCB97; --monetize: #F472D0;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
-}
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 Inter, system-ui, -apple-system, sans-serif; }
-a { color: inherit; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-
-header.hero { padding: 48px 0 28px; }
-.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
-h1 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: clamp(24px, 3vw, 34px); line-height: 1.15; letter-spacing: -.01em; margin: 0 0 12px; max-width: none; }
-.lede { font-size: 16.5px; line-height: 1.6; color: var(--ink-2); max-width: 68ch; margin: 0; }
-.meta { font-size: 13.5px; color: var(--ink-3); margin: 12px 0 0; }
-.lede-2 { margin-top: 8px; }
-.lede strong { color: var(--ink); font-weight: 600; }
-.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.jump a { text-decoration: none; font-size: 14px; font-weight: 500; padding: 7px 14px; border-radius: 999px; background: var(--chip); border: 1px solid var(--line); }
-.jump a:hover { border-color: var(--ink-3); }
-.jump .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
-
-main { display: grid; gap: 28px; padding-bottom: 64px; }
-.project { --accent: var(--ink); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); background: var(--panel); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); scroll-margin-top: 24px; }
-.project.conviction { --accent: var(--conviction); }
-.project.orbit { --accent: var(--orbit); }
-.project.readaroo { --accent: var(--readaroo); }
-.project.meridian { --accent: var(--meridian); }
-.project.fieldwise { --accent: var(--fieldwise); }
-.project.saleslore { --accent: var(--saleslore); }
-.project.focus { --accent: var(--focus); }
-.project.monetize { --accent: var(--monetize); }
-.shot { display: block; position: relative; background: var(--chip); border-right: 1px solid var(--line); overflow: hidden; }
-.shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .4s ease; }
-.shot:hover img { transform: scale(1.02); }
-.shot video.clip { display: block; width: 100%; height: 100%; object-fit: contain; background: #F6F3EE; }
-.shot:has(video.clip) { background: #F6F3EE; }
-.shot img.gif { object-fit: contain; object-position: center; background: #F2F7FF; }
-.shot:has(img.gif) { background: #F2F7FF; }
-.shot:hover img.gif { transform: none; }
-.shot .play { position: absolute; left: 18px; bottom: 18px; background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; }
-.body { padding: 32px 34px 30px; display: flex; flex-direction: column; }
-.tag { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
-h2 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 30px; line-height: 1.15; margin: 0 0 6px; }
-.tagline { font-size: 16px; color: var(--ink-2); margin: 0 0 18px; font-style: italic; }
-.problem { margin: 0 0 16px; color: var(--ink-2); font-size: 15px; }
-ul.points { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 9px; }
-ul.points li { position: relative; padding-left: 20px; font-size: 15px; }
-ul.points li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); }
-.stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; }
-.stack span { font-size: 12.5px; padding: 3px 10px; border-radius: 6px; background: var(--chip); color: var(--ink-2); }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
-.btn { text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 18px; border-radius: 10px; border: 1px solid var(--line); display: inline-flex; align-items: center; gap: 8px; }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.btn.primary:hover { filter: brightness(1.08); }
-.btn:not(.primary):hover { border-color: var(--ink-3); }
-.btn svg { width: 16px; height: 16px; }
-.note { font-size: 13px; color: var(--ink-3); margin: 12px 0 0; }
-
-footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--ink-3); font-size: 14px; }
-footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
-
-@media (max-width: 860px) {
-  header.hero { padding: 32px 0 20px; }
-  .project { grid-template-columns: minmax(0, 1fr); }
-  .shot { border-right: 0; border-bottom: 1px solid var(--line); aspect-ratio: 16 / 10; }
-  .body { padding: 24px 20px 22px; }
-  .wrap { padding: 0 16px; }
-  h2 { font-size: 26px; }
-}
-
-.thinking { margin: 0 0 20px; padding: 14px 16px 12px; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: color-mix(in srgb, var(--accent) 7%, var(--panel)); }
-.thinking .th-label { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
-.thinking p { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 6px; }
-.thinking p:last-child { margin-bottom: 0; }
-.thinking b { color: var(--ink); font-weight: 600; }
-/* ---- jazz ---- */
-.eyebrow a.name { text-decoration: none; color: var(--ink); border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
-.eyebrow a.name:hover { color: var(--conviction); border-bottom-color: currentColor; }
-header.hero { position: relative; overflow: hidden; isolation: isolate; }
-.blobs { position: absolute; inset: 0; z-index: -1; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
-.blobs span { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .32; animation: drift 18s ease-in-out infinite alternate; }
-.blobs .b1 { width: 420px; height: 420px; background: var(--orbit); top: -160px; right: 6%; }
-.blobs .b2 { width: 360px; height: 360px; background: var(--readaroo); top: 40px; right: 26%; animation-delay: -6s; opacity: .22; }
-.blobs .b3 { width: 300px; height: 300px; background: var(--conviction); top: 120px; right: -60px; animation-delay: -12s; opacity: .24; }
-@keyframes drift { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(-40px,30px) scale(1.08); } 100% { transform: translate(30px,-20px) scale(.95); } }
-.eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 5px 12px 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--panel) 70%, transparent); backdrop-filter: blur(6px); }
-.eyebrow .live { width: 8px; height: 8px; border-radius: 50%; background: #22A06B; box-shadow: 0 0 0 0 rgba(34,160,107,.6); animation: pulse 2s infinite; }
-@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(34,160,107,0); } 100% { box-shadow: 0 0 0 0 rgba(34,160,107,0); } }
-.grad { background: linear-gradient(90deg, var(--orbit), var(--meridian) 45%, var(--readaroo)); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite; }
-@keyframes shimmer { to { background-position: 200% center; } }
-.jump a { --c: var(--ink-3); transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease; backdrop-filter: blur(6px); }
-.jump a:hover { transform: translateY(-2px); background: var(--c); border-color: var(--c); color: #fff; }
-.jump a:hover .dot { background: #fff !important; }
-.project { position: relative; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
-.project::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 30%, transparent)); z-index: 2; }
-.project:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 2px 4px rgba(27,31,36,.04), 0 18px 44px color-mix(in srgb, var(--accent) 22%, transparent); }
-.btn { transition: transform .15s ease, box-shadow .2s ease, filter .2s ease, border-color .2s ease; }
-.btn.primary { box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent); }
-.btn:hover { transform: translateY(-1px); }
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.hero .wrap > * { animation: rise .7s ease both; }
-.hero .wrap > *:nth-child(2) { animation-delay: .08s; } .hero .wrap > *:nth-child(3) { animation-delay: .16s; }
-.hero .wrap > *:nth-child(4) { animation-delay: .24s; } .hero .wrap > *:nth-child(5) { animation-delay: .32s; } .hero .wrap > *:nth-child(6) { animation-delay: .4s; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@media (max-width: 860px) { .blobs .b1 { width: 260px; height: 260px; right: -60px; } .blobs .b2 { width: 220px; height: 220px; right: 30%; } .blobs .b3 { display: none; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .reveal { opacity: 1; transform: none; } }
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-<header class="hero">
-  <div class="blobs" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<body id="top">
+<header class="topbar">
   <div class="wrap">
-    <p class="eyebrow"><span class="live" aria-hidden="true"></span><a class="name" href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">Hitha Kishore</a> · AI product portfolio</p>
-    <h1>Product thinker. Curious by nature. <span class="grad">Builder by instinct.</span></h1>
-    <p class="lede">I&rsquo;m curious about a lot of things: AI, how products come together, and the occasional &ldquo;I wonder if I can actually build that.&rdquo; The best way for me to explore an idea is to build it. I prototype, make mistakes, change direction, and learn far more than I would just reading about it.</p>
-    <p class="lede lede-2">AI turned that curiosity into a playground. This is a collection of ideas I&rsquo;ve chased and experiments I&rsquo;ve had way too much fun building.</p>
-    <p class="meta">Every demo runs in your browser &middot; synthetic data &middot; no install &middot; always evolving</p>
-    <nav class="jump" aria-label="Projects">
-      <a href="#orbit" style="--c:var(--orbit)"><span class="dot" style="background:var(--orbit)"></span>GTM Orbit</a>
-      <a href="#account-focus" style="--c:var(--focus)"><span class="dot" style="background:var(--focus)"></span>Account Focus</a>
-      <a href="#saleslore" style="--c:var(--saleslore)"><span class="dot" style="background:var(--saleslore)"></span>SalesLore</a>
-      <a href="#conviction" style="--c:var(--conviction)"><span class="dot" style="background:var(--conviction)"></span>Conviction AI</a>
-      <a href="#meridian" style="--c:var(--meridian)"><span class="dot" style="background:var(--meridian)"></span>Meridian</a>
-      <a href="#monetizeiq" style="--c:var(--monetize)"><span class="dot" style="background:var(--monetize)"></span>MonetizeIQ</a>
-      <a href="#fieldwise" style="--c:var(--fieldwise)"><span class="dot" style="background:var(--fieldwise)"></span>Fieldwise</a>
-      <a href="#readaroo" style="--c:var(--readaroo)"><span class="dot" style="background:var(--readaroo)"></span>Readaroo</a>
+    <a class="brand" href="#top"><b>Hitha Kishore</b><span>AI product portfolio</span></a>
+    <nav class="topnav" aria-label="Site">
+      <a href="#projects">Projects</a>
+      <a href="#reading" class="hide-sm">How to read the work</a>
+      <a href="https://github.com/hithakishore-all" class="hide-sm">GitHub</a>
+      <a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a>
     </nav>
   </div>
 </header>
-
-<main class="wrap">
-
-  <article class="reveal project orbit" id="orbit">
-    <a class="shot" href="https://hithakishore-all.github.io/gtm-orbit/" aria-label="Open the GTM Orbit live demo">
-      <video class="clip" src="img/orbit.mp4" poster="img/orbit-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of GTM Orbit"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Agentic go-to-market</p>
-      <h2>GTM Orbit</h2>
-      <p class="tagline">Every account has a next move. Orbit helps you find it.</p>
-      <p class="problem">Sellers spend about 40% of their time selling, and most buyers double-check AI insights with a rep. More AI isn't the fix. AI that sellers can trust is.</p>
-      <ul class="points">
-        <li>Turns a ranked account into a cited, validated outreach brief in under a minute</li>
-        <li>A validator rejects made-up claims and sends the draft back to be rewritten</li>
-        <li>Only the account owner can approve; every agent step lands in an audit trail</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Sellers don’t need more AI. They need AI they trust enough to act on.</p><p><b>Hardest call.</b> Making the validator a hard gate. A draft that can’t cite its evidence goes back for a rewrite, and after two tries it goes to the seller, never out the door. Slower, but one invented fact costs more trust than a minute saves.</p><p><b>How I’d measure it.</b> Briefs approved by the account owner, and how often the validator has to step in.</p></div>
-      <div class="stack"><span>Salesforce</span><span>Snowflake</span><span>Slack bot</span><span>Node.js</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/gtm-orbit/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/7c63280e62d94164bc1f6162bdc25c4c"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/gtm-orbit"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">Tip: click <strong>Prepare outreach brief</strong> to watch the agents run.</p>
-    </div>
-  </article>
-
-  <article class="reveal project focus" id="account-focus">
-    <a class="shot" href="https://hithakishore-all.github.io/account-focus/" aria-label="Open the Account Focus live demo">
-      <video class="clip" src="img/account-focus.mp4" poster="img/account-focus-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of Account Focus"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Account prioritization · part of GTM Orbit</p>
-      <h2>Account Focus</h2>
-      <p class="tagline">Five accounts a day, why now, and the next move.</p>
-      <p class="problem">AI saves sellers almost five hours a week, yet 72% of sales teams don't put that time into high-value selling. A longer ranked list isn't the fix. Five picks a seller can check is.</p>
-      <ul class="points">
-        <li>Separates worth winning, moving now and able to reach the buyer, so a hot account with the wrong people says multithread instead of disappearing</li>
-        <li>Reads calls instead of counting tracker hits: our own rep's questions count for nothing</li>
-        <li>Every sentence cites its evidence; a validator removes the rest, and every decision is audited</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Everyone ranks accounts. The gap is explaining the rank and checking the seller can actually act on it.</p><p><b>Hardest call.</b> Splitting one score into four. Worth winning and moving now set the rank; readiness and confidence choose the action. A hot account with the wrong people becomes “multithread” instead of sinking. A model may write the words, never the score.</p><p><b>North star.</b> Meetings booked with a real buying role from the five picks, per seller per week.</p></div>
-      <div class="stack"><span>Salesforce</span><span>Snowflake</span><span>Gong (simulated)</span><span>Slack bot</span><span>Node.js</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/account-focus/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/account_focus"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">The live demo opens with a 2&frac12;-minute captioned video, then lets you click through it yourself. One scoring engine runs in the browser, in Node and inside Snowflake, checked by 20 tests.</p>
-    </div>
-  </article>
-
-  <article class="reveal project saleslore" id="saleslore">
-    <a class="shot" href="https://hithakishore-all.github.io/saleslore/" aria-label="Open the SalesLore live demo">
-      <video class="clip" src="img/saleslore.mp4" poster="img/saleslore-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of SalesLore"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Sales knowledge · AE succession</p>
-      <h2>SalesLore</h2>
-      <p class="tagline">Your best sellers' knowledge. Never lost.</p>
-      <p class="problem">The top 14% of sellers generate 80% of revenue, and a new AE takes 6.2 months to ramp. When a top AE leaves, the CRM keeps the record but loses who really decides, what was promised and how they worked.</p>
-      <ul class="points">
-        <li>Captures a departing AE's account knowledge and approved working patterns as a context graph in Postgres, with evidence on every edge</li>
-        <li>Agents draft a brief per inherited account; a validator rejects any uncited claim, and only the manager who owns the handoff can approve</li>
-        <li>Stops on do-not-contact, labels stale and unknown facts, filters personal details, and never speaks to customers as the departed rep</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Most sales AI learns what the organization does. When a top seller leaves, what’s lost is what they knew.</p><p><b>Hardest call.</b> Consent and no impersonation. Capture runs only for sellers who opt in and approve their own patterns, and SalesLore can never send a message or speak as the person who left, even though that would demo better.</p><p><b>How I’d measure it.</b> Time for a new seller to ramp on an inherited territory.</p></div>
-      <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Context graph</span><span>Slack bot</span><span>Salesforce</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/saleslore/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/0696e48a8df249aa870a990e4ae0524e"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/SalesLore"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">The live demo opens with a 3-minute captioned video of the working app, then lets you click through it yourself. The code is the full app with 16 automated tests and a one-click Mac setup.</p>
-    </div>
-  </article>
-
-  <article class="reveal project conviction" id="conviction">
-    <a class="shot" href="https://hithakishore-all.github.io/conviction-ai/" aria-label="Open the Conviction AI live demo">
-      <video class="clip" src="img/conviction.mp4" poster="img/conviction-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="45-second demo of Conviction AI"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Investment intelligence · VC &amp; PE</p>
-      <h2>Conviction AI</h2>
-      <p class="tagline">From market signal to evidence-backed investment decision.</p>
-      <p class="problem">A deck that claims 124% NRR produces a confident memo that says 124%. The expensive mistakes come from numbers nobody checked.</p>
-      <ul class="points">
-        <li>Recomputes the deck's 124% NRR from customer rows (113%) and holds both until a reviewer resolves them</li>
-        <li>NRR, MOIC, IRR and LBO returns come from tested engines, never from the model</li>
-        <li>Anything not public shows as <em>Missing</em>, never guessed or scored by default</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Faster memos aren’t the problem. A deck that claims 124% net retention produces a confident memo that says 124%.</p><p><b>Hardest call.</b> Keeping the model away from the math. Every figure comes from a tested engine; language only explains. When sources disagree, both values stay, marked disputed, so nothing is quietly overwritten.</p><p><b>How I’d measure it.</b> Evidence coverage. A company can score well and still be blocked when only 3 of 10 critical claims are backed.</p></div>
-      <div class="stack"><span>PostgreSQL</span><span>FastAPI</span><span>React</span><span>Claude research agent</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/conviction-ai/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/427af746c17e42399474bbfe055c6cf6"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/conviction-ai"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-    </div>
-  </article>
-
-  <article class="reveal project meridian" id="meridian">
-    <a class="shot" href="https://hithakishore-all.github.io/meridian/" aria-label="Open the Meridian live demo">
-      <video class="clip" src="img/meridian.mp4" poster="img/meridian-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of Meridian"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Agent marketplace · B2B platform</p>
-      <h2>Meridian</h2>
-      <p class="tagline">Every agent, governed and paid for in one place.</p>
-      <p class="problem">Every platform is making AI agents easier to buy, yet only 19.7% of tech leaders say all their agents are fully governed before go-live. Meridian makes agents safe to switch on and proves they get used.</p>
-      <ul class="points">
-        <li>IT approves once: groups, tools, PII masking and a spend cap apply in chat, the data cloud and Slack</li>
-        <li>A validator rejects uncited claims; stale data and unknowns are flagged, never hidden</li>
-        <li>Writes wait for the person who asked, and the north star is purchase-to-weekly-active, not bookings</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Marketplaces are making agents easier to buy. The harder problem is making them safe to switch on, and proving they get used.</p><p><b>Hardest call.</b> One policy, set once by IT, enforced everywhere the agent runs: chat, the data cloud and Slack. Any tool that changes a record waits for the person who asked.</p><p><b>North star.</b> Purchase to weekly active, not bookings. Bookings hide agents that were bought and abandoned.</p></div>
-      <div class="stack"><span>Snowflake</span><span>Slack bot</span><span>Node.js</span><span>MCP tool servers</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/meridian/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/9b47050033fd48938348bf1d3af26932"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/Meridian"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">The live demo opens with a 3-minute captioned video of the marketplace, then lets you click through it yourself. My other prototypes, including Fieldwise, appear as working partner listings.</p>
-    </div>
-  </article>
-
-  <article class="reveal project monetize" id="monetizeiq">
-    <a class="shot" href="https://hithakishore-all.github.io/monetizeiq/" aria-label="Open the MonetizeIQ live demo">
-      <img src="img/monetizeiq-poster.jpg" alt="MonetizeIQ market map: four ways to meter AI and twelve AI categories with readiness scores" loading="lazy">
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">AI monetization · Pricing strategy</p>
-      <h2>MonetizeIQ</h2>
-      <p class="tagline">Price the work, not the seat.</p>
-      <p class="problem">AI agents do the work that seats used to pay for. Yet 44% of software companies absorb AI inference cost entirely, and only 8% of leaders are fully confident in what their AI features cost to deliver.</p>
-      <ul class="points">
-        <li>Maps 12 AI categories across industries by how each proves value: effort, work completed, an outcome event or measured lift</li>
-        <li>Prices one book of customers four ways (seat, credit, hybrid, outcome) with token cost, margin and forecast range for each</li>
-        <li>A readiness gate refuses pure outcome pricing where results can't be credited to the AI, and every billed outcome traces to a source record</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Everyone is building the meter. MonetizeIQ picks the model.</p><p><b>Hardest call.</b> Saying no to outcome pricing. Most workflows fail the test of observable, attributable and contractible, so the gate recommends credits or a hybrid instead.</p><p><b>How I&rsquo;d measure it.</b> Share of the book moved to a new model with margin at or above the seat baseline and no unplanned churn.</p></div>
-      <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Slack bot</span><span>Token economics</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/monetizeiq/">Live demo</a>
-        <a class="btn" href="https://www.loom.com/share/401e77a5f5c342a5a1ba42140e0c108e"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a>
-        <a class="btn" href="https://github.com/hithakishore-all/monetizeiq"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">Watch the 2-minute captioned walkthrough on Loom, or open the live demo to try it yourself. The code is the full app: web console, Slack bot and Postgres, with 14 automated tests.</p>
-    </div>
-  </article>
-
-  <article class="reveal project fieldwise" id="fieldwise">
-    <a class="shot" href="https://hithakishore-all.github.io/fieldwise/" aria-label="Open the Fieldwise live demo">
-      <video class="clip" src="img/fieldwise.mp4" poster="img/fieldwise-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="30-second demo of Fieldwise"></video>
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Field service · Guided resolution</p>
-      <h2>Fieldwise</h2>
-      <p class="tagline">Your next move, made clear.</p>
-      <p class="problem">A failed first service visit adds two more visits and 14 days on average. When sibling models share a fault code, a confident answer for the wrong model is how it happens.</p>
-      <ul class="points">
-        <li>Gives zero repair steps until a person confirms the model and revision, and never guesses from a serial number</li>
-        <li>Every step cites a manual page and runs from a reviewer-published, version-pinned procedure the technician resumes on a phone</li>
-        <li>Chat can explain a step but never choose a branch; withdrawing a procedure pauses live runs, and every action is audited</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Everyone is adding AI answers. A technician needs the approved next step.</p><p><b>Hardest call.</b> Refusing to guess. No model-specific step until a person confirms the exact model and revision, and a past fix can support a hypothesis but never authorize a step. The assistant explains; people choose.</p><p><b>North star.</b> Verified first-visit fixes. A failed first visit adds two more visits and about two weeks.</p></div>
-      <div class="stack"><span>Python · FastAPI</span><span>PostgreSQL</span><span>Product hierarchy</span><span>Procedure templates</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/fieldwise/">Live demo</a>
-        <a class="btn" href="https://github.com/hithakishore-all/fieldwise"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">The live demo opens with a 3-minute captioned video of the working app, then lets you click through it yourself. The code is the full app with 58 automated tests.</p>
-    </div>
-  </article>
-
-  <article class="reveal project readaroo" id="readaroo">
-    <a class="shot" href="https://hithakishore-all.github.io/readaroo/" aria-label="Open the Readaroo live demo">
-      <img class="gif" src="img/readaroo.gif" alt="Animated tour of Readaroo features: Next-Up read-alikes, parent approval, instant borrow, reading streaks and more" loading="lazy">
-      <span class="play">Open live demo →</span>
-    </a>
-    <div class="body">
-      <p class="tag">Consumer · Payments</p>
-      <h2>Readaroo</h2>
-      <p class="tagline">Never wait for the next book, and never read alone.</p>
-      <p class="problem">When the book your kid wants is on hold, the reading streak stalls. Readaroo finds similar books you can borrow from your libraries tonight.</p>
-      <ul class="points">
-        <li>One holds list across every library card in the family</li>
-        <li>Parents set age bands and approve exceptions; a weekly family reading digest</li>
-        <li>Libraries fund instant borrows, metered through Stripe with a hard cap that's never exceeded</li>
-      </ul>
-      <div class="thinking"><p class="th-label">How I thought about it</p><p><b>The bet.</b> Library apps lend to one reader and make them wait. Readaroo lends to the family and turns the wait into a read.</p><p><b>Hardest call.</b> Families never pay. When a kid is mid-series and the wait is weeks, the library can buy an instant copy, capped inside a database transaction so it can never overspend.</p><p><b>How I’d measure it.</b> Holds that turn into a book read tonight.</p></div>
-      <div class="stack"><span>Node.js</span><span>PostgreSQL</span><span>Stripe metering</span><span>PWA + Capacitor</span></div>
-      <div class="actions">
-        <a class="btn primary" href="https://hithakishore-all.github.io/readaroo/">Live demo</a>
-        <a class="btn" href="https://github.com/hithakishore-all/readaroo"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a>
-      </div>
-      <p class="note">Works on a phone too. Try switching who you're "Acting as".</p>
-    </div>
-  </article>
-
-</main>
-
-<footer>
+<main>
+<section class="hero">
   <div class="wrap">
-    <span>All companies, people and figures in the demos are synthetic.</span>
-    <span class="links"><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
+    <p class="byline"><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">Hitha Kishore</a> · Product thinker. Curious by nature. Builder by instinct.</p>
+    <h1>Enterprise AI, Agentic Systems &amp; Product Innovation</h1>
+    <p class="intro">A collection of AI products and interactive prototypes exploring how intelligent systems transform enterprise workflows, data, decision-making, and business models. Each project demonstrates product thinking from problem discovery and strategy through workflows, architecture, evaluation, and execution.</p>
+    <ul class="facts">
+      <li>8 products across 4 domains</li>
+      <li>Every demo runs in your browser, with no install</li>
+      <li>Synthetic data, clearly labeled. <a href="#reading">What's real vs simulated</a></li>
+    </ul>
+  </div>
+</section>
+<nav class="filters" id="projects" aria-label="Filter projects by domain">
+  <div class="wrap">
+    <a href="#projects" data-filter="all" aria-current="true">All<span class="n">8</span></a>
+    <a href="#sales" data-filter="sales" title="Sales &amp; GTM Intelligence">Sales &amp; GTM<span class="n">3</span></a>
+    <a href="#enterprise" data-filter="enterprise" title="Enterprise AI &amp; Decision Intelligence">Enterprise AI &amp; Decisions<span class="n">2</span></a>
+    <a href="#monetization" data-filter="monetization" title="AI Monetization &amp; Business Workflows">Monetization &amp; Workflows<span class="n">2</span></a>
+    <a href="#consumer" data-filter="consumer" title="Consumer Product Innovation">Consumer<span class="n">1</span></a>
+  </div>
+</nav>
+<div class="wrap">
+<section class="cat" id="sales" data-cat="sales" aria-labelledby="h-sales">
+  <div class="cat-head"><h2 id="h-sales">Sales &amp; GTM Intelligence</h2><p>Agents that help sellers decide where to spend the day, what to say, and what to keep when people move on.</p></div>
+
+  <article class="card p-orbit flagship" id="orbit">
+    <div class="fl-left"><a class="media" href="https://hithakishore-all.github.io/gtm-orbit/" aria-label="Open the GTM Orbit live demo"><video src="img/orbit.mp4" poster="img/orbit-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Short clip of the GTM Orbit demo"></video><span class="pill">Open live demo →</span></a><div class="thinking"><p><b>The bet.</b> Sellers don&rsquo;t need more AI. They need AI they trust enough to act on.</p><p><b>Hardest call.</b> Making the validator a hard gate. A draft that can&rsquo;t cite its evidence goes back for a rewrite, and after two tries it goes to the seller, never out the door.</p><p><b>How I&rsquo;d measure it.</b> Briefs approved by the account owner, and how often the validator has to step in.</p></div></div>
+    <div class="body">
+      <span class="badge">Flagship project</span>
+      <p class="kicker">Agentic go-to-market</p>
+      <h3><a href="work/gtm-orbit/">GTM Orbit</a></h3>
+      <p class="tagline">Every account has a next move. Orbit helps you find it.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>A score tells a seller which account, but not why now, who to contact or what to say. AI drafts that make up facts lose the seller's trust.</dd></div>
+        <div><dt>For</dt><dd>Account executives working a named book of accounts, and the RevOps teams who have to trust what the AI produces.</dd></div>
+        
+        <div><dt>Explore</dt><dd>Click <b>Prepare outreach brief</b>. Four agents run, and the validator catches a made-up claim and sends the draft back for a rewrite.</dd></div>
+      </dl>
+      
+      <p class="stackline">Salesforce · Snowflake · Slack bot · Node.js</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/gtm-orbit/">Live demo</a><a class="btn" href="work/gtm-orbit/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/7c63280e62d94164bc1f6162bdc25c4c"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/gtm-orbit"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      <p class="related">Extended by <a href="#account-focus">Account Focus</a>, the daily prioritization layer, and listed as a working agent in <a href="#meridian">Meridian</a>.</p>
+    </div>
+  </article>
+  <div class="grid">
+  <article class="card p-focus" id="account-focus">
+    <a class="media" href="https://hithakishore-all.github.io/account-focus/" aria-label="Open the Account Focus live demo"><video class="hoverplay" src="img/account-focus.mp4" poster="img/account-focus-poster.jpg" muted loop playsinline preload="none" aria-label="Short clip of the Account Focus demo"></video><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Account prioritization · part of GTM Orbit</p>
+      <h3><a href="work/account-focus/">Account Focus</a></h3>
+      <p class="tagline">Five accounts a day, why now, and the next move.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>AI saves sellers almost five hours a week, but most teams don't put that time into high-value selling. A longer ranked list doesn't fix that.</dd></div>
+        <div><dt>For</dt><dd>Account executives starting their day, and the managers who coach them.</dd></div>
+        <div><dt>The bet</dt><dd>Everyone ranks accounts. The gap is explaining the rank and checking that the seller can act on it.</dd></div>
+        <div><dt>Explore</dt><dd>See why a hot account with the wrong people becomes <em>multithread</em>, and why our own rep saying &ldquo;budget&rdquo; counts for nothing.</dd></div>
+      </dl>
+      
+      <p class="stackline">Salesforce · Snowflake · Gong (simulated) · Slack bot · Node.js</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/account-focus/">Live demo</a><a class="btn" href="work/account-focus/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/account_focus"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  <article class="card p-saleslore" id="saleslore">
+    <a class="media" href="https://hithakishore-all.github.io/saleslore/" aria-label="Open the SalesLore live demo"><video class="hoverplay" src="img/saleslore.mp4" poster="img/saleslore-poster.jpg" muted loop playsinline preload="none" aria-label="Short clip of the SalesLore demo"></video><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Sales knowledge · AE succession</p>
+      <h3><a href="work/saleslore/">SalesLore</a></h3>
+      <p class="tagline">Your best sellers' knowledge. Never lost.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>When a top AE leaves, the CRM keeps the records but loses who really decides, what was promised and how the seller worked.</dd></div>
+        <div><dt>For</dt><dd>Sales managers handing over a territory, and the successor AE inheriting it.</dd></div>
+        <div><dt>The bet</dt><dd>Most sales AI learns what the organization does. What's lost when a top seller leaves is what they knew.</dd></div>
+        <div><dt>Explore</dt><dd>Run the agents on a handover. The validator rejects &ldquo;Champion has approved budget&rdquo;, and only the manager can approve the result.</dd></div>
+      </dl>
+      
+      <p class="stackline">Node.js · PostgreSQL · Context graph · Slack bot · Salesforce</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/saleslore/">Live demo</a><a class="btn" href="work/saleslore/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/0696e48a8df249aa870a990e4ae0524e"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/SalesLore"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  </div>
+</section>
+<section class="cat" id="enterprise" data-cat="enterprise" aria-labelledby="h-enterprise">
+  <div class="cat-head"><h2 id="h-enterprise">Enterprise AI &amp; Decision Intelligence</h2><p>Checking the evidence behind high-stakes decisions, and governing the agents that make them.</p></div>
+
+  <div class="grid">
+  <article class="card p-conviction" id="conviction">
+    <a class="media" href="https://hithakishore-all.github.io/conviction-ai/" aria-label="Open the Conviction AI live demo"><video class="hoverplay" src="img/conviction.mp4" poster="img/conviction-poster.jpg" muted loop playsinline preload="none" aria-label="Short clip of the Conviction AI demo"></video><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Investment intelligence · VC &amp; PE</p>
+      <h3><a href="work/conviction-ai/">Conviction AI</a></h3>
+      <p class="tagline">From market signal to evidence-backed investment decision.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>A deck that claims 124% NRR produces a confident memo that says 124%. The expensive mistakes come from numbers nobody checked.</dd></div>
+        <div><dt>For</dt><dd>Venture and private equity deal teams taking a company from first look to investment committee.</dd></div>
+        <div><dt>The bet</dt><dd>Faster memos aren't the problem. Unchecked metrics are.</dd></div>
+        <div><dt>Explore</dt><dd>Load the HelioOps data room and watch the deck's 124% NRR get recomputed from customer rows at 113%.</dd></div>
+      </dl>
+      
+      <p class="stackline">PostgreSQL · FastAPI · React · Claude research agent</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/conviction-ai/">Live demo</a><a class="btn" href="work/conviction-ai/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/427af746c17e42399474bbfe055c6cf6"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/conviction-ai"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  <article class="card p-meridian" id="meridian">
+    <a class="media" href="https://hithakishore-all.github.io/meridian/" aria-label="Open the Meridian live demo"><video class="hoverplay" src="img/meridian.mp4" poster="img/meridian-poster.jpg" muted loop playsinline preload="none" aria-label="Short clip of the Meridian demo"></video><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Agent marketplace · B2B platform</p>
+      <h3><a href="work/meridian/">Meridian</a></h3>
+      <p class="tagline">Every agent, governed and paid for in one place.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>Agents are getting easier to buy, but only 19.7% of tech leaders say all their agents are fully governed before go-live.</dd></div>
+        <div><dt>For</dt><dd>Buyers, IT admins and employees at companies adopting third-party agents, and the marketplace team running it.</dd></div>
+        <div><dt>The bet</dt><dd>The hard part isn't buying agents. It's making them safe to switch on, and proving they get used.</dd></div>
+        <div><dt>Explore</dt><dd>Buy GTM Orbit, have IT approve the policy, then watch the gateway refuse a group IT never enabled.</dd></div>
+      </dl>
+      
+      <p class="stackline">Snowflake · Slack bot · Node.js · MCP-style tool servers</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/meridian/">Live demo</a><a class="btn" href="work/meridian/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/9b47050033fd48938348bf1d3af26932"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/Meridian"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  </div>
+</section>
+<section class="cat" id="monetization" data-cat="monetization" aria-labelledby="h-monetization">
+  <div class="cat-head"><h2 id="h-monetization">AI Monetization &amp; Business Workflows</h2><p>How AI gets priced, and how it turns into a verified result in operational work.</p></div>
+
+  <div class="grid">
+  <article class="card p-monetize" id="monetizeiq">
+    <a class="media" href="https://hithakishore-all.github.io/monetizeiq/" aria-label="Open the MonetizeIQ live demo"><img src="img/monetizeiq-poster.jpg" alt="Screenshot of MonetizeIQ" loading="lazy"><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">AI monetization · Pricing strategy</p>
+      <h3><a href="work/monetizeiq/">MonetizeIQ</a></h3>
+      <p class="tagline">Price the work, not the seat.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>AI agents do the work that seats used to pay for. Yet 44% of software companies absorb AI inference cost entirely.</dd></div>
+        <div><dt>For</dt><dd>Pricing, monetization and finance leaders at AI and SaaS companies, and account owners at renewal.</dd></div>
+        <div><dt>The bet</dt><dd>Everyone is building the meter. MonetizeIQ picks the model.</dd></div>
+        <div><dt>Explore</dt><dd>Price one book of customers four ways, and see the readiness gate refuse outcome pricing where results can't be credited to the AI.</dd></div>
+      </dl>
+      
+      <p class="stackline">Node.js · PostgreSQL · Slack bot · Token economics</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/monetizeiq/">Live demo</a><a class="btn" href="work/monetizeiq/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/401e77a5f5c342a5a1ba42140e0c108e"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/MonetizeIQ"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  <article class="card p-fieldwise" id="fieldwise">
+    <a class="media" href="https://hithakishore-all.github.io/fieldwise/" aria-label="Open the Fieldwise live demo"><video class="hoverplay" src="img/fieldwise.mp4" poster="img/fieldwise-poster.jpg" muted loop playsinline preload="none" aria-label="Short clip of the Fieldwise demo"></video><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Field service · Guided resolution</p>
+      <h3><a href="work/fieldwise/">Fieldwise</a></h3>
+      <p class="tagline">Your next move, made clear.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>A failed first service visit adds two more visits and 14 days on average. A confident answer for the wrong model is how it happens.</dd></div>
+        <div><dt>For</dt><dd>Service desk agents, field technicians on their phones, and the people who author and review procedures.</dd></div>
+        <div><dt>The bet</dt><dd>Everyone is adding AI answers. A technician needs the approved next step.</dd></div>
+        <div><dt>Explore</dt><dd>Ask about fault D17. Fieldwise refuses to give steps until the model is confirmed, then cites the exact manual page.</dd></div>
+      </dl>
+      
+      <p class="stackline">Python · FastAPI · PostgreSQL · Product hierarchy · Procedure templates</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/fieldwise/">Live demo</a><a class="btn" href="work/fieldwise/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://www.loom.com/share/b216065fed444a60976e9811e9ec1994"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/fieldwise"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  </div>
+</section>
+<section class="cat" id="consumer" data-cat="consumer" aria-labelledby="h-consumer">
+  <div class="cat-head"><h2 id="h-consumer">Consumer Product Innovation</h2><p>Consumer products where the family is the user and the library pays.</p></div>
+
+  <div class="grid one">
+  <article class="card p-readaroo" id="readaroo">
+    <a class="media" href="https://hithakishore-all.github.io/readaroo/" aria-label="Open the Readaroo live demo"><img class="contain" src="img/readaroo.gif" alt="Animated tour of Readaroo" loading="lazy"><span class="pill">Open live demo →</span></a>
+    <div class="body">
+      
+      <p class="kicker">Consumer · Payments</p>
+      <h3><a href="work/readaroo/">Readaroo</a></h3>
+      <p class="tagline">Never wait for the next book, and never read alone.</p>
+      <dl class="facts-dl">
+        <div><dt>Problem</dt><dd>When the book a kid wants is on hold, the reading streak stalls, and pay-per-use library apps ration instant access.</dd></div>
+        <div><dt>For</dt><dd>Families (parents and kids), and the public libraries that fund their borrowing.</dd></div>
+        <div><dt>The bet</dt><dd>Library apps lend to one reader and make them wait. Readaroo lends to the family and turns the wait into a read.</dd></div>
+        <div><dt>Explore</dt><dd>Switch who you're <b>Acting as</b>. A kid's out-of-band request waits for a parent, and an instant borrow stops at the library's cap.</dd></div>
+      </dl>
+      
+      <p class="stackline">Node.js · PostgreSQL · Stripe metering · PWA + Capacitor</p>
+      <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/readaroo/">Live demo</a><a class="btn" href="work/readaroo/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M6.2 8h4M6.2 10.6h4"/></svg>Case study</a><a class="btn" href="https://github.com/hithakishore-all/readaroo"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+      
+    </div>
+  </article>
+  </div>
+</section>
+
+<section class="legend" id="reading" aria-labelledby="h-reading">
+  <h2 id="h-reading">How to read these prototypes</h2>
+  <p>These are working prototypes, not commercial products. Every case study has a <em>What's real</em> panel that uses these labels, so you can tell built functionality from simulation, research and assumptions.</p>
+  <ul>
+    <li><span class="lbl lbl-built">Built</span><span>Working code you can run: flows, guardrails, engines, tests.</span></li>
+    <li><span class="lbl lbl-scripted">Scripted</span><span>Deterministic stand-ins (for example, pre-written agent wording) that a live model can replace.</span></li>
+    <li><span class="lbl lbl-simulated">Simulated</span><span>Integrations or systems that are mocked, such as Gong calls or a host CRM.</span></li>
+    <li><span class="lbl lbl-synthetic">Synthetic</span><span>Fictional companies, people and numbers generated for the demo.</span></li>
+    <li><span class="lbl lbl-public">Public source</span><span>Facts and market figures from cited public research.</span></li>
+    <li><span class="lbl lbl-assumption">Assumption</span><span>Illustrative inputs or judgments, stated as such.</span></li>
+    <li><span class="lbl lbl-proposed">Proposed</span><span>Target metrics for a pilot. Not results.</span></li>
+    <li><span class="lbl lbl-measured">Measured</span><span>Something actually measured, such as automated test results.</span></li>
+  </ul>
+</section>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <span>Every company, person and figure in the demos is synthetic, except where a page marks a public source.</span>
+    <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
   </div>
 </footer>
 <script>
-(()=>{const els=document.querySelectorAll('.reveal');if(!('IntersectionObserver'in window)){els.forEach(e=>e.classList.add('in'));return;}
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-els.forEach(e=>io.observe(e));})();
+(() => {
+  const links = [...document.querySelectorAll('.filters a')];
+  const cats = [...document.querySelectorAll('.cat')];
+  const apply = (f, scroll) => {
+    links.forEach(a => a.setAttribute('aria-current', a.dataset.filter === f ? 'true' : 'false'));
+    cats.forEach(c => { c.hidden = f !== 'all' && c.dataset.cat !== f; });
+    if (scroll) document.getElementById('projects').scrollIntoView({ block: 'start' });
+  };
+  links.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const f = a.dataset.filter;
+    apply(f, true);
+    history.replaceState(null, '', f === 'all' ? '#projects' : '#' + f);
+  }));
+  const h = location.hash.slice(1);
+  if (cats.some(c => c.dataset.cat === h)) apply(h, true);
+
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still) document.querySelectorAll('video[autoplay]').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+  if (!still && matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.card').forEach(card => {
+      const v = card.querySelector('video.hoverplay');
+      if (!v) return;
+      const play = () => { v.play().catch(() => {}); };
+      const stop = () => { v.pause(); };
+      card.addEventListener('mouseenter', play); card.addEventListener('mouseleave', stop);
+      card.addEventListener('focusin', play); card.addEventListener('focusout', stop);
+    });
+  }
+})();
 </script>
 </body>
 </html>

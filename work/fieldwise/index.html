@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fieldwise: case study · Hitha Kishore</title>
+<meta name="description" content="Fieldwise: Your next move, made clear. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<link rel="canonical" href="https://hithakishore-all.github.io/work/fieldwise/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fieldwise: case study · Hitha Kishore">
+<meta property="og:description" content="Fieldwise: Your next move, made clear. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<meta property="og:image" content="https://hithakishore-all.github.io/img/fieldwise-walkthrough-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1F24'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' fill='%23F4EFE6' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body class="p-fieldwise">
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../"><b>Hitha Kishore</b><span>AI product portfolio</span></a>
+    <nav class="topnav" aria-label="Site">
+      <a href="../../#projects">Projects</a>
+      <a href="../../#reading" class="hide-sm">How to read the work</a>
+      <a href="https://github.com/hithakishore-all" class="hide-sm">GitHub</a>
+      <a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <header class="cs-head">
+    <p class="crumb"><a href="../../#monetization">← AI Monetization &amp; Business Workflows</a></p>
+    <p class="kicker">Field service · Guided resolution</p>
+    <h1>Fieldwise</h1>
+    <p class="tagline">Your next move, made clear.</p>
+    <p class="summary">Fieldwise carries one equipment problem from the support call to a verified fix on a technician's phone. It gives no repair steps until a person confirms the exact model and revision. After that, every step is cited to a manual page, pinned to a reviewer-approved procedure version and recorded in an audit trail.</p>
+    <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/fieldwise/">Live demo</a><a class="btn" href="https://www.loom.com/share/b216065fed444a60976e9811e9ec1994"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/fieldwise"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+  </header>
+  <dl class="glance">
+    <div><dt>For</dt><dd>Service agents, field technicians, knowledge authors and reviewers</dd></div>
+    <div><dt>Problem</dt><dd>Wrong-model guidance causes failed first visits</dd></div>
+    <div><dt>The bet</dt><dd>Refuse to guess; deliver the approved, cited next step</dd></div>
+    <div><dt>Status</dt><dd>Working prototype · 58 tests passing on PostgreSQL</dd></div>
+  </dl>
+  <figure style="margin:0">
+    <div class="cs-media"><video controls preload="none" playsinline poster="../../img/fieldwise-walkthrough-poster.jpg" src="../../img/fieldwise-walkthrough.mp4" aria-label="Captioned walkthrough of Fieldwise"></video></div>
+    <figcaption class="cs-caption">Captioned walkthrough, recorded from the working app with synthetic data (no sound).</figcaption>
+  </figure>
+  <div class="cs-layout">
+    <nav class="toc" aria-label="On this page"><p>On this page</p><ol>
+      <li><a href="#real">What's real</a></li>
+      <li><a href="#problem">Problem and opportunity</a></li>
+      <li><a href="#users">Target users</a></li>
+      <li><a href="#concept">Concept and thesis</a></li>
+      <li><a href="#journey">User journey</a></li>
+      <li><a href="#architecture">Architecture and integrations</a></li>
+      <li><a href="#decisions">Decisions and trade-offs</a></li>
+      <li><a href="#evaluation">Evaluation and metrics</a></li>
+      <li><a href="#value">Business value</a></li>
+      <li><a href="#future">Future opportunities</a></li>
+    </ol></nav>
+    <div class="cs-body">
+<section class="cs-sec" id="real" aria-labelledby="h-real"><h2 id="h-real">What's real in this prototype</h2>
+<p>What this prototype actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>A FastAPI server on Postgres (with a SQLite fallback): an assistant, a pathway executor, imports, review and publish with separation of duties, and an outbox that delivers each update exactly once</span></li><li><span class="lbl lbl-built">Built</span><span>A phone run view that resumes the same pinned run after a refresh or handoff</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>The assistant uses scripted retrieval over stored passages plus response templates. There's no language model in v0.1</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>The &ldquo;Northline Service Desk&rdquo; host CRM is a mock page that embeds the workspace</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Every elevator model, manual, procedure, company and person</span></li><li><span class="lbl lbl-proposed">Proposed</span><span>All pilot metrics in the PRD</span></li></ul></div>
+</section>
+<section class="cs-sec" id="problem" aria-labelledby="h-problem"><h2 id="h-problem"><span class="num">01</span>Problem and opportunity</h2>
+<p class="lead">When sibling models share a fault code, a confident answer for the wrong model sends a technician down the wrong path, and the customer waits for a second and third visit.</p><ul class="stats"><li><b>+2 visits, +14 days</b>the average cost of a failed first visit<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://salestechstar.com/predictive-ai-artificial-intelligence/aquants-2025-field-service-benchmark-report-reveals-ai-enabling-39-faster-machinery-repairs-and-more/">Aquant 2025 Field Service Benchmark</a></span></li><li><b>86% vs 53%</b>first-time fix rate for top performers against the bottom group<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://salestechstar.com/predictive-ai-artificial-intelligence/aquants-2025-field-service-benchmark-report-reveals-ai-enabling-39-faster-machinery-repairs-and-more/">Aquant 2025 benchmark</a></span></li><li><b>30%</b>of solutions appear only in data provided by experts<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.businesswire.com/news/home/20230517005191/en/Aquants-Service-Co-Pilot-Delivers-Generative-AI-Purpose-Built-for-Service">Aquant Service Co-Pilot release</a></span></li></ul><h3>The opportunity</h3><p>Don't add another AI answer. Carry the approved next step, pinned to the right model, from the call to the fix.</p>
+</section>
+<section class="cs-sec" id="users" aria-labelledby="h-users"><h2 id="h-users"><span class="num">02</span>Target users</h2>
+<ul class="users"><li><b>Service desk agent (Ana)</b>Takes the call, confirms the model and revision, starts and assigns a run.</li><li><b>Field technician (Teo)</b>Follows the pinned procedure step by step on a phone and records the verified outcome.</li><li><b>Knowledge author (Ari)</b>Imports manuals and drafts procedures from templates.</li><li><b>Reviewer (Ren)</b>Publishes or withdraws procedure versions, and can't publish their own drafts.</li></ul>
+</section>
+<section class="cs-sec" id="concept" aria-labelledby="h-concept"><h2 id="h-concept"><span class="num">03</span>Product concept and thesis</h2>
+<p class="lead">Chat explains; people choose. The assistant can explain the current step but can never pick a branch.</p><ul><li><b>Refuse to guess.</b> No model-specific steps until a person confirms the model and revision, and never inferred from a serial number.</li><li><b>Only approved steps.</b> A past fix can support a hypothesis, but only a published, applicable procedure authorizes a step.</li><li><b>Pin and resume.</b> A run is pinned to one procedure version. Withdrawing that version pauses live runs.</li></ul>
+</section>
+<section class="cs-sec" id="journey" aria-labelledby="h-journey"><h2 id="h-journey"><span class="num">04</span>User journey and workflow</h2>
+<ol class="steps"><li>Ana opens case C104: &ldquo;doors keep reopening, D17&rdquo;, with the model and revision unknown.</li><li>She clicks <b>Ask</b>. D17 appears for two models, so Fieldwise asks her to confirm, and gives zero steps.</li><li>She confirms Model B, rev 2. Now she gets manual MB2 · rev 2 · p14, one verified recovery in two matching cases, and procedure PB2 v1.</li><li>She assigns the run to Teo. On his phone, he steps through it, reloads, and the same run, version and step come back.</li><li>Teo saves a verified outcome. Ana approves it, a simulated host outage fails the first send, and the retry delivers exactly one summary.</li><li>Ren opens <b>Review</b> to see every step, piece of evidence and audit event in order. Withdrawing v1 mid-run pauses Teo's run.</li></ol><p class="note">Try it yourself in the <a href="https://hithakishore-all.github.io/fieldwise/">live demo</a>.</p>
+</section>
+<section class="cs-sec" id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture"><span class="num">05</span>Architecture and integrations</h2>
+<div class="flow" role="img" aria-label="Flow: Case (host CRM, mocked) Confirm model + revision Assistant cites passages Pinned procedure run Verified outcome Outbox (exactly once)"><span class="">Case (host CRM, mocked)</span><i aria-hidden="true">→</i><span class="k">Confirm model + revision</span><i aria-hidden="true">→</i><span class="">Assistant cites passages</span><i aria-hidden="true">→</i><span class="k">Pinned procedure run</span><i aria-hidden="true">→</i><span class="">Verified outcome</span><i aria-hidden="true">→</i><span class="">Outbox (exactly once)</span></div><p>A FastAPI server handles sessions and access, the assistant, the pathway executor, imports and the outbox, on Postgres (or SQLite as a fallback). A mock host page embeds the workspace and receives the summary.</p><p class="note">Built with: Python · FastAPI · PostgreSQL · Product hierarchy · Procedure templates. Full architecture notes are in the <a href="https://github.com/hithakishore-all/fieldwise">repository</a>.</p><details class="more"><summary>Stage-by-stage inputs, outputs and guardrails</summary><div><div class="tbl-wrap"><table><thead><tr><th>Stage</th><th>Reads</th><th>Produces</th><th>Guardrail</th></tr></thead><tbody><tr><td><b>Assistant</b></td><td>Case facts, passages for the confirmed revision, published procedures</td><td>Answer, clarify or escalate, with citations</td><td>No model-specific content before confirmation</td></tr><tr><td><b>Pathway executor</b></td><td>The pinned version's frozen nodes</td><td>One transition per allowed answer</td><td>Assigned technician only; retry keys; paused when withdrawn</td></tr><tr><td><b>Imports</b></td><td>JSON manifests</td><td>Sources and passages, with a report</td><td>Checksummed and safe to rerun; bad records rejected with reasons</td></tr><tr><td><b>Review</b></td><td>Drafts, sources, feedback</td><td>Published or withdrawn versions</td><td>Authors can't publish their own drafts</td></tr><tr><td><b>Outbox</b></td><td>Approved outcomes</td><td>One host record and a receipt</td><td>Deduplicated by delivery key</td></tr></tbody></table></div></div></details>
+</section>
+<section class="cs-sec" id="decisions" aria-labelledby="h-decisions"><h2 id="h-decisions"><span class="num">06</span>Important decisions and trade-offs</h2>
+<ul class="decisions"><li><b>Refuse to guess</b>Zero model-specific steps until a person confirms the exact model and revision.<span class="trade">One more question for the agent, instead of a wrong visit.</span></li><li><b>Separate explaining from deciding</b>The assistant explains steps but can't choose a branch.<span class="trade">Less &ldquo;magical&rdquo;, and much safer.</span></li><li><b>Pin runs to a version</b>A procedure update mid-run doesn't change the steps under a technician's feet. A withdrawal pauses the run.<span class="trade">Version management for reviewers.</span></li><li><b>Exactly-once delivery</b>Retry keys, version checks and an outbox mean a double tap or a retry counts once.<span class="trade">More infrastructure than a simple API call.</span></li></ul>
+</section>
+<section class="cs-sec" id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation"><span class="num">07</span>Evaluation and success metrics</h2>
+<h3>North star <span class="lbl lbl-proposed">Proposed</span></h3><p class="lead">Verified first-visit resolutions: +10 points over the sponsor's baseline on pilot cases.</p><h3>Verified today <span class="lbl lbl-measured">Measured</span></h3><ul><li>58 tests passing on PostgreSQL 16, including true parallel writes (57 passed and 1 skipped on SQLite), covering applicability, transitions, access, retry safety, versions, imports and closure</li></ul><details class="more"><summary>Proposed pilot metrics</summary><div><ul><li><span class="lbl lbl-proposed">Proposed</span> Supported answers that are correct and cite an applicable passage: 36 of 40</li><li><span class="lbl lbl-proposed">Proposed</span> Ambiguous questions met with a clarification or abstention: 18 of 20</li><li><span class="lbl lbl-proposed">Proposed</span> Multi-step runs whose recorded trace matches the expected path: 20 of 20</li><li><span class="lbl lbl-proposed">Proposed</span> Model-specific steps shown before confirmation, cross-tenant leaks and duplicate host updates: 0</li></ul></div></details><p class="note" style="margin-top:12px">The PRD's evaluation plan freezes 100 held-out scenarios and compares them against a keyword-search baseline. All targets are proposed.</p>
+</section>
+<section class="cs-sec" id="value" aria-labelledby="h-value"><h2 id="h-value"><span class="num">08</span>Business value</h2>
+<p><span class="lbl lbl-assumption">Hypothesis</span> This is the value expected if a pilot confirms the north star. None of it is a measured outcome.</p><ul><li><b>Fewer repeat visits.</b> Each avoided failed visit saves two more visits and about two weeks.</li><li><b>Expert knowledge, governed.</b> Procedures are reviewed, versioned and cited, not improvised.</li><li><b>Clean records.</b> One verified summary reaches the host system per closure.</li></ul>
+</section>
+<section class="cs-sec" id="future" aria-labelledby="h-future"><h2 id="h-future"><span class="num">09</span>Future opportunities</h2>
+<ul><li>A live CRM or CMMS host (Salesforce Service Cloud, ServiceNow, MaintainX) in place of the mock</li><li>A model phrasing answers over the same cited passages, with the executor unchanged</li><li>PDF ingestion with page and table locators, and an import adapter for existing CMMS procedures</li><li>Offline execution in the field, log diagnosis and photo capture</li></ul>
+</section>
+    </div>
+  </div>
+  <nav class="pager" aria-label="More projects">
+    <a href="../../work/monetizeiq/"><small>← Previous</small><b>MonetizeIQ</b></a>
+    <a class="next" href="../../work/readaroo/"><small>Next →</small><b>Readaroo</b></a>
+  </nav>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <span>Every company, person and figure in the demos is synthetic, except where a page marks a public source.</span>
+    <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
+  </div>
+</footer>
+<script>
+(() => {
+  const links = [...document.querySelectorAll('.toc a')];
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { links.forEach(a => a.classList.remove('on')); map.get(e.target.id)?.classList.add('on'); }
+  }), { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.cs-sec').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>
