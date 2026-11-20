@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTM Orbit: case study · Hitha Kishore</title>
+<meta name="description" content="GTM Orbit: Every account has a next move. Orbit helps you find it. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<link rel="canonical" href="https://hithakishore-all.github.io/work/gtm-orbit/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GTM Orbit: case study · Hitha Kishore">
+<meta property="og:description" content="GTM Orbit: Every account has a next move. Orbit helps you find it. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<meta property="og:image" content="https://hithakishore-all.github.io/img/orbit-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1F24'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' fill='%23F4EFE6' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body class="p-orbit">
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../"><b>Hitha Kishore</b><span>AI product portfolio</span></a>
+    <nav class="topnav" aria-label="Site">
+      <a href="../../#projects">Projects</a>
+      <a href="../../#reading" class="hide-sm">How to read the work</a>
+      <a href="https://github.com/hithakishore-all" class="hide-sm">GitHub</a>
+      <a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="cs-band"><div class="wrap">
+  <header class="cs-head">
+    <p class="crumb"><a href="../../#sales">← Sales &amp; GTM Intelligence</a></p>
+    <p class="kicker">Agentic go-to-market</p>
+    <h1>GTM Orbit</h1>
+    <p class="tagline">Every account has a next move. Orbit helps you find it.</p>
+    <p class="summary">GTM Orbit turns a ranked account into an outreach brief a seller can send. Salesforce, call and product signals come together in Snowflake. Four bounded agents (Discover, Research, Compose, Validate) build the brief from one governed view, every claim cites its evidence, and the account owner approves it in a web console or in Slack. Nothing is sent automatically.</p>
+    <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/gtm-orbit/">Live demo</a><a class="btn" href="https://www.loom.com/share/7c63280e62d94164bc1f6162bdc25c4c"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/gtm-orbit"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+  </header>
+  <dl class="glance">
+    <div><dt>For</dt><dd>Account executives; sales and RevOps leaders</dd></div>
+    <div><dt>Problem</dt><dd>Context for the next move is scattered, and invented AI claims erode trust</dd></div>
+    <div><dt>The bet</dt><dd>Trusted, cited context beats more AI output</dd></div>
+    <div><dt>Status</dt><dd>Independent prototype · browser demo replays a real run</dd></div>
+  </dl>
+  </div></div>
+<div class="wrap">
+  <figure style="margin:0">
+    <div class="cs-media"><video controls muted loop playsinline preload="metadata" poster="../../img/orbit-poster.jpg" src="../../img/orbit.mp4" aria-label="Short clip of GTM Orbit"></video></div>
+    <figcaption class="cs-caption">Short clip of the live demo. The full walkthrough is on <a href="https://www.loom.com/share/7c63280e62d94164bc1f6162bdc25c4c">Loom</a>.</figcaption>
+  </figure>
+  <div class="cs-layout">
+    <nav class="toc" aria-label="On this page"><p>On this page</p><ol>
+      <li><a href="#real">What's real</a></li>
+      <li><a href="#problem">Problem and opportunity</a></li>
+      <li><a href="#users">Target users</a></li>
+      <li><a href="#concept">Concept and thesis</a></li>
+      <li><a href="#journey">User journey</a></li>
+      <li><a href="#architecture">Architecture and integrations</a></li>
+      <li><a href="#decisions">Decisions and trade-offs</a></li>
+      <li><a href="#evaluation">Evaluation and metrics</a></li>
+      <li><a href="#value">Business value</a></li>
+      <li><a href="#future">Future opportunities</a></li>
+    </ol></nav>
+    <div class="cs-body">
+<section class="cs-sec" id="real" aria-labelledby="h-real"><h2 id="h-real">What's real in this prototype</h2>
+<p>An independent prototype: conceived and built independently to explore an idea. Here is what it actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>The four-stage agent flow as a stored procedure inside Snowflake, with a state machine, evidence checks, up to two validator retries, owner-only approval and an audit trail of every step</span></li><li><span class="lbl lbl-built">Built</span><span>Two front ends on one engine: a web console and a Slack bot (<code>/orbit</code>), plus an end-to-end smoke test</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>The agents' wording is pre-written by default, because Snowflake trial accounts block AI functions. One setting switches it to a Snowflake Cortex model</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>Gong call transcripts and tracker hits</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>Ten fictional accounts, people and calls. The browser demo replays a snapshot of real runs</span></li><li><span class="lbl lbl-notbuilt">Not built</span><span>Sending email. Approval records a decision and never sends anything</span></li></ul></div>
+</section>
+<section class="cs-sec" id="problem" aria-labelledby="h-problem"><h2 id="h-problem"><span class="num">01</span>Problem and opportunity</h2>
+<p class="lead">A priority score tells a seller <em>which</em> account. It doesn't say <em>why now</em>, <em>who to contact</em> or <em>what to say</em>. That context is scattered across systems, and drafts that make up facts cost more trust than they save in time.</p><ul class="stats"><li><b>~40%</b>of a seller's time goes to selling, and 51% of sales leaders using AI say disconnected systems slow it down<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.salesforce.com/news/stories/state-of-sales-report-announcement-2026/">Salesforce, State of Sales 2026</a></span></li><li><b>69%</b>of B2B buyers check AI-generated insights with a sales rep<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2026-05-20-gartner-survey-finds-sixty-nine-percent-of-b-two-b-buyers-turn-to-sales-reps-to-validate-ai-generated-insights">Gartner, May 2026</a></span></li><li><b>&lt;40%</b>of sellers are expected to say AI agents improved their productivity, even as agents may outnumber sellers 10 to 1 by 2028 (prediction)<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2025-11-18-gartner-predicts-by-2028-ai-agents-will-outnumber-sellers-by-10x-yet-fewer-than-40-percent-of-sellers-will-report-ai-agents-improved-productivity">Gartner, Nov 2025</a></span></li></ul><h3>The opportunity</h3><p>The opportunity isn't another generator. It's a workflow where every sentence can be traced to its evidence and the seller stays in control.</p>
+</section>
+<section class="cs-sec" id="users" aria-labelledby="h-users"><h2 id="h-users"><span class="num">02</span>Target users</h2>
+<ul class="users"><li><b>Account executive</b>Works a ranked queue, prepares outreach and owns the approval for their accounts.</li><li><b>Sales and RevOps leaders</b>Own the scoring model and need freshness, versioning and an audit trail they can inspect.</li><li><b>Security and data owners</b>Need agents to read one governed view under a least-privilege service user.</li></ul>
+</section>
+<section class="cs-sec" id="concept" aria-labelledby="h-concept"><h2 id="h-concept"><span class="num">03</span>Product concept and thesis</h2>
+<p class="lead">Not more AI, but context a seller can trust, delivered where they already work, with the seller in control.</p><ul><li><b>No uncited claims.</b> Every sentence in a draft points to an evidence ID.</li><li><b>Unknown is not low.</b> A stale or missing score shows as <em>stale</em> or <em>not scored</em>, never quietly ranked low.</li><li><b>Read, don't recompute.</b> Agents read the scoring model's score, version and freshness, and never re-score accounts.</li><li><b>Human approval.</b> Only the account owner can approve, and approving sends nothing.</li></ul>
+</section>
+<section class="cs-sec" id="journey" aria-labelledby="h-journey"><h2 id="h-journey"><span class="num">04</span>User journey and workflow</h2>
+<ol class="steps"><li>Open the queue: today's accounts ranked by the scoring model, each marked <em>fresh</em>, <em>stale</em> or <em>not scored</em>.</li><li>Pick <b>Northstar Field Services</b> and review its Signals, Buying group and Score tabs. Every piece of evidence shows its source and date.</li><li>Click <b>Prepare outreach brief</b>. The orbit diagram lights up as Discover, Research, Compose and Validate run.</li><li>Validate rejects &ldquo;expanding into three new regions&rdquo;, a claim from an unsourced note, and the rewrite comes back fully cited. A contact who opted out is skipped.</li><li>Edit the draft, approve it as the account owner, then read the audit trail of every agent step and decision.</li><li>Try <b>Verdant Grid Energy</b>: every contact opted out, so Orbit stops and writes no draft.</li></ol><p class="note">Try it yourself in the <a href="https://hithakishore-all.github.io/gtm-orbit/">live demo</a>.</p>
+</section>
+<section class="cs-sec" id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture"><span class="num">05</span>Architecture and integrations</h2>
+<div class="flow" role="img" aria-label="Flow: Salesforce Gong (simulated) Product signals Snowflake governed view Discover Research Compose Validate Seller approves"><span class="">Salesforce</span><span class="">Gong (simulated)</span><span class="">Product signals</span><i aria-hidden="true">→</i><span class="k">Snowflake governed view</span><i aria-hidden="true">→</i><span class="">Discover</span><span class="">Research</span><span class="">Compose</span><span class="k">Validate</span><i aria-hidden="true">→</i><span class="">Seller approves</span></div><p>The flow is a Python stored procedure in Snowflake that writes its state and every step to audit tables. A Node.js app (an Express web console and a Slack bot on Bolt in Socket Mode) starts runs, polls their progress and records edits, approvals and rejections. Both front ends share one engine.</p><p class="note">Built with: Salesforce · Snowflake · Slack bot · Node.js. Full architecture notes are in the <a href="https://github.com/hithakishore-all/gtm-orbit">repository</a>.</p><details class="more"><summary>Stage-by-stage inputs, outputs and guardrails</summary><div><div class="tbl-wrap"><table><thead><tr><th>Stage</th><th>Reads</th><th>Produces</th><th>Guardrail</th></tr></thead><tbody><tr><td><b>Discover</b></td><td>Contact readiness</td><td>Permitted contacts by buying role, missing roles</td><td>Opted-out or incomplete contacts are never used. No permitted contact means stop</td></tr><tr><td><b>Research</b></td><td>Evidence in the governed view</td><td>Cited facts: why now, pains, risks</td><td>Only facts with an evidence ID</td></tr><tr><td><b>Compose</b></td><td>Research output</td><td>First email draft with a claim list</td><td>Each claim must reference evidence</td></tr><tr><td><b>Validate</b></td><td>Draft plus evidence</td><td>Pass, or flagged claims sent back</td><td>At most 2 retries, then it escalates to the seller</td></tr><tr><td><b>Approve</b></td><td>Brief</td><td>Edit, approve or reject</td><td>Owner only. Approval never sends</td></tr></tbody></table></div></div></details>
+</section>
+<section class="cs-sec" id="decisions" aria-labelledby="h-decisions"><h2 id="h-decisions"><span class="num">06</span>Important decisions and trade-offs</h2>
+<ul class="decisions"><li><b>Make the validator a hard gate</b>A draft that can't cite its evidence is rewritten at most twice, then escalated to the seller.<span class="trade">Slower than shipping the first draft, but one invented fact costs more trust than a minute saves.</span></li><li><b>Agents read one governed view</b>The app logs in as a key-pair service user that can read views and call procedures, and nothing else.<span class="trade">Less flexibility for the agents in exchange for least privilege and auditability.</span></li><li><b>Unknown is not low</b>Stale and unscored accounts are labeled, not sorted to the bottom.<span class="trade">The queue looks less tidy, but it's honest about data quality.</span></li><li><b>Scripted wording by default</b>Everything except the wording is real, so the demo is reproducible and runs on a free trial.<span class="trade">The language is less natural until a live model is switched on.</span></li></ul>
+</section>
+<section class="cs-sec" id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation"><span class="num">07</span>Evaluation and success metrics</h2>
+<h3>North star <span class="lbl lbl-proposed">Proposed</span></h3><p class="lead">Briefs approved by the account owner, and how often the validator has to step in.</p><h3>Verified today <span class="lbl lbl-measured">Measured</span></h3><ul><li>An end-to-end smoke test runs the real server and covers the queue, buying group, a full brief where Validate rejects and then passes, edit, approve, no double approval, the no-contact stop and bad-input errors</li></ul><details class="more"><summary>Proposed pilot metrics</summary><div><ul><li><span class="lbl lbl-proposed">Proposed</span> Approval rate of briefs by account owners</li><li><span class="lbl lbl-proposed">Proposed</span> Validator catch rate and retries per brief</li><li><span class="lbl lbl-proposed">Proposed</span> Share of accounts stopped for having no permitted contact (a guardrail that should hold at 100%)</li></ul></div></details><p class="note" style="margin-top:12px">The audit trail records every agent step with timings, which is the raw material for these metrics. No real-world results are claimed.</p>
+</section>
+<section class="cs-sec" id="value" aria-labelledby="h-value"><h2 id="h-value"><span class="num">08</span>Business value</h2>
+<p><span class="lbl lbl-assumption">Hypothesis</span> This is the value expected if a pilot confirms the north star. None of it is a measured outcome.</p><ul><li><b>Seller time.</b> Sellers spend less time stitching together context from several systems before reaching out.</li><li><b>Trust and adoption.</b> Cited, validated briefs address the main reason sellers ignore AI output.</li><li><b>Governance.</b> Every agent step and human decision is auditable, which matters to RevOps, security and compliance.</li></ul>
+</section>
+<section class="cs-sec" id="future" aria-labelledby="h-future"><h2 id="h-future"><span class="num">09</span>Future opportunities</h2>
+<ul><li>Expose Orbit's actions as MCP tools so a seller can ask Claude in plain English, with Validate and approval still enforced</li><li>A Salesforce panel on the account page; Hex dashboards for validator catch rate and approval rate; a Streamlit in Snowflake version</li><li>Switch the agents to a live Cortex model with one setting</li><li>For production: a real call connector, the scoring model owner's feed, SSO and per-user identity in Slack, hosted authentication, and a pilot in shadow mode first</li></ul>
+</section>
+    </div>
+  </div>
+  <nav class="pager" aria-label="More projects">
+    <a href="../../work/readaroo/"><small>← Previous</small><b>Readaroo</b></a>
+    <a class="next" href="../../work/account-focus/"><small>Next →</small><b>Account Focus</b></a>
+  </nav>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <span>Independently conceived and built: these are independent explorations, not commercial products. Demo data is synthetic unless a page marks a public source. Product names such as Salesforce, Snowflake, Slack, Gong and Stripe describe integrations only and imply no affiliation or endorsement.</span>
+    <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
+  </div>
+</footer>
+<script>
+(() => {
+  const links = [...document.querySelectorAll('.toc a')];
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { links.forEach(a => a.classList.remove('on')); map.get(e.target.id)?.classList.add('on'); }
+  }), { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.cs-sec').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>

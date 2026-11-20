@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account Focus: case study · Hitha Kishore</title>
+<meta name="description" content="Account Focus: Five accounts a day, why now, and the next move. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<link rel="canonical" href="https://hithakishore-all.github.io/work/account-focus/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Account Focus: case study · Hitha Kishore">
+<meta property="og:description" content="Account Focus: Five accounts a day, why now, and the next move. Problem, users, workflow, architecture, trade-offs and evaluation for a working AI prototype.">
+<meta property="og:image" content="https://hithakishore-all.github.io/img/account-focus-walkthrough-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B1F24'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' fill='%23F4EFE6' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body class="p-focus">
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../"><b>Hitha Kishore</b><span>AI product portfolio</span></a>
+    <nav class="topnav" aria-label="Site">
+      <a href="../../#projects">Projects</a>
+      <a href="../../#reading" class="hide-sm">How to read the work</a>
+      <a href="https://github.com/hithakishore-all" class="hide-sm">GitHub</a>
+      <a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="cs-band"><div class="wrap">
+  <header class="cs-head">
+    <p class="crumb"><a href="../../#sales">← Sales &amp; GTM Intelligence</a></p>
+    <p class="kicker">Account prioritization · part of GTM Orbit</p>
+    <h1>Account Focus</h1>
+    <p class="tagline">Five accounts a day, why now, and the next move.</p>
+    <p class="summary">Account Focus is the daily decision layer inside GTM Orbit. Each morning it surfaces the five account-and-motion combinations most worth a seller's attention, explains why now, names who to engage and recommends the next move. Every sentence links to evidence, a validator removes anything it can't cite, and the seller's decisions flow back into Orbit.</p>
+    <div class="actions"><a class="btn primary" href="https://hithakishore-all.github.io/account-focus/">Live demo</a><a class="btn" href="https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"/></svg>Video</a><a class="btn" href="https://github.com/hithakishore-all/account_focus"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0z"/></svg>Code</a></div>
+  </header>
+  <dl class="glance">
+    <div><dt>For</dt><dd>Account executives; sales managers</dd></div>
+    <div><dt>Problem</dt><dd>Ranked lists can't say why now, or whether the seller can reach the people who decide</dd></div>
+    <div><dt>The bet</dt><dd>Explain the rank and check the seller can act on it</dd></div>
+    <div><dt>Status</dt><dd>Independent prototype · 21 automated tests</dd></div>
+  </dl>
+  </div></div>
+<div class="wrap">
+  <figure style="margin:0">
+    <div class="cs-media"><video controls preload="none" playsinline poster="../../img/account-focus-walkthrough-poster.jpg" src="../../img/account-focus-walkthrough.mp4" aria-label="Captioned walkthrough of Account Focus"></video></div>
+    <figcaption class="cs-caption">Captioned walkthrough, recorded from the working app with synthetic data (no sound).</figcaption>
+  </figure>
+  <div class="cs-layout">
+    <nav class="toc" aria-label="On this page"><p>On this page</p><ol>
+      <li><a href="#real">What's real</a></li>
+      <li><a href="#problem">Problem and opportunity</a></li>
+      <li><a href="#users">Target users</a></li>
+      <li><a href="#concept">Concept and thesis</a></li>
+      <li><a href="#journey">User journey</a></li>
+      <li><a href="#architecture">Architecture and integrations</a></li>
+      <li><a href="#decisions">Decisions and trade-offs</a></li>
+      <li><a href="#evaluation">Evaluation and metrics</a></li>
+      <li><a href="#value">Business value</a></li>
+      <li><a href="#future">Future opportunities</a></li>
+    </ol></nav>
+    <div class="cs-body">
+<section class="cs-sec" id="real" aria-labelledby="h-real"><h2 id="h-real">What's real in this prototype</h2>
+<p>An independent prototype: conceived and built independently to explore an idea. Here is what it actually does, and what it simulates.</p><div class="real"><ul><li><span class="lbl lbl-built">Built</span><span>One deterministic scoring engine that runs in the browser, in Node and inside a Snowflake stored procedure, with a test that checks all three produce the same brief</span></li><li><span class="lbl lbl-built">Built</span><span>Picks, cooldowns, a validator that removes uncited sentences, a hand-off record to GTM Orbit, a web console and an 8:00 Slack brief</span></li><li><span class="lbl lbl-scripted">Scripted</span><span>Offline, the call-reading stage is a scripted stand-in (who's speaking, plus negation). Its precision is 0.85 against planted labels, not 1.0. Wording is scripted, or comes from Cortex in live mode</span></li><li><span class="lbl lbl-simulated">Simulated</span><span>Gong call segments</span></li><li><span class="lbl lbl-synthetic">Synthetic</span><span>The evaluation numbers are computed by the app from synthetic data generated under stated assumptions. They show the method, not a real-world result</span></li><li><span class="lbl lbl-proposed">Proposed</span><span>All pilot targets in the PRD</span></li></ul></div>
+</section>
+<section class="cs-sec" id="problem" aria-labelledby="h-problem"><h2 id="h-problem"><span class="num">01</span>Problem and opportunity</h2>
+<p class="lead">Sellers gain time from AI but don't spend it on the accounts that matter. The ranked lists they get can't say why now, or whether the seller can reach the people who decide.</p><ul class="stats"><li><b>4.8 hrs</b>a week saved for sellers by AI, yet 72% of sales organizations don't put that time into high-value work<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-survey-finds-ai-saves-sellers-nearly-five-hours-per-week-yet-seventy-two-percent-of-sales-organizations-fail-to-reinvest-time-in-high-value-activities">Gartner, May 2026</a></span></li><li><b>2.6×</b>more likely to reach commercial growth when sellers get AI-enabled next best actions<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2026-05-20-gartner-survey-finds-sales-organizations-that-provide-ai-enabled-next-best-actions-are-two-point-six-times-more-likely-to-achieve-commercial-growth">Gartner, May 2026</a></span></li><li><b>13 + 9</b>internal and external people influence a typical B2B purchase<span class="src"><span class="lbl lbl-public">Public source</span> <a href="https://digitalcommerce360.com/2026/01/22/forrester-b2b-buying-ai-2026/">Forrester via Digital Commerce 360, Jan 2026</a></span></li></ul><h3>The opportunity</h3><p>Explain the rank, check that the seller can actually reach the buying group, and measure whether the picks worked.</p>
+</section>
+<section class="cs-sec" id="users" aria-labelledby="h-users"><h2 id="h-users"><span class="num">02</span>Target users</h2>
+<ul class="users"><li><b>Account executive</b>Gets five picks every morning, with the evidence behind each and a clear next move.</li><li><b>Sales manager</b>Coaches from the same picks, reasons and audit trail. A dedicated team view is a known gap.</li><li><b>GTM Orbit</b>Receives accepted picks with their evidence and drafts the outreach.</li></ul>
+</section>
+<section class="cs-sec" id="concept" aria-labelledby="h-concept"><h2 id="h-concept"><span class="num">03</span>Product concept and thesis</h2>
+<p class="lead">Four numbers, not one. Attractiveness and Momentum set the rank; Readiness and Confidence choose the action.</p><ul><li><b>Priority = √(Attractiveness × Momentum).</b> Readiness and Confidence decide the action: Pursue, Rescue, Multithread or Verify.</li><li><b>Read signals, don't count them.</b> A &ldquo;budget&rdquo; tracker hit spoken by our own rep counts zero, and an unmatched speaker counts half.</li><li><b>Four picks plus an exploration slot.</b> At most three picks per motion, and a 14-day cooldown after a rejection.</li><li><b>A model may write the words, never the score.</b></li></ul>
+</section>
+<section class="cs-sec" id="journey" aria-labelledby="h-journey"><h2 id="h-journey"><span class="num">04</span>User journey and workflow</h2>
+<ol class="steps"><li>Open <b>Today's five</b>. Keystone Elevator Services is first: a new CFO, a 12% cost program, and budget set aside for Q1 according to a call.</li><li>Press <b>Replay</b> on &ldquo;How this pick was made&rdquo;, and click an evidence chip to jump to the signal behind it.</li><li>Open Northstar: the account is hot, but there's no economic buyer or technical evaluator, so the move is <em>Multithread</em>.</li><li>Check <b>Rest of your book</b>: Copperline's nine budget mentions all came from our own rep, so its Momentum is 0. Quarry &amp; Pine shows as <em>not scored</em>.</li><li>Accept, snooze or reject a pick with a reason, then <b>Prepare outreach in Orbit</b> to hand it over with its evidence.</li><li>Open the <b>Evaluation</b> tab to see Precision@5 against the baseline score.</li></ol><p class="note">Try it yourself in the <a href="https://hithakishore-all.github.io/account-focus/">live demo</a>.</p>
+</section>
+<section class="cs-sec" id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture"><span class="num">05</span>Architecture and integrations</h2>
+<div class="flow" role="img" aria-label="Flow: Salesforce Gong (simulated) Usage Public signals Snowflake Score Pick Explain Validate Seller decides GTM Orbit"><span class="">Salesforce</span><span class="">Gong (simulated)</span><span class="">Usage</span><span class="">Public signals</span><i aria-hidden="true">→</i><span class="">Snowflake</span><i aria-hidden="true">→</i><span class="k">Score</span><span class="">Pick</span><span class="">Explain</span><span class="k">Validate</span><i aria-hidden="true">→</i><span class="">Seller decides</span><i aria-hidden="true">→</i><span class="">GTM Orbit</span></div><p>The scoring engine is a single file. Offline mode runs it in Node, a build step embeds it in a Snowflake JavaScript stored procedure, and a test runs that generated procedure to confirm it produces the same brief.</p><p class="note">Built with: Salesforce · Snowflake · Gong (simulated) · Slack bot · Node.js. Full architecture notes are in the <a href="https://github.com/hithakishore-all/account_focus">repository</a>.</p><details class="more"><summary>Stage-by-stage inputs, outputs and guardrails</summary><div><div class="tbl-wrap"><table><thead><tr><th>Stage</th><th>Reads</th><th>Produces</th><th>Guardrail</th></tr></thead><tbody><tr><td><b>Signals</b></td><td>CRM, call moments, usage, public news</td><td>Typed signals with speaker and side</td><td>Our own side's tracker hits count 0</td></tr><tr><td><b>Score</b></td><td>Events, roles, data quality</td><td>Attractiveness, Momentum, Readiness, Confidence</td><td>Deterministic</td></tr><tr><td><b>Pick</b></td><td>Scores, cooldowns</td><td>Four ranked picks plus an exploration slot</td><td>At most 3 per motion; 14-day cooldown</td></tr><tr><td><b>Explain</b></td><td>Drafts, evidence index</td><td>Why now, exec prep, next best action, gaps</td><td>The validator removes uncited sentences</td></tr><tr><td><b>Act</b></td><td>Seller decision</td><td>Feedback, hand-off to Orbit, audit events</td><td>Nothing is sent to customers</td></tr></tbody></table></div></div></details>
+</section>
+<section class="cs-sec" id="decisions" aria-labelledby="h-decisions"><h2 id="h-decisions"><span class="num">06</span>Important decisions and trade-offs</h2>
+<ul class="decisions"><li><b>Split one score into four</b>A hot account with the wrong people becomes &ldquo;multithread&rdquo; instead of dropping down the list.<span class="trade">Harder to explain than one number, so every pick shows how it was made.</span></li><li><b>Keep the model away from the score</b>Ranking is deterministic and tested. Language only explains.<span class="trade">Less adaptive than a learned ranker, but every rank can be audited.</span></li><li><b>Hold an exploration slot</b>One of the five slots goes to an account the score would otherwise miss, such as a new executive nobody has met.<span class="trade">One fewer high-confidence pick a day, in exchange for learning.</span></li><li><b>One engine in three runtimes</b>The browser, Node and Snowflake run the same file.<span class="trade">A build step and a parity test to maintain.</span></li></ul>
+</section>
+<section class="cs-sec" id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation"><span class="num">07</span>Evaluation and success metrics</h2>
+<h3>North star <span class="lbl lbl-proposed">Proposed</span></h3><p class="lead">Meetings booked with a required buying role from Focus picks, per seller per week: +30% against a holdout at 90 days.</p><h3>Verified today <span class="lbl lbl-measured">Measured</span></h3><ul><li>21 automated tests covering scoring, routing, cooldowns, the validator, gap detection and opted-out contacts, the Snowflake procedure matching offline mode, and an HTTP smoke test</li><li>The in-app Evaluation tab computes Precision@5, call-signal precision and groundedness on <em>synthetic</em> data, to show the method</li></ul><details class="more"><summary>Proposed pilot metrics</summary><div><ul><li><span class="lbl lbl-proposed">Proposed</span> Sellers who open the brief on 4 of 5 workdays: at least 70%</li><li><span class="lbl lbl-proposed">Proposed</span> Pick acceptance: at least 50%</li><li><span class="lbl lbl-proposed">Proposed</span> Precision@5 against the baseline score: at least 20% relative lift</li><li><span class="lbl lbl-proposed">Proposed</span> Claims with a valid citation: at least 98%, with zero uncited numbers</li><li><span class="lbl lbl-proposed">Proposed</span> Opted-out contacts suggested: 0</li></ul></div></details><p class="note" style="margin-top:12px">All targets are proposals to confirm in a shadow pilot (from the project PRD).</p>
+</section>
+<section class="cs-sec" id="value" aria-labelledby="h-value"><h2 id="h-value"><span class="num">08</span>Business value</h2>
+<p><span class="lbl lbl-assumption">Hypothesis</span> This is the value expected if a pilot confirms the north star. None of it is a measured outcome.</p><ul><li><b>Reinvested time.</b> The hours AI saves go to the accounts most likely to move.</li><li><b>Buying-group coverage.</b> Sellers are steered toward the roles that actually decide.</li><li><b>Provable lift.</b> The design includes measuring against a holdout, not just reporting usage.</li></ul>
+</section>
+<section class="cs-sec" id="future" aria-labelledby="h-future"><h2 id="h-future"><span class="num">09</span>Future opportunities</h2>
+<ul><li>GTM Orbit's agents read Focus runs and hand-offs directly in Snowflake</li><li>MCP tools so an assistant can answer &ldquo;what should I work on today?&rdquo;</li><li>A Snowflake Intelligence or Cortex Agent for questions like &ldquo;which accounts have a new exec and no relationship?&rdquo;</li><li>A manager team view, a Salesforce Lightning panel, and Attractiveness normalized within each segment</li></ul>
+</section>
+    </div>
+  </div>
+  <nav class="pager" aria-label="More projects">
+    <a href="../../work/gtm-orbit/"><small>← Previous</small><b>GTM Orbit</b></a>
+    <a class="next" href="../../work/saleslore/"><small>Next →</small><b>SalesLore</b></a>
+  </nav>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <span>Independently conceived and built: these are independent explorations, not commercial products. Demo data is synthetic unless a page marks a public source. Product names such as Salesforce, Snowflake, Slack, Gong and Stripe describe integrations only and imply no affiliation or endorsement.</span>
+    <span><a href="https://www.linkedin.com/in/hithakishore/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/hithakishore-all">GitHub</a></span>
+  </div>
+</footer>
+<script>
+(() => {
+  const links = [...document.querySelectorAll('.toc a')];
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { links.forEach(a => a.classList.remove('on')); map.get(e.target.id)?.classList.add('on'); }
+  }), { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.cs-sec').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>
