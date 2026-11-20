@@ -1,6 +1,6 @@
 # Enterprise AI, Agentic Systems & Product Innovation
 
-Live at **https://hithakishore-all.github.io**: independent personal projects. Each one is my own idea, prototyped and built end to end to explore it. Each has a live demo that runs in the browser on synthetic data, and a case study covering the problem, users, workflow, architecture, trade-offs, evaluation and business value.
+Live at **https://hithakishore-all.github.io**: independently conceived AI products and interactive prototypes, each built end to end to explore a question, an opportunity or a product hypothesis. Each has a live demo that runs in the browser on synthetic data, and a case study covering the problem, users, workflow, architecture, trade-offs, evaluation and business value.
 
 | Domain | Project | Demo | Case study | Code |
 | --- | --- | --- | --- | --- |
